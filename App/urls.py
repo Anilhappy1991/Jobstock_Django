@@ -60,6 +60,7 @@ urlpatterns = [
     
     path("candidate-dashboard/", views.candidate_dashboard, name="candidate_dashboard"),
     path("candidate-profile/", views.candidate_profile, name="candidate_profile"),
+    path("candidate-profile/<str:username>/", views.candidate_profile_detail, name="candidate_profile_detail"),
     path("candidate-resume/", views.candidate_resume, name="candidate_resume"),
     path("candidate-applied-jobs/", views.candidate_applied_jobs, name="candidate_applied_jobs"),
     path("candidate-alert-job/", views.candidate_alert_job, name="candidate_alert_job"),
@@ -110,5 +111,7 @@ urlpatterns = [
     path("job-detail/<slug:title>/", views.job_detail, name="job_detail"),
     
     path("signup/", views.signup, name="signup"),
+    path("login/", views.login_view, name="login"),
+    path("logout/", views.logout_view, name="logout"),
     path("slider-home/", views.slider_home, name="slider_home"),
 ]

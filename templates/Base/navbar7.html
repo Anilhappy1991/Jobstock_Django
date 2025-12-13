@@ -57,7 +57,7 @@
                                 </div>
                                 <ul>
                                     <li><a href="{% url 'App:candidate_dashboard' %}"><i class="fa fa-tachometer-alt"></i>Dashboard<span class="notti_coun style-1">4</span></a></li>                                  
-                                    <li><a href="{% url 'App:candidate_profile' %}"><i class="fa fa-user-tie"></i>My Profile</a></li>                                 
+                                    <li><a href="{% url 'App:candidate_profile_detail' request.user.username %}"><i class="fa fa-user-tie"></i>My Profile</a></li>                                 
                                     <li><a href="{% url 'App:candidate_resume' %}"><i class="fa fa-file"></i>My Resume<span class="notti_coun style-2">7</span></a></li>
                                     <li><a href="{% url 'App:candidate_saved_jobs' %}"><i class="fa-solid fa-bookmark"></i>Saved Resume</a></li>
                                     <li><a href="{% url 'App:candidate_messages' %}"><i class="fa fa-envelope"></i>Messages<span class="notti_coun style-3">3</span></a></li>
@@ -241,7 +241,7 @@
                                 </div>
                                 <ul>
                                     <li><a href="{% url 'App:candidate_dashboard' %}" class="sub-menu-item"><i class="fa fa-tachometer-alt"></i>Dashboard<span class="notti_coun style-1">4</span></a></li>                                  
-                                    <li><a href="{% url 'App:candidate_profile' %}" class="sub-menu-item"><i class="fa fa-user-tie"></i>My Profile</a></li>                                 
+                                    <li><a href="{% url 'App:candidate_profile_detail' request.user.username %}" class="sub-menu-item"><i class="fa fa-user-tie"></i>My Profile</a></li>                                 
                                     <li><a href="{% url 'App:candidate_resume' %}" class="sub-menu-item"><i class="fa fa-file"></i>My Resume<span class="notti_coun style-2">7</span></a></li>
                                     <li><a href="{% url 'App:candidate_saved_jobs' %}" class="sub-menu-item"><i class="fa-solid fa-bookmark"></i>Saved Resume</a></li>
                                     <li><a href="{% url 'App:candidate_messages' %}" class="sub-menu-item"><i class="fa fa-envelope"></i>Messages<span class="notti_coun style-3">3</span></a></li>

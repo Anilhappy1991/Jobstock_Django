@@ -27,7 +27,14 @@
         <!-- Main wrapper -->
         <div id="main-wrapper">
 
-            <main>
+			<main>
+				{% if messages %}
+					<div class="container mt-3">
+						{% for message in messages %}
+							<div class="alert alert-{{ message.tags }}">{{ message }}</div>
+						{% endfor %}
+					</div>
+				{% endif %}
 				{% block hero_content %}
 					{{ hero_content}}
 				{% endblock %}
@@ -71,6 +78,18 @@
 		<script src="{% static 'app/js/htmleditor.js' %}"></script>
 		<!-- plugins -->
 		{% block js %}{% endblock %}
+		<script>
+			(function(){
+				try{
+					var params = new URLSearchParams(window.location.search);
+					if (params.get('login') === 'failed'){
+						if (typeof jQuery !== 'undefined'){
+							jQuery(function($){ $('#login').modal('show'); });
+						}
+					}
+				}catch(e){console.error(e);}                
+			})();
+		</script>
 		
 	</body>
 </html>

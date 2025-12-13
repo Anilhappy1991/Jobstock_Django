@@ -9,15 +9,22 @@
             </div>
             <div class="modal-body">
                 <div class="modal-login-form">
-                    <form>
+                    <form method="post" action="{% url 'App:login' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
                     
                         <div class="form-floating mb-4">
-                            <input type="email" class="form-control" placeholder="name@example.com">
+                            <input type="text" name="username" class="form-control" placeholder="Username" value="{{ request.POST.username }}">
                             <label>User Name</label>
                         </div>
                         
                         <div class="form-floating mb-4">
-                            <input type="password" class="form-control" placeholder="Password">
+                            <input type="password" name="password" class="form-control" placeholder="Password">
                             <label>Password</label>
                         </div>
                         

@@ -1,8 +1,14 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Blog
 from .models import Candidate
 from .models import Employer
 from .models import Job
+from .forms import SignUpForm
+from django.contrib.auth.models import User
+from .models import Profile
+from django.contrib import messages
+from django.contrib.auth import login, authenticate, logout
+from django.urls import reverse
 
 # Create your views here.
 
@@ -151,7 +157,18 @@ def candidate_dashboard(request):
     return render(request, 'pages/candidate-dashboard.html')
 
 def candidate_profile(request):
-    return render(request, 'pages/candidate-profile.html')
+    # Redirect to the profile detail for the current authenticated user
+    if request.user.is_authenticated:
+        return redirect('App:candidate_profile_detail', username=request.user.username)
+    # If not authenticated, send them to the home page
+    return redirect('App:index')
+
+
+def candidate_profile_detail(request, username):
+    # Show the profile for the given username
+    user = get_object_or_404(User, username=username)
+    profile = Profile.objects.filter(user=user).first()
+    return render(request, 'pages/candidate-profile.html', {'profile_user': user, 'profile': profile})
 
 def candidate_resume(request):
     return render(request, 'pages/candidate-resume.html')
@@ -280,7 +297,47 @@ def job_detail(request, title):
     return render(request, 'pages/job-detail.html', {'job': job})
 
 def signup(request):
-    return render(request, 'pages/signup.html')
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, 'Account created successfully.')
+            return redirect('App:candidate_profile_detail', username=user.username)
+    else:
+        form = SignUpForm()
+    return render(request, 'pages/signup.html', {'form': form})
 
 def slider_home(request):
     return render(request, 'pages/slider-home.html')
+
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        # Try to use next from POST, fall back to HTTP_REFERER or index
+        next_url = request.POST.get('next') or request.META.get('HTTP_REFERER') or reverse('App:index')
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'You are now logged in.')
+            # If no next_url was provided, redirect to the user's profile detail
+            if not next_url:
+                return redirect('App:candidate_profile_detail', username=user.username)
+            return redirect(next_url)
+        else:
+            messages.error(request, 'Invalid username or password.')
+            # On failure, redirect to the same page and open login modal
+            # Append ?login=failed so frontend can detect and open modal
+            if '?' in next_url:
+                return redirect(f"{next_url}&login=failed")
+            return redirect(f"{next_url}?login=failed")
+    # For GET or other, just redirect to index
+    return redirect('App:index')
+
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, 'You have been logged out.')
+    return redirect('App:index')

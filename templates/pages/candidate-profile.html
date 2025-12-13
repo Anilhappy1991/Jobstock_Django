@@ -29,7 +29,7 @@
 						</div>
 					</div>
 					<div class="jbs-tiosk">
-						<h4 class="jbs-tiosk-title"><a href="{% url 'App:candidate_list_or_default' %}">Linda D. Strong</a></h4>
+						<h4 class="jbs-tiosk-title"><a href="{% url 'App:candidate_list_or_default' %}">{{ profile_user.get_full_name|default:profile_user.username }}</a></h4>
 						<div class="jbs-tiosk-subtitle"><span>Front-End Developer</span></div>
 					</div>
 				</div>
@@ -37,7 +37,7 @@
 			<div class="dashboard-inner">
 				<ul data-submenu-title="Main Navigation">
 					<li><a href="{% url 'App:candidate_dashboard' %}"><i class="fa-solid fa-gauge-high me-2"></i>User Dashboard</a></li>
-					<li class="active"><a href="{% url 'App:candidate_profile' %}"><i class="fa-regular fa-user me-2"></i>My Profile </a></li>
+					<li class="active"><a href="{% url 'App:candidate_profile_detail' request.user.username %}"><i class="fa-regular fa-user me-2"></i>My Profile </a></li>
 					<li><a href="{% url 'App:candidate_resume' %}"><i class="fa-solid fa-file-pdf me-2"></i>My Resumes</a></li>
 					<li><a href="{% url 'App:candidate_applied_jobs' %}"><i class="fa-regular fa-paper-plane me-2"></i>Applied jobs</a></li>
 					<li><a href="{% url 'App:candidate_alert_job' %}"><i class="fa-solid fa-bell me-2"></i>Alert Jobs<span class="count-tag bg-warning">4</span></a></li>
@@ -96,7 +96,7 @@
 						<div class="col-xl-8 col-lg-8">
 							<div class="dash-prfs-caption mb-4">
 								<div class="dash-prfs-title d-flex align-items-center justify-content-between">
-									<div class="avatar-title"><h4>R. Daniel Markduke</h4></div>
+									<div class="avatar-title"><h4>{{ profile_user.get_full_name|default:profile_user.username }}</h4></div>
 									<div class="update-status"><span class="text-sm opacity-75">Last Update: Just now</span></div>
 								</div>
 								<div class="dash-prfs-subtitle">

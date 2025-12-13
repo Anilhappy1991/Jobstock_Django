@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -66,3 +67,19 @@ class Job(models.Model):
 
     def __str__(self):
         return self.title
+
+
+WORK_STATUS_CHOICES = (
+    ('findjob', "I'm looking for a job"),
+    ('findtalent', "I'm looking for talent"),
+)
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=255, blank=True)
+    phone = models.CharField(max_length=30, blank=True)
+    work_status = models.CharField(max_length=20, choices=WORK_STATUS_CHOICES, default='findjob')
+
+    def __str__(self):
+        return f"Profile({self.user.username})"
