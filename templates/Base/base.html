@@ -1,0 +1,76 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+	<head>
+		{% block meta %}
+		<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		{% endblock %}
+		
+        <title>{% block title %}JobStock - Django Job Listing, Job Portal Landing & Admin Dashboard Template{% endblock %}</title>
+		<link rel="icon" type="image/x-icon" href="{% static 'app/img/favicon.png' %}">
+		
+        <!-- Custom CSS -->
+        <link href="{% static 'app/css/styles.css' %}" rel="stylesheet">
+		
+		<!-- Colors CSS -->
+        <link href="{% static 'app/css/colors.css' %}" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+		{% block css %}{% endblock %}
+		
+    </head>
+	
+    <body>
+        <!-- Preloader -->
+        <div id="preloader"><div class="preloader"><span></span><span></span></div></div>
+		
+        <!-- Main wrapper -->
+        <div id="main-wrapper">
+
+            <main>
+				{% block hero_content %}
+					{{ hero_content}}
+				{% endblock %}
+			</main>
+
+
+            <a href="#" id="back2Top" class="top-scroll" title="Back to top"><i class="bi bi-arrow-up"></i></a>
+
+		</div>
+		<!-- End Wrapper -->
+		
+		<!-- All Jquery -->
+		<script src="{% static 'app/js/jquery.min.js' %}"></script>
+		<script src="{% static 'app/js/popper.min.js' %}"></script>
+		<script src="{% static 'app/js/bootstrap.min.js' %}"></script>
+		<script src="{% static 'app/js/rangeslider.js' %}"></script>
+		<script src="{% static 'app/js/jquery.nice-select.min.js' %}"></script>
+		<script src="{% static 'app/js/slick.js' %}"></script>
+		<script src="{% static 'app/js/counterup.min.js' %}"></script>
+		
+		 
+		<script src="{% static 'app/js/custom.js' %}"></script>
+
+		<!-- Map -->
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_8C7p0Ws2gUu7wo0b6pK9Qu7LuzX2iWY&amp;libraries=places&amp;"></script>
+		<script src="{% static 'app/js/map/map_infobox.js' %}"></script>
+		<script src="{% static 'app/js/map/markerclusterer.js' %}"></script> 
+		<script src="{% static 'app/js/map/map.js' %}"></script>
+		<script src="{% static 'app/js/map/employer-map.js' %}"></script>
+
+		<!-- Morris.js charts -->
+		<script src="{% static 'app/js/raphael/raphael.min.js' %}"></script>
+		<script src="{% static 'app/js/morris.js/morris.min.js' %}"></script>
+		<!-- Custom Chart JavaScript -->
+		<script src="{% static 'app/js/custom/dashboard.js' %}"></script>
+		<script src="{% static 'app/js/main.js' %}"></script>
+		<script src="{% static 'app/js/contact.js' %}"></script>
+
+		<!-- HTML Editor -->
+		<script src="{% static 'app/js/datepicker.js' %}"></script>
+		<script src="{% static 'app/js/htmleditor.js' %}"></script>
+		<!-- plugins -->
+		{% block js %}{% endblock %}
+		
+	</body>
+</html>

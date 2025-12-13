@@ -1,0 +1,416 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar7.html' %}
+
+<!-- dashboard Detail -->
+<div class="dashboard-wrap bg-light">
+	<a class="mobNavigation" data-bs-toggle="collapse" href="#MobNav" role="button" aria-expanded="false" aria-controls="MobNav">
+		<i class="fas fa-bars mr-2"></i>Dashboard Navigation
+	</a>
+		<div class="collapse" id="MobNav">
+		<div class="dashboard-nav">
+			<div class="dash-user-blocks pt-5">
+				<div class="jbs-grid-usrs-thumb">
+					<div class="jbs-grid-yuo">
+						<a href="{% url 'App:candidate_list_or_default' %}"><figure><img src="{% static 'app/img/user-5.png' %}" class="img-fluid circle" alt=""></figure></a>
+					</div>
+				</div>
+				<div class="jbs-grid-usrs-caption mb-3">
+					<div class="jbs-kioyer">
+						<div class="jbs-kioyer-groups">
+							<span class="fa-solid fa-star active"></span>
+							<span class="fa-solid fa-star active"></span>
+							<span class="fa-solid fa-star active"></span>
+							<span class="fa-solid fa-star active"></span>
+							<span class="fa-solid fa-star"></span>
+							<span class="aal-reveis">4.7</span>
+						</div>
+					</div>
+					<div class="jbs-tiosk">
+						<h4 class="jbs-tiosk-title"><a href="{% url 'App:candidate_list_or_default' %}">Linda D. Strong</a></h4>
+						<div class="jbs-tiosk-subtitle"><span>Front-End Developer</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="dashboard-inner">
+				<ul data-submenu-title="Main Navigation">
+					<li><a href="{% url 'App:candidate_dashboard' %}"><i class="fa-solid fa-gauge-high me-2"></i>User Dashboard</a></li>
+					<li class="active"><a href="{% url 'App:candidate_profile' %}"><i class="fa-regular fa-user me-2"></i>My Profile </a></li>
+					<li><a href="{% url 'App:candidate_resume' %}"><i class="fa-solid fa-file-pdf me-2"></i>My Resumes</a></li>
+					<li><a href="{% url 'App:candidate_applied_jobs' %}"><i class="fa-regular fa-paper-plane me-2"></i>Applied jobs</a></li>
+					<li><a href="{% url 'App:candidate_alert_job' %}"><i class="fa-solid fa-bell me-2"></i>Alert Jobs<span class="count-tag bg-warning">4</span></a></li>
+					<li><a href="{% url 'App:candidate_saved_jobs' %}"><i class="fa-solid fa-bookmark me-2"></i>Shortlist Jobs</a></li>
+					<li><a href="{% url 'App:candidate_follow_employers' %}"><i class="fa-solid fa-user-clock me-2"></i>Following Employers</a></li>
+					<li><a href="{% url 'App:candidate_messages' %}"><i class="fa-solid fa-comments me-2"></i>Messages<span class="count-tag">4</span></a></li>
+					<li><a href="{% url 'App:candidate_change_password' %}"><i class="fa-solid fa-unlock-keyhole me-2"></i>Change Password</a></li>
+					<li><a href="{% url 'App:candidate_delete_account' %}"><i class="fa-solid fa-trash-can me-2"></i>Delete Account</a></li>
+					<li><a href="{% url 'App:index' %}"><i class="fa-solid fa-power-off me-2"></i>Log Out</a></li>
+				</ul>
+			</div>					
+		</div>
+	</div>
+	
+	<div class="dashboard-content">
+		<div class="dashboard-tlbar d-block mb-4">
+			<div class="row">
+				<div class="colxl-12 col-lg-12 col-md-12">
+					<h1 class="mb-1 fs-3 fw-medium">Candidate Profile</h1>
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item text-muted"><a href="#">Candidate</a></li>
+							<li class="breadcrumb-item text-muted"><a href="#">Dashboard</a></li>
+							<li class="breadcrumb-item"><a href="#" class="text-main">Candidate Profile</a></li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+		
+		<div class="dashboard-widg-bar d-block">
+		
+			<div class="dashboard-profle-wrapper mb-4">
+				<div class="dash-prf-start">
+					<div class="profile-avatar position-ralative mb-3">
+						<svg>
+							<circle class="bg" cx="70" cy="70" r="60"></circle>
+							<circle class="progress" cx="70" cy="70" r="60" stroke-dasharray="326.72" stroke-dashoffset="326.72"></circle>
+						</svg>
+						<img class="avatar" src="{% static 'app/img/avatar.jpg' %}" alt="Avatar">
+						<div class="position-absolute bottom-0 start-50 translate-middle-x">
+							<span class="badge badge-md bg-white text-main rounded-pill fw-medium shadow-sm px-3 py-2">75%</span>
+						</div>
+					</div>
+					<div class="dash-prf-start-bottom">
+						<div class="upload-btn-wrapper small">
+							<button class="btn">Change Profile</button>
+							<input type="file" name="myfile">
+						</div>
+					</div>
+				</div>
+				<div class="dash-prf-end">
+					<div class="row gx-xl-5 g-4">
+						
+						<!-- Profile info -->
+						<div class="col-xl-8 col-lg-8">
+							<div class="dash-prfs-caption mb-4">
+								<div class="dash-prfs-title d-flex align-items-center justify-content-between">
+									<div class="avatar-title"><h4>R. Daniel Markduke</h4></div>
+									<div class="update-status"><span class="text-sm opacity-75">Last Update: Just now</span></div>
+								</div>
+								<div class="dash-prfs-subtitle">
+									<div class="jbs-job-mrch-lists mb-2">
+										<div class="single-mrch-lists">
+											<span>Sr. Web Designer <a href="#" class="text-main">@Megrio Infotech</a></span>
+										</div>
+									</div>
+									<div class="short-description">
+										<p>Creative and detail-oriented Web Designer with a strong foundation in responsive design, HTML, CSS, and modern UI/UX principles. Experienced in designing visually appealing, user-friendly websites.</p>
+									</div>
+								</div>
+								<div class="jbs-grid-job-edrs-group mt-1">
+									<span>HTML</span>
+									<span>CSS3</span>
+									<span>Bootstrap</span>
+									<span>Redux</span>
+								</div>
+							</div>
+							<div class="dash-prf-caption-end">
+								<div class="row gx-lg-5 g-4">
+								
+									<!-- Components/For-Candidate/candidate-dashboard/caption.html -->
+           	 						{% include 'Components/For-Candidate/candidate-dashboard/caption.html' %}
+								
+								</div>
+							</div>
+						</div>
+						
+						<!-- Completion Profile -->
+						<div class="col-xl-4 col-lg-4">
+							<div class="card rpunded-3 p-4" style="background:#fff5ee;">
+							
+								<div class="completion-group d-flex flex-column gap-3 mb-3">
+	
+									<!-- Components/For-Candidate/candidate-dashboard/completion.html -->
+           	 						{% include 'Components/For-Candidate/candidate-dashboard/completion.html' %}
+								
+								</div>
+								
+								<div class="completion-button">
+									<a href="#" class="btn btn-md btn-main rounded-pill w-100">Complete Your Profile</a>
+								</div>
+							</div>
+						</div>
+					
+					</div>
+				</div>
+			
+			</div>
+			
+			<!-- Card Row -->
+			<div class="card">
+				<div class="card-header">
+					<h4>Basic Detail</h4>
+				</div>
+				<div class="card-body">
+					<form>
+						<div class="row">
+						
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Your Name</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Job Title</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Age</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Education</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">High School</option>
+											<option value="2">Intermidiate</option>
+											<option value="3">Bachelore Degree</option>
+											<option value="4">Master Degree</option>
+											<option value="5">Post Graduate</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Experience</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">Fresher</option>
+											<option value="2">1+ Year</option>
+											<option value="3">2+ Year</option>
+											<option value="4">4+ Year</option>
+											<option value="5">5+ Year</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Language</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-12 col-lg-12 col-md-12">
+								<div class="form-group">
+									<label>About Info</label>
+									<textarea class="form-control ht-80"></textarea>
+								</div>
+							</div>
+							
+						</div> 
+					</form>
+				</div>
+			</div>
+			<!-- Card Row End -->
+			
+			<!-- Card Row -->
+			<div class="card">
+				<div class="card-header">
+					<h4>Contact Detail</h4>
+				</div>
+				<div class="card-body">
+					<form>
+						<div class="row">
+						
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Your Email</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Phone no.</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Temporary Address</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Address</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Address 2</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Country</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">India</option>
+											<option value="2">United State</option>
+											<option value="3">United kingdom</option>
+											<option value="4">Austrailia</option>
+											<option value="5">Russia</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>State/City</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">California</option>
+											<option value="2">Denver</option>
+											<option value="3">New York</option>
+											<option value="4">Canada</option>
+											<option value="5">Poland</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Zip Code</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Latitude</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>longitude</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+						</div> 
+					</form>
+				</div>
+			</div>
+			<!-- Card Row End -->
+			
+			<!-- Card Row -->
+			<div class="card">
+				<div class="card-header">
+					<h4>Social Login</h4>
+				</div>
+				<div class="card-body">
+					<form>
+						<div class="row">
+						
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Facebook</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Twitter</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Instagram</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Linked In</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Twitter</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Google Plus</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+						</div> 
+					</form>
+				</div>
+			</div>
+			<!-- Card Row End -->
+			
+			<!-- Submit Busston -->
+			<div class="row">
+				<div class="col-lg-12 col-md-12">
+					<button type="submit" class="btn ft--medium btn-main">Save Profile</button>
+				</div>	
+			</div>
+
+		</div>
+		
+		<!-- footer -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="py-3 text-center">© <script>document.write(new Date().getFullYear())</script> JobStock. Develop with <i class="mdi mdi-heart text-danger"></i> by <a href="https://shreethemes.in" target="_blank" class="text-reset">Shreethemes</a>.</div>
+			</div>
+		</div>
+
+	</div>				
+	
+</div>
+<!-- dashboard Detail End -->
+ 
+<!-- Components/For-Candidate/candidate-dashboard/verify.html -->
+{% include 'Components/For-Candidate/candidate-dashboard/verify.html' %}
+		
+<!-- Components/For-Candidate/candidate-dashboard/files.html -->
+{% include 'Components/For-Candidate/candidate-dashboard/files.html' %}
+
+{% endblock %}

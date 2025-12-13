@@ -1,0 +1,9 @@
+{% for item in views %}
+    <div class="single-eflorio-list">
+        <div class="eflorio-list-icons"><i class="{{ item.icon }}"></i></div>
+        <div class="eflorio-list-captions">
+            <label>{{ item.title }}</label>
+            <h6>{{ item.name }}</h6>
+        </div>
+    </div>
+{% endfor %}

@@ -1,0 +1,122 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar2.html' %}
+
+<!-- Header Information Start -->
+<section class="bg-second py-0">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="ht-200"></div>
+		</div>
+	</div>
+</section>
+<!-- Header Information End -->
+
+<!-- Full Candidate Details Start -->
+<section class="bg-light pt-5">
+	<div class="container">
+		<!-- row Start -->
+		<div class="row g-4">
+		
+			<div class="col-xl-4 col-lg-4 col-md-12">
+				<div class="card rounded-4">
+					<div class="card-body py-5">
+						
+						<div class="user-thumb text-center mb-4">
+							<div class="square--100 mx-auto circle mb-3"><img src="{% static 'app/img/avatar.jpg' %}" class="img-fluid circle" alt="Avatar"></div>
+							<div class="caps text-center">
+								<h5 class="mb-0">Karun M. David</h5>
+								<p class="text-muted m-0">UI/UX Designer</p>
+							</div>
+						</div>
+						
+						<div class="d-block short-caps text-center mb-4">
+							<p>I'm a UI/UX Designer passionate about creating intuitive and engaging digital experiences. I blend design thinking with user research to craft clean, responsive interfaces that solve real problems and delight users.</p>
+						</div>
+						
+						<div class="d-block skills-block text-center mb-5">
+							<h5>Skills</h5>
+							<div class="cndts-all-skills-list justify-content-center">
+								<span class="rounded-pill">Figma Expert</span>
+								<span class="rounded-pill">Canva</span>
+								<span class="rounded-pill">Bootstrap</span>
+								<span class="rounded-pill">Front-end Design</span>
+								<span class="rounded-pill">UI/UX Design</span>
+								<span class="rounded-pill">Brand Design</span>
+								<span class="rounded-pill">WordPress</span>
+							</div>
+						</div>
+						
+						<div class="d-block contact-block text-center">
+							<div class="d-flex align-items-center justify-content-center flex-column gap-3">
+								<button type="button" class="btn btn-md btn-outline-dark fw-medium rounded-pill w-100">Download Resume<i class="bi bi-download ms-2"></i></button>
+								<button type="button" class="btn btn-md btn-light-main fw-medium rounded-pill w-100" data-bs-toggle="modal" data-bs-target="#usermessage">Send Message<i class="bi bi-send ms-2"></i></button>
+							</div>
+						</div>
+					
+					</div>
+					<div class="card-footer px-4 py-3 pt-4 bg-white position-relative">
+						<div class="position-absolute top-0 start-50 translate-middle"><span class="px-3 py-2 bg-white">Share profile</span></div>
+						<div class="profile-share-links my-2">
+							<ul class="p-0 d-flex align-items-center justify-content-center flex-wrap gap-3">
+								<li><a href="#" class="square--30 circle btn-light-second"><i class="bi bi-facebook"></i></a></li>
+								<li><a href="#" class="square--30 circle btn-light-second"><i class="bi bi-twitter"></i></a></li>
+								<li><a href="#" class="square--30 circle btn-light-second"><i class="bi bi-behance"></i></a></li>
+								<li><a href="#" class="square--30 circle btn-light-second"><i class="bi bi-whatsapp"></i></a></li>
+								<li><a href="#" class="square--30 circle btn-light-second"><i class="bi bi-linkedin"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="col-xl-8 col-lg-8 col-md-12">
+				<div class="cdtsr-groups-block">
+					
+					<div class="single-cdtsr-block">
+						<div class="single-cdtsr-header"><h5>About Candidate</h5></div>
+						<div class="single-cdtsr-body">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<p>
+							<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+						</div>
+					</div>
+					
+					<div class="single-cdtsr-block">
+						<div class="single-cdtsr-header"><h5>All Information</h5></div>
+						<div class="single-cdtsr-body">
+							<div class="row align-items-center justify-content-between gy-4">
+									
+								<!-- Components/For-Candidate/Candidate-Detail/information.html -->
+           	 					{% include 'Components/For-Candidate/Candidate-Detail/information.html' %}
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Components/For-Candidate/Candidate-Detail/resumes.html -->
+           	 		{% include 'Components/For-Candidate/Candidate-Detail/resumes.html' %}
+				
+				</div>
+			</div>
+			
+		</div>
+		<!-- /row -->					
+	</div>	
+</section>
+<!-- Full Candidate Details End -->						
+			
+<!-- Components/Home/home-4/find2.html -->
+{% include 'Components/Home/home-4/find2.html' %}
+				
+<!-- Components/Home/index/log.html -->
+{% include 'Components/Home/index/log.html' %}
+
+<!-- Components/For-Candidate/Candidate-Detail/message.html -->
+{% include 'Components/For-Candidate/Candidate-Detail/message.html' %}
+			
+{% include 'Base/footer2.html' %} 
+
+{% endblock %}

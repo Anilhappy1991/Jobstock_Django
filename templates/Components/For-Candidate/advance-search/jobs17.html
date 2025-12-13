@@ -1,0 +1,43 @@
+{% for item in jobs11 %}
+    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+        <div class="zob-list-bloxks border">
+            <div class="zoblist-uppr-module">
+                <div class="zoblist-uppr-module-left">
+                    <div class="zoblist-uppr-module-thumb">
+                        <div class="jbs-list-emp-thumb jbs-verified"><a href="{% url 'App:job_detail' title=item.title|slugify %}"><figure><img src="{{ item.img }}" class="img-fluid" alt=""></figure></a></div>
+                    </div>
+                    <div class="zoblist-uppr-module-caption">
+                        <div class="jbs-job-title-wrap"><h4><a href="{% url 'App:job_detail' title=item.title|slugify %}" class="jbs-job-title">{{ item.title }}</a></h4></div>
+                        <div class="single-mrch-lists mb-2">
+                            <span>{{ item.name }}</span>.<span><i class="fa-solid fa-location-dot me-1"></i>{{ item.location }}</span>.<span class="text-success">{{ item.time }}</span>
+                        </div>
+                        <div class="jbs-grid-job-edrs-group">
+                            <span>HTML</span>
+                            <span>CSS3</span>
+                            <span>Bootstrap</span>
+                            <span>Redux</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="zoblist-uppr-module-right">
+                    <div class="jbs-grid-jbs-saved"><a href="JavaScript:Void(0);" class="bkrs"><i class="fa-regular fa-bookmark"></i></a></div>
+                </div>
+            </div>
+            <div class="zoblist-bott-module">
+                <div class="zoblist-leio-field">
+                    <div class="zoblist-package-wraps">
+                        <div class="jbs-grid-package-title"><h5>{{ item.years }}<span>\Year</span></h5></div>
+                    </div>
+                </div>
+                <div class="zoblist-leio-button">
+                    <div class="zoblist-leio-button-left me-2">
+                        <div class="jbs-grid-posted"><span>{{ item.ago }}</span></div>
+                    </div>
+                    <div class="zoblist-leio-button-right">
+                        <a href="JavaScript:Void(0);" class="btn btn-sm btn-main px-3">Quick Apply</a>	
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

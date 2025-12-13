@@ -1,0 +1,116 @@
+from App.models import Employer
+from django.utils.text import slugify
+
+# Define the employer data
+employers = [
+        {
+            'id' : 1,
+            'img' : '/static/app/img/l-4.png', 
+            'name' : 'Software & Consultancy', 
+            'title' : 'Swap Technology',
+            'location' : 'California, USA', 
+            'open' : '06 Open position', 
+        },
+        {
+            'id' : 2,
+            'img' : '/static/app/img/l-5.png', 
+            'name' : 'Photo Edditing Tools', 
+            'title' : 'Photoshop',
+            'location' : 'New York, USA', 
+            'open' : '16 Open position', 
+        },
+        {
+            'id' : 3,
+            'img' : '/static/app/img/l-6.png', 
+            'name' : 'Web Browser & Tech', 
+            'title' : 'Firefox',
+            'location' : 'Denver, USA', 
+            'open' : '03 Open position', 
+        },
+        {
+            'id' : 4,
+            'img' : '/static/app/img/l-7.png', 
+            'name' : 'Business Directory', 
+            'title' : 'Airbnb',
+            'location' : 'London, UK', 
+            'open' : '08 Open position', 
+        },
+        {
+            'id' : 5,
+            'img' : '/static/app/img/l-8.png', 
+            'name' : 'Message & Video Reelas', 
+            'title' : 'Snapchat',
+            'location' : 'London, UK', 
+            'open' : '07 Open position', 
+        },
+        {
+            'id' : 6,
+            'img' : '/static/app/img/l-9.png', 
+            'name' : 'Portfolio Showcase', 
+            'title' : 'Dribbble Inc',
+            'location' : 'New York, USA', 
+            'open' : '05 Open position', 
+        },
+        {
+            'id' : 7,
+            'img' : '/static/app/img/l-10.png', 
+            'name' : 'Chat & Video Calling', 
+            'title' : 'Skype',
+            'location' : 'Canada, USA', 
+            'open' : '10 Open position', 
+        },
+        {
+            'id' : 8,
+            'img' : '/static/app/img/l-11.png', 
+            'name' : 'Software & Consultancy', 
+            'title' : 'Google Inc',
+            'location' : 'London, UK', 
+            'open' : '06 Open position', 
+        },
+        {
+            'id' : 9,
+            'img' : '/static/app/img/l-2.png', 
+            'name' : 'Photo Showcase & Tools', 
+            'title' : 'Pinterest - Punjab',
+            'location' : 'Austrailia', 
+            'open' : '03 Openings', 
+            'est' : 'Est: 2003', 
+        },
+        {
+            'id' : 10,
+            'img' : '/static/app/img/l-3.png', 
+            'name' : 'Web & Applications', 
+            'title' : 'Shopify - Delhi',
+            'location' : 'Canada, USA', 
+            'open' : '05 Openings', 
+            'est' : 'Est: 1980', 
+        }
+    ]
+
+# Loop through the data and create employer entries
+for employer in employers:
+    new_employer = Employer.objects.create(
+        title=employer['title'],
+        open=employer['open'],
+        name=employer['name'],
+        location=employer['location'],
+        img=employer['img'],
+    )
+    
+    new_employer.slug = slugify(new_employer.title)
+    new_employer.save()
+----------------------------------------------
+#check employer data
+-----------------------------------------------
+from App.models import Employer
+
+employers = Employer.objects.all()
+for employer in employers:
+    print(employer.title, employer.open, employer.name, employer.location, employer.img, employer.slug)
+
+-------------------------------------------------
+#delete employer data
+-------------------------------------------------
+from App.models import Employer
+
+Employer.objects.all().delete()

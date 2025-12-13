@@ -1,0 +1,27 @@
+{% for item in jobs10 %}
+    <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="jbs-list-box border">
+            <div class="jbs-list-head">
+                <div class="jbs-list-head-thunner">
+                    <div class="jbs-list-emp-thumb jbs-verified"><a href="{% url 'App:job_detail' title=item.title|slugify %}"><figure><img src="{{ item.img }}" class="img-fluid" alt=""></figure></a></div>
+                    <div class="jbs-list-job-caption">
+                        <div class="jbs-job-types-wrap"><span class="label text-green bg-light-green">{{ item.time }}</span></div>
+                        <div class="jbs-job-title-wrap"><h4><a href="{% url 'App:job_detail' title=item.title|slugify %}" class="jbs-job-title">{{ item.title }}</a></h4></div>
+                        <div class="jbs-job-mrch-lists">
+                            <div class="single-mrch-lists">
+                                <span>{{ item.name }}</span>.<span><i class="fa-solid fa-location-dot me-1"></i>{{ item.location }}</span>.<span>{{ item.date }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="jbs-list-head-middle">
+                    <div class="elsocrio-jbs"><div class="ilop-tr"><i class="fa-solid fa-sack-dollar"></i></div><h5 class="jbs-list-pack">{{ item.price }}<span class="patype">\PA</span></h5></div>
+                </div>
+                <div class="jbs-list-head-last">
+                    <a href="{% url 'App:job_detail' title=item.title|slugify %}" class="btn btn-md btn-gray px-3 me-2">View Detail</a>
+                    <a href="JavaScript:Void(0);" class="btn btn-md btn-main px-3">Quick Apply</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

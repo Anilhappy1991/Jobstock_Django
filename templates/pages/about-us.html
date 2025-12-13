@@ -1,0 +1,135 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar2.html' %}
+
+<!-- Page Title Start -->
+<section class="page-head bg-cover" style="background:#017efa url({% static 'app/img/about.jpg' %}) no-repeat;" data-overlay="4">
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-8 col-lg-9 col-md-12">
+				
+				<h1 class="text-white mb-4">Who We are<br> & Our Smart Mission</h1>
+				<p class="text-white mb-4">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. </p>
+				<button type="button" class="btn btn-main fw-medium">Get In Touch</button>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Page Title End -->
+
+<!-- Our Story Start -->
+<section>
+
+	<div class="container">
+	
+		<!-- row Start -->
+		<div class="row align-items-center justify-content-between">
+
+			<div class="col-lg-6 col-md-6">
+				<div class="story-wrap explore-content">
+					
+					<h2>Our Mission & Story</h2>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+					<p class="fw-light mb-4">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. </p>
+					<button type="button" class="btn fw-medium btn-main">Start Today Now</button>
+				</div>
+			</div>
+			
+			<div class="col-lg-5 col-md-6">
+				<img src="{% static 'app/img/bn-1.png' %}" class="img-fluid" alt="">
+			</div>
+			
+		</div>
+		<!-- /row -->					
+		
+	</div>
+			
+</section>
+<!-- Our Story End -->
+
+<!-- Our Team -->
+<section class="bg-light">
+	<div class="container">
+	
+		<div class="row">
+			<div class="col-lg-12 col-md-12">
+				<div class="sec-heading center">
+					<h2>Meet Our Team</h2>
+					<p>Professional & Dedicated Team</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row gx-3 gy-4">
+
+			<!-- Components/Pages/team.html -->
+            {% include 'Components/Pages/team.html' %}
+
+		</div>
+	
+	</div>
+</section>
+<!-- Our Team -->
+
+<!-- Valuable Step Start -->
+<section class="bg-second">
+	<div class="container">
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center light">
+					<h2>Choose What You Need</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row align-items-center gx-4 gy-4">
+		
+			<!-- Components/Home/home-2/need.html -->
+            {% include 'Components/Home/home-2/need.html' %}
+			
+		</div>
+		
+	</div>
+</section>
+<!-- Valuable Step End -->
+
+<!-- Good Reviews By Customers -->
+<section>
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<div class="col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Good Reviews By Customers</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-4 gy-4">
+			
+			<!-- Components/Home/index/reviews.html -->
+			{% include 'Components/Home/index/reviews.html' %}
+			
+		</div>
+		
+	</div>	
+</section>
+<!-- Good Reviews By Customers -->
+			
+<!-- Components/Home/home-4/find2.html -->
+{% include 'Components/Home/home-4/find2.html' %}
+
+<!-- Components/Home/index/log.html -->
+{% include 'Components/Home/index/log.html' %}
+
+<!-- Components/Home/home-3/filter.html -->
+{% include 'Components/Home/home-3/filter.html' %}
+			
+{% include 'Base/footer2.html' %} 
+
+{% endblock %}

@@ -1,0 +1,11 @@
+{% for item in needs %}
+    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+        <div class="jobstock-posted-box-y78">
+            <div class="jobstock-posted-body-y78">
+                <div class="serv-ctr-title"><h2 class="text-main">{{ item.number }}</h2></div>
+                <div class="serv-ctr-subtitle"><h5>{{ item.title }}</h5></div>
+                <div class="serv-ctr-decs"><p>{{ item.desc }}</p></div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

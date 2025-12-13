@@ -1,0 +1,26 @@
+{% for item in reviews %}
+    <div class="col-xl-4 col-lg-4 col-md-6">
+        <div class="jobstock-reviews-box">
+            <div class="jobstock-reviews-desc">
+                <h6 class="review-title-yui">{{ item.title }}</h6>
+                <p>{{ item.desc }}</p>
+            </div>
+            <div class="jobstock-reviews-flex">
+                <div class="jobstock-reviews-thumb">
+                    <div class="jobstock-reviews-figure"><img src="{{ item.img }}" class="img-fluid circle" alt=""></div>
+                </div>
+                <div class="jobstock-reviews-caption">
+                    <div class="jobstock-reviews-title"><h4>{{ item.name }}</h4></div>
+                    <div class="jobstock-reviews-designation"><span>{{ item.tag }}</span></div>
+                    <div class="jobstock-reviews-rates">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star deactive"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

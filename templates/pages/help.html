@@ -1,0 +1,173 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar2.html' %}
+
+<!-- Page Title Start -->
+<section class="bg-cover bg-second" style="background:url({% static 'app/img/bg2.png' %})no-repeat;">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12">
+				
+				<h2 class="ipt-title text-light">Help & Component</h2>
+				<span class="ipn-subtitle text-light opacity-75">Check all elements and components</span>
+				
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Page Title End -->
+
+<!-- All Components Start -->
+<section>
+	<div class="container">
+	
+		<!-- row Start -->
+		<div class="row mb-5">
+			
+			<div class="col-xl-6 col-lg-6 col-md-12 col-12">
+				<div class="elements-wrap">
+					<h3>Headings</h3>
+
+					<!-- Components/help/headings.html -->
+           	 		{% include 'Components/help/headings.html' %}
+
+				</div>
+			</div>
+			
+			<div class="col-xl-6 col-lg-6 col-md-12 col-12">
+				<div class="elements-wrap">
+					<h3>Buttons</h3>
+					<div class="d-flex flex-wrap gap-2">
+						
+						<!-- Components/help/buttons.html -->
+           	 			{% include 'Components/help/buttons.html' %}
+
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<!-- /row -->
+		
+		<!-- row Start -->
+		<div class="row mb-5">
+			
+			<div class="col-xl-6 col-lg-6 col-md-12 col-12">
+				<div class="elements-wrap">
+					<h3>Alerts</h3>
+
+					<!-- Components/help/alerts.html -->
+           	 		{% include 'Components/help/alerts.html' %}
+
+				</div>
+			</div>
+			
+			<div class="col-xl-6 col-lg-6 col-md-12 col-12">
+				<div class="elements-wrap">
+					<h3>Alert Links</h3>
+					
+					<!-- Components/help/links.html -->
+           	 		{% include 'Components/help/links.html' %}
+
+				</div>
+			</div>
+			
+		</div>
+		<!-- /row -->
+		
+		<!-- row Start -->
+		<div class="row mb-5">
+			
+			<div class="col-xl-6 col-lg-6 col-md-12 col-12">
+				<div class="elements-wrap">
+					<h3>Badges</h3>
+					<div class="d-flex flex-wrap gap-2 mb-4">
+						
+						<!-- Components/help/badges.html -->
+           	 			{% include 'Components/help/badges.html' %}
+
+					</div>
+					
+					<h3>Avatar</h3>
+					<div class="d-flex align-items-center flex-wrap gap-3 mb-4">
+						
+						<!-- Components/help/avatar.html -->
+           	 			{% include 'Components/help/avatar.html' %}
+
+					</div>
+					
+					<h3>Pagination</h3>
+					<div class="pagination-wrap">
+						<nav aria-label="...">
+							<ul class="pagination">
+							<li class="page-item"><a href="#" class="page-link">Previous</a></li>
+							<li class="page-item"><a class="page-link" href="#" style="margin-left: 1rem;">1</a></li>
+							<li class="page-item active">
+								<a class="page-link" href="#" aria-current="page">2</a>
+							</li>
+							<li class="page-item"><a class="page-link" href="#">3</a></li>
+							<li class="page-item"><a class="page-link" href="#">4</a></li>
+							<li class="page-item"><a class="page-link" href="#">5</a></li>
+							<li class="page-item"><a class="page-link" href="#">Next</a></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xl-6 col-lg-6 col-md-12 col-12">
+				<div class="elements-wrap">
+					<h3>Form Elements</h3>
+					
+					<!-- Components/help/form.html -->
+           	 		{% include 'Components/help/form.html' %}
+
+				</div>
+			</div>
+			
+		</div>
+		<!-- /row -->
+		
+		<!-- row Start -->
+		<div class="row mb-5">
+			
+			<div class="col-xl-6 col-lg-6 col-md-12 col-12">
+				<div class="elements-wrap">
+					<h3>Accordion</h3>
+					<div class="accordion" id="accordionExample">
+						
+						<!-- Components/help/accordion.html -->
+           	 			{% include 'Components/help/accordion.html' %}
+
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xl-6 col-lg-6 col-md-12 col-12">
+				<div class="elements-wrap">
+					<h3>Navs and tabs</h3>
+					
+					<!-- Components/help/tabs.html -->
+           	 		{% include 'Components/help/tabs.html' %}
+
+				</div>
+			</div>
+			
+		</div>
+		<!-- /row -->
+		
+	</div>	
+</section>
+<!-- All Components End -->
+			
+<!-- Components/Home/home-4/find2.html -->
+{% include 'Components/Home/home-4/find2.html' %}
+		
+<!-- Components/Home/index/log.html -->
+{% include 'Components/Home/index/log.html' %}
+
+{% include 'Base/footer2.html' %} 
+
+{% endblock %}

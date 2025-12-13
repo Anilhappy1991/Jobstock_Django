@@ -1,0 +1,585 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar7.html' %}
+
+<!-- dashboard Detail -->
+<div class="dashboard-wrap bg-light">
+	<a class="mobNavigation" data-bs-toggle="collapse" href="#MobNav" role="button" aria-expanded="false" aria-controls="MobNav">
+		<i class="fas fa-bars mr-2"></i>Dashboard Navigation
+	</a>
+		<div class="collapse" id="MobNav">
+		<div class="dashboard-nav">
+			<div class="dash-user-blocks pt-5">
+				<div class="jbs-grid-usrs-thumb">
+					<div class="jbs-grid-yuo">
+						<a href="{% url 'App:candidate_list_or_default' %}"><figure><img src="{% static 'app/img/user-5.png' %}" class="img-fluid circle" alt=""></figure></a>
+					</div>
+				</div>
+				<div class="jbs-grid-usrs-caption mb-3">
+					<div class="jbs-kioyer">
+						<div class="jbs-kioyer-groups">
+							<span class="fa-solid fa-star active"></span>
+							<span class="fa-solid fa-star active"></span>
+							<span class="fa-solid fa-star active"></span>
+							<span class="fa-solid fa-star active"></span>
+							<span class="fa-solid fa-star"></span>
+							<span class="aal-reveis">4.7</span>
+						</div>
+					</div>
+					<div class="jbs-tiosk">
+						<h4 class="jbs-tiosk-title"><a href="{% url 'App:candidate_list_or_default' %}">Linda D. Strong</a></h4>
+						<div class="jbs-tiosk-subtitle"><span>Front-End Developer</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="dashboard-inner">
+				<ul data-submenu-title="Main Navigation">
+					<li><a href="{% url 'App:candidate_dashboard' %}"><i class="fa-solid fa-gauge-high me-2"></i>User Dashboard</a></li>
+					<li><a href="{% url 'App:candidate_profile' %}"><i class="fa-regular fa-user me-2"></i>My Profile </a></li>
+					<li class="active"><a href="{% url 'App:candidate_resume' %}"><i class="fa-solid fa-file-pdf me-2"></i>My Resumes</a></li>
+					<li><a href="{% url 'App:candidate_applied_jobs' %}"><i class="fa-regular fa-paper-plane me-2"></i>Applied jobs</a></li>
+					<li><a href="{% url 'App:candidate_alert_job' %}"><i class="fa-solid fa-bell me-2"></i>Alert Jobs<span class="count-tag bg-warning">4</span></a></li>
+					<li><a href="{% url 'App:candidate_saved_jobs' %}"><i class="fa-solid fa-bookmark me-2"></i>Shortlist Jobs</a></li>
+					<li><a href="{% url 'App:candidate_follow_employers' %}"><i class="fa-solid fa-user-clock me-2"></i>Following Employers</a></li>
+					<li><a href="{% url 'App:candidate_messages' %}"><i class="fa-solid fa-comments me-2"></i>Messages<span class="count-tag">4</span></a></li>
+					<li><a href="{% url 'App:candidate_change_password' %}"><i class="fa-solid fa-unlock-keyhole me-2"></i>Change Password</a></li>
+					<li><a href="{% url 'App:candidate_delete_account' %}"><i class="fa-solid fa-trash-can me-2"></i>Delete Account</a></li>
+					<li><a href="{% url 'App:index' %}"><i class="fa-solid fa-power-off me-2"></i>Log Out</a></li>
+				</ul>
+			</div>					
+		</div>
+	</div>
+	
+	<div class="dashboard-content">
+		<div class="dashboard-tlbar d-block mb-4">
+			<div class="row">
+				<div class="colxl-12 col-lg-12 col-md-12">
+					<h1 class="mb-1 fs-3 fw-medium">My Resume</h1>
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item text-muted"><a href="#">Candidate</a></li>
+							<li class="breadcrumb-item text-muted"><a href="#">Dashboard</a></li>
+							<li class="breadcrumb-item"><a href="#" class="text-main">My Resume</a></li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+		
+		<div class="dashboard-widg-bar d-block">
+			
+			<!-- Row Start -->
+			<div class="card">
+				<div class="card-header">
+					<h4>My Resume</h4>
+				</div>
+				<div class="card-body">
+					<div class="row gx-4 gy-4 mb-3">
+				
+						<!-- Components/For-Candidate/candidate-dashboard/resume.html -->
+           	 			{% include 'Components/For-Candidate/candidate-dashboard/resume.html' %}
+
+					</div>
+					<div class="row gx-4 gy-4">
+						<div class="col-xl-12 col-lg-12 col-md-12">
+							<div class="upload-btn-wrapper">
+								<button class="btn">Upload a file</button>
+								<input type="file" name="myfile">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>	
+			<!-- End Row -->
+			
+			<!-- Row Start -->
+			<div class="card">
+				<div class="card-header">
+					<h4>Education</h4>
+				</div>
+				<div class="card-body">
+					
+					<!-- Single Education Wrap -->
+					<div class="single-edc-wrap">
+						<div class="single-edc-box">
+							<div class="single-edc-remove-box"><div class="cd-resume-cancel"><a href="JavaScript:Void(0);" class="cancel-link"><i class="fa-solid fa-xmark"></i></a></div></div>
+							<div class="single-edc-title-box">
+								<a class="btn btn-collapse" data-bs-toggle="collapse" href="#secondarySchool" role="button" aria-expanded="false" aria-controls="secondarySchool">Secondary School</a>
+							</div>
+						</div>
+						<div class="single-edc-caption">
+							<div class="collapse" id="secondarySchool">
+								<div class="card card-body">
+									<form>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Education Title</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="High School">
+											</div>
+										</div> 
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Academy Name</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="Awadh main School">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Passing year</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="2008">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Description</label>
+											<div class="col-md-10">
+												<textarea class="form-control ht-80">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</textarea>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Single Education Wrap -->
+					<div class="single-edc-wrap">
+						<div class="single-edc-box">
+							<div class="single-edc-remove-box"><div class="cd-resume-cancel"><a href="JavaScript:Void(0);" class="cancel-link"><i class="fa-solid fa-xmark"></i></a></div></div>
+							<div class="single-edc-title-box">
+								<a class="btn btn-collapse" data-bs-toggle="collapse" href="#intermediate" role="button" aria-expanded="false" aria-controls="intermediate">Intermediate</a>
+							</div>
+						</div>
+						<div class="single-edc-caption">
+							<div class="collapse" id="intermediate">
+								<div class="card card-body">
+									<form>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Education Title</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="Intermidiate">
+											</div>
+										</div> 
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Academy Name</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="Awadh main School">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Passing year</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="2010">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Description</label>
+											<div class="col-md-10">
+												<textarea class="form-control ht-80">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</textarea>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Single Education Wrap -->
+					<div class="single-edc-wrap">
+						<div class="single-edc-box">
+							<div class="single-edc-remove-box"><div class="cd-resume-cancel"><a href="JavaScript:Void(0);" class="cancel-link"><i class="fa-solid fa-xmark"></i></a></div></div>
+							<div class="single-edc-title-box">
+								<a class="btn btn-collapse" data-bs-toggle="collapse" href="#bachelorDegree" role="button" aria-expanded="false" aria-controls="bachelorDegree">Bachelor Degree</a>
+							</div>
+						</div>
+						<div class="single-edc-caption">
+							<div class="collapse" id="bachelorDegree">
+								<div class="card card-body">
+									<form>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Education Title</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="Bachelor Appliation Of Computer">
+											</div>
+										</div> 
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Academy Name</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="Swami Vivekanand University">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Passing year</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="2013">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Description</label>
+											<div class="col-md-10">
+												<textarea class="form-control ht-80">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</textarea>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Single Education Wrap -->
+					<div class="single-edc-wrap">
+						<div class="single-edc-box">
+							<div class="single-edc-remove-box"><div class="cd-resume-cancel"><a href="JavaScript:Void(0);" class="cancel-link"><i class="fa-solid fa-xmark"></i></a></div></div>
+							<div class="single-edc-title-box">
+								<a class="btn btn-collapse" data-bs-toggle="collapse" href="#masterDegree" role="button" aria-expanded="false" aria-controls="masterDegree">Master Degree</a>
+							</div>
+						</div>
+						<div class="single-edc-caption">
+							<div class="collapse" id="masterDegree">
+								<div class="card card-body">
+									<form>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Education Title</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="Master Application Of Computer">
+											</div>
+										</div> 
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Academy Name</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="Awadh University">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Passing year</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="2016">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Description</label>
+											<div class="col-md-10">
+												<textarea class="form-control ht-80">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</textarea>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="single-edc-wrap">
+						<a href="JavaScript:Void(0);" data-bs-toggle="modal" data-bs-target="#education" class="add-light-btn">Add More Education</a>
+					</div>
+					
+				</div>
+			</div>	
+			<!-- End Row -->
+			
+			<!-- Row Start -->
+			<div class="card">
+				<div class="card-header">
+					<h4>Experience</h4>
+				</div>
+				<div class="card-body">
+					<!-- Single Experience Wrap -->
+					<div class="single-edc-wrap">
+						<div class="single-edc-box">
+							<div class="single-edc-remove-box"><div class="cd-resume-cancel"><a href="JavaScript:Void(0);" class="cancel-link"><i class="fa-solid fa-xmark"></i></a></div></div>
+							<div class="single-edc-title-box">
+								<a class="btn btn-collapse" data-bs-toggle="collapse" href="#exp1" role="button" aria-expanded="false" aria-controls="exp1">Front-End Developer</a>
+							</div>
+						</div>
+						<div class="single-edc-caption">
+							<div class="collapse" id="exp1">
+								<div class="card card-body">
+									<form>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Job Title</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="Front-End Developer">
+											</div>
+										</div> 
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Joinin Date</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="10-06-2008">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">End Date</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="15-04-2010">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Company Name</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="Shreethemes Technology">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Description</label>
+											<div class="col-md-10">
+												<textarea class="form-control ht-80">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</textarea>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Single Experience Wrap -->
+					<div class="single-edc-wrap">
+						<div class="single-edc-box">
+							<div class="single-edc-remove-box"><div class="cd-resume-cancel"><a href="JavaScript:Void(0);" class="cancel-link"><i class="fa-solid fa-xmark"></i></a></div></div>
+							<div class="single-edc-title-box">
+								<a class="btn btn-collapse" data-bs-toggle="collapse" href="#exp2" role="button" aria-expanded="false" aria-controls="exp2">WordPress Developer</a>
+							</div>
+						</div>
+						<div class="single-edc-caption">
+							<div class="collapse" id="exp2">
+								<div class="card card-body">
+									<form>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Job Title</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="WordPress Developer">
+											</div>
+										</div> 
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Joinin Date</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="01-12-2011">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">End Date</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="15-05-2015">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Company Name</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="Google Inc">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Description</label>
+											<div class="col-md-10">
+												<textarea class="form-control ht-80">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</textarea>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Single Experience Wrap -->
+					<div class="single-edc-wrap">
+						<div class="single-edc-box">
+							<div class="single-edc-remove-box"><div class="cd-resume-cancel"><a href="JavaScript:Void(0);" class="cancel-link"><i class="fa-solid fa-xmark"></i></a></div></div>
+							<div class="single-edc-title-box">
+								<a class="btn btn-collapse" data-bs-toggle="collapse" href="#exp3" role="button" aria-expanded="false" aria-controls="exp3">Magento Developer</a>
+							</div>
+						</div>
+						<div class="single-edc-caption">
+							<div class="collapse" id="exp3">
+								<div class="card card-body">
+									<form>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Job Title</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="Sr. magento Developer">
+											</div>
+										</div> 
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Joinin Date</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="01-12-2016">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">End Date</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="15-05-2022">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Company Name</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="Google Inc">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Description</label>
+											<div class="col-md-10">
+												<textarea class="form-control ht-80">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</textarea>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="single-edc-wrap">
+						<a href="JavaScript:Void(0);" data-bs-toggle="modal" data-bs-target="#experience" class="add-light-btn">Add More Experience</a>
+					</div>
+				</div>
+			</div>	
+			<!-- End Row -->
+			
+			<!-- Row Start -->
+			<div class="card">
+				<div class="card-header">
+					<h4>Award</h4>
+				</div>
+				<div class="card-body">
+					<!-- Single Award Wrap -->
+					<div class="single-edc-wrap">
+						<div class="single-edc-box">
+							<div class="single-edc-remove-box"><div class="cd-resume-cancel"><a href="JavaScript:Void(0);" class="cancel-link"><i class="fa-solid fa-xmark"></i></a></div></div>
+							<div class="single-edc-title-box">
+								<a class="btn btn-collapse" data-bs-toggle="collapse" href="#BCPIL" role="button" aria-expanded="false" aria-controls="BCPIL">BCPIL Award</a>
+							</div>
+						</div>
+						<div class="single-edc-caption">
+							<div class="collapse" id="BCPIL">
+								<div class="card card-body">
+									<form>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Award Title</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="BCPIL Award">
+											</div>
+										</div> 
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Award Year</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="01-12-2012">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Description</label>
+											<div class="col-md-10">
+												<textarea class="form-control ht-80">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</textarea>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Single Award Wrap -->
+					<div class="single-edc-wrap">
+						<div class="single-edc-box">
+							<div class="single-edc-remove-box"><div class="cd-resume-cancel"><a href="JavaScript:Void(0);" class="cancel-link"><i class="fa-solid fa-xmark"></i></a></div></div>
+							<div class="single-edc-title-box">
+								<a class="btn btn-collapse" data-bs-toggle="collapse" href="#RIZZA" role="button" aria-expanded="false" aria-controls="RIZZA">RIZZA Award</a>
+							</div>
+						</div>
+						<div class="single-edc-caption">
+							<div class="collapse" id="RIZZA">
+								<div class="card card-body">
+									<form>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Award Title</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="RIZZA Award">
+											</div>
+										</div> 
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Award Year</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="01-12-2016">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Description</label>
+											<div class="col-md-10">
+												<textarea class="form-control ht-80">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</textarea>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Single Award Wrap -->
+					<div class="single-edc-wrap">
+						<div class="single-edc-box">
+							<div class="single-edc-remove-box"><div class="cd-resume-cancel"><a href="JavaScript:Void(0);" class="cancel-link"><i class="fa-solid fa-xmark"></i></a></div></div>
+							<div class="single-edc-title-box">
+								<a class="btn btn-collapse" data-bs-toggle="collapse" href="#FIFFA" role="button" aria-expanded="false" aria-controls="FIFFA">FIFFA Award</a>
+							</div>
+						</div>
+						<div class="single-edc-caption">
+							<div class="collapse" id="FIFFA">
+								<div class="card card-body">
+									<form>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Award Title</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="FIFFA ICL">
+											</div>
+										</div> 
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Award Year</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="01-12-2022">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Description</label>
+											<div class="col-md-10">
+												<textarea class="form-control ht-80">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</textarea>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="single-edc-wrap">
+						<a href="JavaScript:Void(0);" data-bs-toggle="modal" data-bs-target="#award" class="add-light-btn">Add More Award</a>
+					</div>
+				</div>
+			</div>	
+			<!-- End Row -->
+			
+			<!-- Submit Busston -->
+			<div class="row">
+				<div class="col-lg-12 col-md-12">
+					<button type="submit" class="btn ft--medium btn-main">Save Resume</button>
+				</div>	
+			</div>
+
+		</div>
+		
+		<!-- footer -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="py-3 text-center">© <script>document.write(new Date().getFullYear())</script> JobStock. Develop with <i class="mdi mdi-heart text-danger"></i> by <a href="https://shreethemes.in" target="_blank" class="text-reset">Shreethemes</a>.</div>
+			</div>
+		</div>
+		
+	</div>
+	
+</div>
+<!-- dashboard Detail End -->
+
+<!-- Components/For-Candidate/candidate-dashboard/education.html -->
+{% include 'Components/For-Candidate/candidate-dashboard/education.html' %}
+			
+<!-- Components/For-Candidate/candidate-dashboard/files.html -->
+{% include 'Components/For-Candidate/candidate-dashboard/files.html' %}
+
+{% endblock %}

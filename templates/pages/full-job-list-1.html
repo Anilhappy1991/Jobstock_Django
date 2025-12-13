@@ -1,0 +1,76 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar5.html' %}
+
+<!-- Page Title Start -->
+<div class="page-title bg-main" style="background:url({% static 'app/img/bg2.png' %}) no-repeat;">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12">
+				
+				<div class="full-search-2">
+					<div class="hero-search-content search-shadow">
+							
+						<!-- Components/For-Candidate/Browse-Jobs/full-job-grid-1/full-search.html -->
+           	 			{% include 'Components/For-Candidate/Browse-Jobs/full-job-grid-1/full-search.html' %}
+					
+					</div>
+				</div>
+		
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Page Title End -->
+
+<!-- All List Wrap -->
+<section>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12">
+			
+				<!-- Shorting Box -->
+				<div class="row justify-content-center mb-5">
+					<div class="col-lg-12 col-md-12">
+							
+						<!-- Components/For-Candidate/Browse-Jobs/grid-style-1/results.html -->
+           	 			{% include 'Components/For-Candidate/Browse-Jobs/grid-style-1/results.html' %}
+
+					</div>
+				</div>
+				<!-- Shorting Wrap End -->
+				
+				<!-- Start All List -->
+				<div class="row justify-content-start gx-3 gy-4">
+					
+					<!-- Components/For-Candidate/Browse-Jobs/full-job-list-1/jobs15.html -->
+           	 		{% include 'Components/For-Candidate/Browse-Jobs/full-job-list-1/jobs15.html' %}
+					
+				</div>
+				<!-- End All Job List -->
+				
+				<!-- Components/For-Candidate/Browse-Jobs/grid-style-1/pagination.html -->
+           	 	{% include 'Components/For-Candidate/Browse-Jobs/grid-style-1/pagination.html' %}
+
+			</div>
+			
+		</div>
+	</div>		
+</section>
+<!-- All List Wrap -->
+			
+<!-- Components/Home/home-4/find2.html -->
+{% include 'Components/Home/home-4/find2.html' %}
+
+<!-- Components/Home/index/log.html -->
+{% include 'Components/Home/index/log.html' %}
+			
+<!-- Components/Home/home-3/filter.html -->
+{% include 'Components/Home/home-3/filter.html' %}
+			
+
+{% include 'Base/footer2.html' %} 
+
+{% endblock %}

@@ -1,0 +1,8 @@
+{% for item in ctrs %}
+    <li>
+        <div class="lios-parts">
+            <h2><span class="ctr">{{ item.price }}</span><span class="text-main">{{ item.symbol }}</span></h2>
+            <h6>{{ item.title }}</h6>
+        </div>
+    </li>
+{% endfor %}

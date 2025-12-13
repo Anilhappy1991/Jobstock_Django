@@ -1,0 +1,190 @@
+from App.models import Job
+from django.utils.text import slugify
+
+# Define the job data
+jobs = [
+        {
+            'id' : 1,
+            'img' : '/static/app/img/l-1.png', 
+            'title' : 'Jr. PHP Developer',
+            'desc' : 'CSS3, HTML5, Javascript, Bootstrap, Jquery',
+            'price' : '$5K - $8K', 
+            'open' : '6 Open', 
+            'tag' : 'Enternship',
+            'style' : 'enternship',
+            'tag1' : True,
+            'name' : '',
+            'class' : '',
+        },
+        {
+            'id' : 2,
+            'img' : '/static/app/img/l-2.png', 
+            'title' : 'Exp. Project manager',
+            'desc' : 'CSS3, HTML5, Javascript, Bootstrap, Jquery',
+            'price' : '$6K - $10K', 
+            'open' : '4 Open', 
+            'tag' : 'Freelancer',
+            'style' : 'freelanc',
+            'tag1' : False,
+            'name' : 'Urgent',
+            'class' : 'urgent',
+        },
+        {
+            'id' : 3,
+            'img' : '/static/app/img/l-3.png', 
+            'title' : 'Sr. WordPress Developer',
+            'desc' : 'CSS3, HTML5, Javascript, Bootstrap, Jquery',
+            'price' : '$5K - $8K', 
+            'open' : '3 Open', 
+            'tag' : 'Part Time',
+            'style' : 'part-time',
+            'tag1' : True,
+            'name' : '',
+            'class' : '',
+        },
+        {
+            'id' : 4,
+            'img' : '/static/app/img/l-4.png', 
+            'title' : 'Jr. Laravel Developer',
+            'desc' : 'CSS3, HTML5, Javascript, Bootstrap, Jquery',
+            'price' : '$4.2K - $6K', 
+            'open' : '2 Open', 
+            'tag' : 'Full Time',
+            'style' : 'full-time',
+            'tag1' : False,
+            'name' : 'Featured',
+            'class' : 'featured-text',
+        },
+        {
+            'id' : 5,
+            'img' : '/static/app/img/l-5.png', 
+            'title' : 'Sr. UI/UX Designer',
+            'desc' : 'CSS3, HTML5, Javascript, Bootstrap, Jquery',
+            'price' : '$4K - $5.5K', 
+            'open' : '5 Open', 
+            'tag' : 'Freelancer',
+            'style' : 'freelanc',
+            'tag1' : False,
+            'name' : 'Urgent',
+            'class' : 'urgent',
+        },
+        {
+            'id' : 6,
+            'img' : '/static/app/img/l-6.png', 
+            'title' : 'Java & Python Developer',
+            'desc' : 'CSS3, HTML5, Javascript, Bootstrap, Jquery',
+            'price' : '$2K - $4K', 
+            'open' : '4 Open', 
+            'tag' : 'Part Time',
+            'style' : 'part-time',
+            'tag1' : True,
+            'name' : '',
+            'class' : '',
+        },
+        {
+            'id' : 7,
+            'img' : '/static/app/img/l-7.png', 
+            'title' : 'Sr. CodeIgniter Developer',
+            'desc' : 'CSS3, HTML5, Javascript, Bootstrap, Jquery',
+            'price' : '$5K - $6K', 
+            'open' : '3 Open', 
+            'tag' : 'FullTime',
+            'style' : 'full-time',
+            'tag1' : False,
+            'name' : 'Urgent',
+            'class' : 'urgent',
+        },
+        {
+            'id' : 8,
+            'img' : '/static/app/img/l-8.png', 
+            'title' : 'Sr. Magento Developer',
+            'desc' : 'CSS3, HTML5, Javascript, Bootstrap, Jquery',
+            'price' : '$3.2K - $5K', 
+            'open' : '5 Open', 
+            'tag' : 'Enternship',
+            'style' : 'enternship',
+            'tag1' : False,
+            'name' : 'Featured',
+            'class' : 'featured-text',
+        },
+        {
+            'id' : 9,
+            'img' : '/static/app/img/l-9.png', 
+            'title' : 'Technical Content Writer',
+            'app' : 'Dribbble',
+            'location' : 'New York, USA',
+            'price' : '$85K - 90K', 
+            'btn' : 'Quick Apply', 
+            'tag' : 'Freelancer',
+            'style' : 'freelanc',
+            'tag1' : False,
+            'name' : 'Featured',
+            'class' : 'featured-text',
+        },
+        {
+            'id' : 10,
+            'img' : '/static/app/img/l-10.png', 
+            'title' : 'Front-end Developer',
+            'app' : 'Skype',
+            'location' : 'Denver, USA',
+            'price' : '$70K - 95K', 
+            'btn' : 'Quick Apply', 
+            'tag' : 'Full Time',
+            'style' : 'full-time',
+            'tag1' : True,
+            'name' : '',
+            'class' : '',
+        },
+        {
+            'id' : 11,
+            'img' : '/static/app/img/l-11.png', 
+            'title' : 'Jr. Content Writer',
+            'desc' : 'CSS3, HTML5, Javascript, Bootstrap, Jquery',
+            'price' : '$4K - $5.5K', 
+            'open' : '2 Open', 
+            'tag' : 'Part Time',
+            'style' : 'part-time',
+            'tag1' : False,
+            'name' : 'Urgent',
+            'class' : 'urgent',
+        },
+        {
+            'id' : 12,
+            'img' : '/static/app/img/l-12.png', 
+            'title' : 'Sr. Figma Designer',
+            'desc' : 'CSS3, HTML5, Javascript, Bootstrap, Jquery',
+            'price' : '$6K - $8K', 
+            'open' : '3 Open', 
+            'tag' : 'Full Time',
+            'style' : 'full-time',
+            'tag1' : True,
+            'name' : '',
+            'class' : '',
+        }
+    ]
+
+# Loop through the data and create job entries
+for job in jobs:
+    new_job = Job.objects.create(
+        id=job['id'],
+        title=job['title'],
+        price=job['price'],
+    )
+    
+    new_job.slug = slugify(new_job.title)
+    new_job.save()
+----------------------------------------------
+#check job data
+-----------------------------------------------
+from App.models import Job
+
+jobs = Job.objects.all()
+for job in jobs:
+    print(job.title, job.price, job.slug)
+
+-------------------------------------------------
+#delete job data
+-------------------------------------------------
+from App.models import Job
+
+Job.objects.all().delete()

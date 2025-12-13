@@ -1,0 +1,10 @@
+{% for item in contacts %}
+    <div class="ctr-jobstock-signl">
+        <div class="ctr-jobstock-signl-ico"><i class="{{ item.icon }}"></i></div>
+        <div class="ctr-jobstock-signl-caption">
+            <h5>{{ item.name }}</h5>
+            <p>{{ item.title }}</p>
+            <p>{{ item.mail }}</p>
+        </div>
+    </div>
+{% endfor %}

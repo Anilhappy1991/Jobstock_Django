@@ -1,0 +1,89 @@
+from App.models import Blog
+from django.utils.text import slugify
+
+# Define the blog data
+blogs = [
+        {
+            'id' : 1,
+            'img' : '/static/app/img/blog-1.jpg', 
+            'title' : 'How To Work with jobstock Agency',
+            'desc' : 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat',
+            'date' : '10 Jul 2026',
+        },
+        {
+            'id' : 2,
+            'img' : '/static/app/img/blog-2.jpg', 
+            'title' : 'Auctor sit elementum habitant vel tempor varius.',
+            'desc' : 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat',
+            'date' : '17 Jan 2026',
+        },
+        {
+            'id' : 3,
+            'img' : '/static/app/img/blog-3.jpg', 
+            'title' : 'Consectetur purus habitasse ut diam habitant varius.',
+            'desc' : 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat',
+            'date' : '26 Feb 2026',
+        },
+        {
+            'id' : 4,
+            'img' : '/static/app/img/blog-7.jpg', 
+            'title' : 'Smartest Applications for Business',
+            'desc' : 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat',
+            'date' : '19 Dec 2026',
+        },
+        {
+            'id' : 5,
+            'img' : '/static/app/img/blog-4.jpg', 
+            'title' : 'Stop Worrying About Deadlines! We Got You Covered',
+            'desc' : 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat',
+            'date' : '10 Aug 2026',
+        },
+        {
+            'id' : 6,
+            'img' : '/static/app/img/blog-5.jpg', 
+            'title' : 'Change Your Strategy: Find a Business Consultant',
+            'desc' : 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat',
+            'date' : '16 Jul 2026',
+        },
+        {
+            'id' : 7,
+            'img' : '/static/app/img/blog-6.jpg', 
+            'title' : 'Everything About Financial Modeling',
+            'desc' : 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat',
+            'date' : '07 May 2026',
+        },
+        {
+            'id' : 8,
+            'img' : '/static/app/img/blog-7.jpg', 
+            'title' : 'On the other hand we provide denounce',
+            'desc' : 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat',
+            'date' : '19 Dec 2026',
+        }
+    ]
+
+# Loop through the data and create blog entries
+for blog in blogs:
+    new_blog = Blog.objects.create(
+        id=blog['id'],
+        title=blog['title'],
+        date=blog['date'],
+        img=blog['img'],
+    )
+    
+    new_blog.slug = slugify(new_blog.title)
+    new_blog.save()
+----------------------------------------------
+#check blog data
+-----------------------------------------------
+from App.models import Blog
+
+blogs = Blog.objects.all()
+for blog in blogs:
+    print(blog.title, blog.date, blog.img, blog.slug)
+
+-------------------------------------------------
+#delete blog data
+-------------------------------------------------
+from App.models import Blog
+
+Blog.objects.all().delete()

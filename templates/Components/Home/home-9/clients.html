@@ -1,0 +1,13 @@
+{% for item in clients %}
+    <div class="tab-pane fade {{ item.class }}" id="{{ item.id }}" role="tabpanel" aria-labelledby="{{ item.labelledby }}" tabindex="0">
+        <div class="text-center">
+            <div class="mb-3">
+                <p class="m-0 fw-light fs-5">{{ item.desc }}</p>
+            </div>
+            <div class="position-relative">
+                <h5 class="fw-semibold mb-0 lh-base">{{ item.name }}</h5>
+                <p class="fw-medium text-main m-0">{{ item.title }}</p>
+            </div>
+        </div>
+    </div>
+{% endfor %}

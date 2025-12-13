@@ -1,0 +1,54 @@
+<!-- Log In Modal -->
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered login-pop-form" role="document">
+        <div class="modal-content" id="loginmodal">
+            <span class="mod-close" data-bs-dismiss="modal" aria-hidden="true"><i class="fas fa-close"></i></span>
+            <div class="modal-header">
+                <div class="mdl-thumb"><img src="{% static 'app/img/ico.png' %}" class="img-fluid" width="70" alt=""></div>
+                <div class="mdl-title"><h4 class="modal-header-title">Hello, Again</h4></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-login-form">
+                    <form>
+                    
+                        <div class="form-floating mb-4">
+                            <input type="email" class="form-control" placeholder="name@example.com">
+                            <label>User Name</label>
+                        </div>
+                        
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" placeholder="Password">
+                            <label>Password</label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-main full-width font--bold btn-lg">Log In</button>
+                        </div>
+                        
+                        <div class="modal-flex-item mb-3">
+                            <div class="modal-flex-first">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="savepassword" value="option1">
+                                    <label class="form-check-label" for="savepassword">Save Password</label>
+                                </div>
+                            </div>
+                            <div class="modal-flex-last">
+                                <a href="JavaScript:Void(0);">Forget Password?</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="social-login">
+                    <ul>
+                        <li><a href="JavaScript:Void(0);" class="btn connect-fb"><i class="fa-brands fa-facebook"></i>Facebook</a></li>
+                        <li><a href="JavaScript:Void(0);" class="btn connect-google"><i class="fa-brands fa-google"></i>Google+</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <p>Don't have an account yet?<a href="{% url 'App:signup' %}" class="text-main font--bold ms-1">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->

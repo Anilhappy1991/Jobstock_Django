@@ -1,0 +1,21 @@
+{% for item in blogs|slice:"0:3" %}
+    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+        <div class="jobstock-grid-blog">
+            <div class="jobstock-grid-blog-thumb">
+                <img src="{{ item.img }}" class="img-fluid" alt="">
+            </div>
+            <div class="jobstock-grid-blog-body">
+                <div class="jobstock-grid-body-header">
+                    <div class="jobstock-grid-posted bg-main"><span>{{ item.date }}</span></div>
+                    <div class="jobstock-grid-title"><h4><a href="{% url 'App:blog_detail' title=item.title|slugify %}">{{ item.title }}</a></h4></div>
+                </div>
+                <div class="jobstock-grid-body-middle">
+                    <p>{{ item.desc }}</p>
+                </div>
+                <div class="jobstock-grid-body-footer">
+                    <a href="{% url 'App:blog_detail' title=item.title|slugify %}" class="btn btn-blog-link">Continue Reading</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
