@@ -3,6 +3,7 @@ from .models import Blog
 from .models import Candidate
 from .models import Employer
 from .models import Job
+from .models import DropdownGroup, DropdownMaster
 from .forms import SignUpForm
 from django.contrib.auth.models import User
 from .models import Profile
@@ -172,7 +173,23 @@ def candidate_profile_detail(request, username):
     # Show the profile for the given username
     user = get_object_or_404(User, username=username)
     profile = Profile.objects.filter(user=user).first()
-    return render(request, 'pages/candidate-profile.html', {'profile_user': user, 'profile': profile})
+    
+    # Get all dropdown groups and their items
+    education_items = DropdownMaster.objects.filter(group__text='Education', is_active=True)
+    experience_items = DropdownMaster.objects.filter(group__text='Experience', is_active=True)
+    country_items = DropdownMaster.objects.filter(group__text='Country', is_active=True)
+    city_items = DropdownMaster.objects.filter(group__text='State/City', is_active=True)
+    
+    context = {
+        'profile_user': user,
+        'profile': profile,
+        'education_items': education_items,
+        'experience_items': experience_items,
+        'country_items': country_items,
+        'city_items': city_items,
+    }
+    
+    return render(request, 'pages/candidate-profile.html', context)
 
 
 def is_rpo_admin(user):

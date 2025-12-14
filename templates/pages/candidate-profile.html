@@ -168,12 +168,11 @@
 								<div class="form-group">
 									<label>Education</label>
 									<div class="select-ops">
-										<select>
-											<option value="1">High School</option>
-											<option value="2">Intermidiate</option>
-											<option value="3">Bachelore Degree</option>
-											<option value="4">Master Degree</option>
-											<option value="5">Post Graduate</option>
+										<select name="education">
+											<option value="">Select Education</option>
+											{% for item in education_items %}
+											<option value="{{ item.value }}">{{ item.text }}</option>
+											{% endfor %}
 										</select>
 									</div>
 								</div>
@@ -183,12 +182,11 @@
 								<div class="form-group">
 									<label>Experience</label>
 									<div class="select-ops">
-										<select>
-											<option value="1">Fresher</option>
-											<option value="2">1+ Year</option>
-											<option value="3">2+ Year</option>
-											<option value="4">4+ Year</option>
-											<option value="5">5+ Year</option>
+										<select name="experience">
+											<option value="">Select Experience</option>
+											{% for item in experience_items %}
+											<option value="{{ item.value }}">{{ item.text }}</option>
+											{% endfor %}
 										</select>
 									</div>
 								</div>
@@ -262,12 +260,11 @@
 								<div class="form-group">
 									<label>Country</label>
 									<div class="select-ops">
-										<select>
-											<option value="1">India</option>
-											<option value="2">United State</option>
-											<option value="3">United kingdom</option>
-											<option value="4">Austrailia</option>
-											<option value="5">Russia</option>
+										<select name="country">
+											<option value="">Select Country</option>
+											{% for item in country_items %}
+											<option value="{{ item.value }}">{{ item.text }}</option>
+											{% endfor %}
 										</select>
 									</div>
 								</div>
@@ -277,12 +274,11 @@
 								<div class="form-group">
 									<label>State/City</label>
 									<div class="select-ops">
-										<select>
-											<option value="1">California</option>
-											<option value="2">Denver</option>
-											<option value="3">New York</option>
-											<option value="4">Canada</option>
-											<option value="5">Poland</option>
+										<select name="city">
+											<option value="">Select State/City</option>
+											{% for item in city_items %}
+											<option value="{{ item.value }}">{{ item.text }}</option>
+											{% endfor %}
 										</select>
 									</div>
 								</div>
