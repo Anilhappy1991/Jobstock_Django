@@ -398,10 +398,8 @@ def login_view(request):
         if user is not None:
             login(request, user)
             messages.success(request, 'You are now logged in.')
-            # If no next_url was provided, redirect to the user's profile detail
-            if not next_url:
-                return redirect('App:candidate_profile_detail', username=user.username)
-            return redirect(next_url)
+            # Redirect to the user's profile using their email
+            return redirect('App:candidate_profile_detail', username=user.email)
         else:
             messages.error(request, 'Invalid username or password.')
             # On failure, redirect to the same page and open login modal

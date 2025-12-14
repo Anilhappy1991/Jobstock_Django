@@ -2373,7 +2373,7 @@ def global_informations(request):
     informations = [
         {
             'icon' : 'fa-solid fa-envelope-open-text', 
-            'title' : 'shreethemes@gmail.com',
+            'title' : 'reetechusa@gmail.com',
             'name' : 'Mail Address',
         },
         {
@@ -3098,7 +3098,7 @@ def global_views(request):
         {
             'icon' : 'fa-solid fa-envelope-circle-check text-main', 
             'title' : 'Email Address',
-            'name' : 'shreethemes@gmail.com',
+            'name' : 'reetechusa@gmail.com',
         },
         {
             'icon' : 'fa-solid fa-phone-volume text-main', 
@@ -3424,19 +3424,19 @@ def global_contacts(request):
             'icon' : 'fa-solid fa-location-dot', 
             'name' : 'Hyderabad', 
             'title' : 'Krishe Emerald, Whitefields, Kondapur, Hyderabad, Telangana 500081',
-            'mail' : 'shreethemes@gmail.com',
+            'mail' : 'reetechusa@gmail.com',
         },
         {
             'icon' : 'fa-solid fa-map-location-dot', 
             'name' : 'Bengaluru', 
             'title' : 'Prestige Cube, Koramangala, Bengaluru, Karnataka 560029',
-            'mail' : 'shreethemes@gmail.com',
+            'mail' : 'reetechusa@gmail.com',
         },
         {
             'icon' : 'fa-solid fa-map-location', 
             'name' : 'Nagpur', 
             'title' : 'B-101, Vedant Sapphire, Sneha Nagar, Nagpur, Maharashtra, 440015',
-            'mail' : 'shreethemes@gmail.com',
+            'mail' : 'reetechusa@gmail.com',
         }
     ]
     return {"contacts": contacts}
