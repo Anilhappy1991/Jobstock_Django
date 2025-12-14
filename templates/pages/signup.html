@@ -16,6 +16,12 @@
 					<div class="card-body p-4">
 						<form method="post" class="p-md-4" novalidate>
 							{% csrf_token %}
+							<div class="d-flex align-items-center justify-content-start gap-3">
+									<div class="head-caps">
+										<h4>Create your JobStock profile</h4>
+										<p>Search & apply to jobs from India's No.1 Job Site</p>
+									</div>
+							</div>
 							<div class="form-group mb-0">
 								<label class="fw-medium fs-6 text-dark">Username</label>
 								{{ form.username.errors }}
@@ -28,12 +34,7 @@
                                     <div class="alert alert-success">{{ message }}</div>
                                 {% endfor %}
                             {% endif %}
-								<div class="d-flex align-items-center justify-content-start gap-3">
-									<div class="head-caps">
-										<h4>Create your JobStock profile</h4>
-										<p>Search & apply to jobs from India's No.1 Job Site</p>
-									</div>
-								</div>
+								
 							</div>
 							
 							<div class="form-float d-flex flex-column gap-4">
@@ -86,7 +87,7 @@
 								</div>
 								
 								<div class="form-group mb-0">
-									<p class="confirmTex">By clicking Register, you agree to the<a href="#" class="text-main"> Terms and Conditions </a> &amp;<a href="#" class="text-main"> Privacy Policy </a> of Jobstock.com</p>
+									<!-- <p class="confirmTex">By clicking Register, you agree to the<a href="#" class="text-main"> Terms and Conditions </a> &amp;<a href="#" class="text-main"> Privacy Policy </a> of Jobstock.com</p> -->
 									<button type="submit" class="btn btn-main full-width">Register now</button>
 								</div>
 							
@@ -98,10 +99,10 @@
 							<div class="position-absolute top-50 start-50 translate-middle"><span class="square--30 circle bg-white text-muted">OR</span></div>
 						</div>
 						
-						<div class="social-signup d-flex flex-column gap-3 mb-4">
+						<!-- <div class="social-signup d-flex flex-column gap-3 mb-4">
 							<a href="#" class="btn btn-gray rounded-pill w-100"><img src="{% static 'app/img/facebook.png' %}" class="img-fluid me-2" width="20" alt="Facebook Signup">Signup with Facebook</a>
 							<a href="#" class="btn btn-gray rounded-pill w-100"><img src="{% static 'app/img/google.png' %}" class="img-fluid me-2" width="20" alt="Google Signup">Signup with Google</a>
-						</div>
+						</div> -->
 						
 					</div>
 				</div>
