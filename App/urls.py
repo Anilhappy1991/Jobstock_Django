@@ -5,6 +5,7 @@ app_name = 'App'
 
 urlpatterns = [
     path("", views.index, name="index"),
+    #path("", views.index, name="home-10"),    
     path("home-2/", views.home_2, name="home_2"),
     path("home-3/", views.home_3, name="home_3"),
     path("home-4/", views.home_4, name="home_4"),
