@@ -20,6 +20,13 @@
 									<div class="head-caps">
 										<h4>Create your JobStock profile</h4>
 										<p>Search & apply to jobs from India's No.1 Job Site</p>
+									{{ form.non_field_errors }}
+									{% if messages %}
+										{% for message in messages %}
+											<div class="alert alert-success">{{ message }}</div>
+										{% endfor %}
+									{% endif %}
+								
 									</div>
 							</div>
 							<div class="form-group mb-0">
@@ -28,16 +35,10 @@
 								{{ form.username }}
 								<span class="text-sm opacity-75">Choose a unique username (no @)</span>
 							</div>
-							{{ form.non_field_errors }}
-                            {% if messages %}
-                                {% for message in messages %}
-                                    <div class="alert alert-success">{{ message }}</div>
-                                {% endfor %}
-                            {% endif %}
-								
-							</div>
 							
-							<div class="form-float d-flex flex-column gap-4">
+							<!-- </div>
+							
+							<div class="form-float d-flex flex-column gap-4"> -->
 							
 								<div class="form-group mb-0">
 									<label class="fw-medium fs-6 text-dark">Full Name</label>
@@ -72,7 +73,7 @@
 									<span class="text-sm opacity-75">This helps your account stay protected</span>
 								</div>
 								
-								<div class="form-group mb-0">
+								<!-- <div class="form-group mb-0">
 									<label class="fw-medium fs-6 text-dark">Work status<i class="text-danger text-md">*</i></label>
 									{{ form.work_status.errors }}
 									<div class="row g-4">
@@ -81,7 +82,7 @@
 									<p class="text-sm opacity-75">Select whether you are looking for a job or hiring talent</p>
 								</div>
 							</div>
-						</div>
+						</div> -->
 										<label class="form-check-label" for="promotions">Send me important updates & promotions via SMS & email</label>
 									</div>
 								</div>
