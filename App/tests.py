@@ -146,3 +146,18 @@ class RoleAssignTests(TestCase):
 		data = {'username': 'rpo_test', 'role': 'candidate'}
 		response = self.client.post(url, data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
 		self.assertEqual(response.status_code, 403)
+
+	def test_group_permissions_assigned(self):
+		# Ensure sample groups and users are created by management command
+		from django.core.management import call_command
+		call_command('create_sample_users', '--force')
+		rpo = User.objects.get(username='rpo_admin')
+		self.assertTrue(rpo.has_perm('App.assign_roles'))
+		self.assertTrue(rpo.has_perm('App.manage_platform'))
+
+		hiring = User.objects.get(username='hiring_manager')
+		self.assertTrue(hiring.has_perm('App.review_candidates') or hiring.has_perm('App.add_job'))
+
+		cand1 = User.objects.filter(username='candidate1').first()
+		if cand1:
+			self.assertTrue(cand1.has_perm('App.apply_jobs'))

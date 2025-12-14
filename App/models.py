@@ -89,3 +89,11 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"Profile({self.user.username})"
+
+    class Meta:
+        permissions = (
+            ("assign_roles", "Can assign roles and manage user roles"),
+            ("manage_platform", "Can manage platform settings and content"),
+            ("review_candidates", "Can review and shortlist candidates"),
+            ("apply_jobs", "Can apply to jobs"),
+        )
