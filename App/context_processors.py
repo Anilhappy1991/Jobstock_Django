@@ -3750,20 +3750,25 @@ def global_sliders(request):
 
 
 def rpo_admin_flag(request):
-    """Add `is_rpo_admin` boolean to context for templates."""
+    """Add `is_rpo_admin` and `is_candidate` booleans to context for templates."""
     user = getattr(request, 'user', None)
     is_rpo = False
+    is_candidate = False
     try:
         if user and user.is_authenticated:
             if user.is_superuser:
                 is_rpo = True
             else:
                 profile = getattr(user, 'profile', None)
-                if profile and getattr(profile, 'role', None) == 'rpo_admin':
+                role = getattr(profile, 'role', None) if profile is not None else None
+                if role == 'rpo_admin':
                     is_rpo = True
+                if role == 'candidate':
+                    is_candidate = True
     except Exception:
         is_rpo = False
-    return {'is_rpo_admin': is_rpo}
+        is_candidate = False
+    return {'is_rpo_admin': is_rpo, 'is_candidate': is_candidate}
 
 
 def site_config(request):

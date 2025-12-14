@@ -38,7 +38,7 @@
                             <li><a href="{% url 'App:home_12' %}" class="sub-menu-item">Home Layout 12</a></li>																								
                         </ul> -->
                     </li>
-                    
+                    {% if is_candidate %}
                     <li class="parent-parent-menu-item"><a href="JavaScript:Void(0);" class="home-link">For Candidate<span class="submenu-indicator"></span></a>
                         <ul class="nav-dropdown nav-submenu">
                             <!-- <li class="parent-menu-item"><a href="JavaScript:Void(0);">Browse Jobs<span class="submenu-indicator"></span></a>
@@ -94,12 +94,14 @@
                                 </ul>
                             </li>
                             <li><a href="{% url 'App:advance_search' %}" class="sub-menu-item">Advance Search</a></li> -->
+                           
                             <li>
                                 <a href="{% url 'App:candidate_dashboard' %}" class="sub-menu-item">Candidate Dashboard</a>                                
                             </li>
+                           
                         </ul>
                     </li>
-                    
+                     {% endif %}
                     <!-- <li class="parent-parent-menu-item"><a href="JavaScript:Void(0);" class="home-link">For Employer<span class="submenu-indicator"></span></a>
                         <ul class="nav-dropdown nav-submenu">
                             <li class="parent-menu-item"><a href="JavaScript:Void(0);">Explore Employers<span class="submenu-indicator"></span></a>
@@ -137,7 +139,7 @@
                         </ul>
                     </li> -->
                     
-                    <li><a href="{% url 'App:help' %}" class="sub-menu-item">Help</a></li>
+                    <!-- <li><a href="{% url 'App:help' %}" class="sub-menu-item">Help</a></li> -->
                     
                 </ul>
                 

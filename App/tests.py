@@ -130,6 +130,16 @@ class RoleAssignTests(TestCase):
 		response = self.client.get(reverse('App:index'))
 		self.assertNotContains(response, 'Assign Roles')
 
+	def test_navbar_shows_candidate_dashboard_for_candidate(self):
+		self.client.login(username='cand_test', password='CandPass123')
+		response = self.client.get(reverse('App:index'))
+		self.assertContains(response, 'Candidate Dashboard')
+
+	def test_navbar_hides_candidate_dashboard_for_non_candidate(self):
+		self.client.login(username='rpo_test', password='RpoPass123')
+		response = self.client.get(reverse('App:index'))
+		self.assertNotContains(response, 'Candidate Dashboard')
+
 	def test_ajax_role_change(self):
 		self.client.login(username='rpo_test', password='RpoPass123')
 		url = reverse('App:assign_role_ajax')
