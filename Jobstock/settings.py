@@ -112,6 +112,7 @@ TEMPLATES = [
                 "App.context_processors.global_avatars",
                 "App.context_processors.global_infos",
                 "App.context_processors.global_sliders",
+                "App.context_processors.rpo_admin_flag",
             ],
         },
     },

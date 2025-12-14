@@ -3749,6 +3749,23 @@ def global_sliders(request):
     return {"sliders": sliders}
 
 
+def rpo_admin_flag(request):
+    """Add `is_rpo_admin` boolean to context for templates."""
+    user = getattr(request, 'user', None)
+    is_rpo = False
+    try:
+        if user and user.is_authenticated:
+            if user.is_superuser:
+                is_rpo = True
+            else:
+                profile = getattr(user, 'profile', None)
+                if profile and getattr(profile, 'role', None) == 'rpo_admin':
+                    is_rpo = True
+    except Exception:
+        is_rpo = False
+    return {'is_rpo_admin': is_rpo}
+
+
 def site_config(request):
     """
     Provides site-wide configuration like site name, copyright info.

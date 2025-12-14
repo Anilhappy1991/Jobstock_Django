@@ -146,6 +146,11 @@
                 
                 <ul class="nav-menu nav-menu-social align-to-right">
                     {% if request.user.is_authenticated %}
+                        {% if is_rpo_admin %}
+                        <li>
+                            <a href="{% url 'App:assign_roles' %}"><i class="bi bi-people me-2"></i>Assign Roles</a>
+                        </li>
+                        {% endif %}
                         <li>
                             <a href="{% url 'App:candidate_profile_detail' request.user.username %}"><i class="bi bi-person-circle me-2"></i>{{ request.user.first_name|default:request.user.username }}</a>
                         </li>

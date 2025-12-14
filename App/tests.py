@@ -86,3 +86,63 @@ class LoginTests(TestCase):
 		# Should show logout message
 		messages_list = list(response.context.get('messages'))
 		self.assertTrue(any('logged out' in str(m) for m in messages_list))
+
+
+class RoleAssignTests(TestCase):
+	def setUp(self):
+		self.client = Client()
+		self.rpo = User.objects.create_user(username='rpo_test', password='RpoPass123')
+		Profile.objects.create(user=self.rpo, role='rpo_admin')
+
+		self.cand = User.objects.create_user(username='cand_test', password='CandPass123')
+		Profile.objects.create(user=self.cand, role='candidate')
+
+	def test_rpo_can_access_assign_roles(self):
+		self.client.login(username='rpo_test', password='RpoPass123')
+		url = reverse('App:assign_roles')
+		response = self.client.get(url)
+		self.assertEqual(response.status_code, 200)
+		# Should show page header
+		self.assertContains(response, 'Assign Roles')
+
+	def test_non_rpo_forbidden(self):
+		self.client.login(username='cand_test', password='CandPass123')
+		url = reverse('App:assign_roles')
+		response = self.client.get(url)
+		self.assertEqual(response.status_code, 403)
+
+	def test_rpo_can_change_role(self):
+		self.client.login(username='rpo_test', password='RpoPass123')
+		url = reverse('App:assign_roles')
+		data = {'username': 'cand_test', 'role': 'hiring_manager'}
+		response = self.client.post(url, data, follow=True)
+		self.assertEqual(response.status_code, 200)
+		profile = Profile.objects.get(user__username='cand_test')
+		self.assertEqual(profile.role, 'hiring_manager')
+
+	def test_navbar_shows_link_for_rpo(self):
+		self.client.login(username='rpo_test', password='RpoPass123')
+		response = self.client.get(reverse('App:index'))
+		self.assertContains(response, 'Assign Roles')
+
+	def test_navbar_hides_link_for_candidate(self):
+		self.client.login(username='cand_test', password='CandPass123')
+		response = self.client.get(reverse('App:index'))
+		self.assertNotContains(response, 'Assign Roles')
+
+	def test_ajax_role_change(self):
+		self.client.login(username='rpo_test', password='RpoPass123')
+		url = reverse('App:assign_role_ajax')
+		data = {'username': 'cand_test', 'role': 'hiring_manager'}
+		response = self.client.post(url, data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue(response.json().get('ok'))
+		profile = Profile.objects.get(user__username='cand_test')
+		self.assertEqual(profile.role, 'hiring_manager')
+
+	def test_ajax_forbidden_for_non_rpo(self):
+		self.client.login(username='cand_test', password='CandPass123')
+		url = reverse('App:assign_role_ajax')
+		data = {'username': 'rpo_test', 'role': 'candidate'}
+		response = self.client.post(url, data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+		self.assertEqual(response.status_code, 403)

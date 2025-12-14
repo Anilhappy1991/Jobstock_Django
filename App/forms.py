@@ -105,3 +105,8 @@ class SignUpForm(UserCreationForm):
         cleaned_data = super().clean()
         # No special processing required; ensure user-supplied username is used
         return cleaned_data
+
+
+class RoleAssignForm(forms.Form):
+    username = forms.CharField(widget=forms.HiddenInput)
+    role = forms.ChoiceField(choices=Profile.ROLE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))

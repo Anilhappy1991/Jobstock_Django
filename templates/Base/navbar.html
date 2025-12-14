@@ -142,12 +142,26 @@
                 </ul>
                 
                 <ul class="nav-menu nav-menu-social align-to-right">
+                    {% if request.user.is_authenticated %}
+                        {% if is_rpo_admin %}
+                        <li>
+                            <a href="{% url 'App:assign_roles' %}"><i class="bi bi-people me-2"></i>Assign Roles</a>
+                        </li>
+                        {% endif %}
+                        <li>
+                            <a href="{% url 'App:candidate_profile_detail' request.user.username %}"><i class="bi bi-person-circle me-2"></i>{{ request.user.first_name|default:request.user.username }}</a>
+                        </li>
+                        <li class="list-buttons ms-2">
+                            <a href="{% url 'App:logout' %}" class="btn btn-main">Logout</a>
+                        </li>
+                    {% else %}
                     <li>
                         <a href="JavaScript:Void(0);" data-bs-toggle="modal" data-bs-target="#login"><i class="fas fa-sign-in-alt me-2"></i>Sign In</a>
                     </li>
                     <li class="list-buttons ms-2">
                         <a href="{% url 'App:signup' %}"><i class="bi bi-person-circle me-2"></i>Register Today</a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>

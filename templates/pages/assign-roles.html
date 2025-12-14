@@ -1,0 +1,113 @@
+{% extends 'Base/base.html' %}
+{% load static %}
+
+{% block hero_content %}
+  {% include 'Base/navbar2.html' %}
+
+  <div class="container mt-4">
+    <h2>Assign Roles</h2>
+    <p>Only RPO Admins can access this page.</p>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Current Role</th>
+          <th>Assign</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user, profile, form in user_rows %}
+        <tr id="user-row-{{ user.username }}">
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td class="current-role">{{ profile.role|default:'candidate' }}</td>
+          <td>
+            <form method="post" class="form-inline role-assign-form" data-username="{{ user.username }}">
+              {% csrf_token %}
+              {{ form.username }}
+              {{ form.role }}
+              <button class="btn btn-primary btn-sm" type="submit">Save</button>
+              <span class="ms-2 text-success small d-none status-msg">Saved</span>
+              <span class="ms-2 text-danger small d-none status-err">Error</span>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+<script>
+  // Helper to get CSRF token from cookie
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const forms = document.querySelectorAll('.role-assign-form');
+    forms.forEach((form) => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = form.dataset.username;
+        const roleSelect = form.querySelector('select[name="role"]');
+        const role = roleSelect ? roleSelect.value : null;
+        const statusMsg = form.querySelector('.status-msg');
+        const statusErr = form.querySelector('.status-err');
+
+        statusMsg.classList.add('d-none');
+        statusErr.classList.add('d-none');
+
+        fetch('{% url "App:assign_role_ajax" %}', {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+          },
+          body: new URLSearchParams({username: username, role: role})
+        }).then(resp => resp.json().then(data => ({status: resp.status, body: data})))
+          .then(({status, body}) => {
+            if (status === 200 && body.ok) {
+              // update UI
+              const row = document.getElementById(`user-row-${username}`);
+              if (row) {
+                const roleCell = row.querySelector('.current-role');
+                if (roleCell) roleCell.textContent = body.role;
+              }
+              statusMsg.classList.remove('d-none');
+              setTimeout(() => statusMsg.classList.add('d-none'), 2500);
+            } else {
+              statusErr.textContent = body.error || 'Error';
+              statusErr.classList.remove('d-none');
+            }
+          }).catch((err) => {
+            statusErr.textContent = 'Network error';
+            statusErr.classList.remove('d-none');
+            console.error(err);
+          });
+      });
+    });
+  });
+</script>
+
+{% endblock %}

@@ -80,6 +80,12 @@ class Profile(models.Model):
     full_name = models.CharField(max_length=255, blank=True)
     phone = models.CharField(max_length=30, blank=True)
     work_status = models.CharField(max_length=20, choices=WORK_STATUS_CHOICES, default='findjob')
+    ROLE_CHOICES = (
+        ('rpo_admin', 'RPO Admin'),
+        ('hiring_manager', 'Hiring Manager'),
+        ('candidate', 'Candidate'),
+    )
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='candidate')
 
     def __str__(self):
         return f"Profile({self.user.username})"

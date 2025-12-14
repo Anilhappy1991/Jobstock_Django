@@ -69,6 +69,9 @@ urlpatterns = [
     path("candidate-messages/", views.candidate_messages, name="candidate_messages"),
     path("candidate-change-password/", views.candidate_change_password, name="candidate_change_password"),
     path("candidate-delete-account/", views.candidate_delete_account, name="candidate_delete_account"),
+    # Role assignment UI for RPO Admin
+    path("assign-roles/", views.assign_roles, name="assign_roles"),
+    path("assign-role-ajax/", views.assign_role_ajax, name="assign_role_ajax"),
     
     path("employer-grid-1/", views.employer_grid_1, name="employer_grid_1"),
     path("employer-grid-2/", views.employer_grid_2, name="employer_grid_2"),
