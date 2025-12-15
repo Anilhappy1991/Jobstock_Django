@@ -190,7 +190,6 @@ def candidate_profile_detail(request, username):
     # Handle resume deletion
     if request.GET.get('delete_resume') == 'true':
         if profile.resume:
-            import os
             if os.path.isfile(profile.resume.path):
                 os.remove(profile.resume.path)
             profile.resume = None
@@ -238,8 +237,11 @@ def candidate_profile_detail(request, username):
                     if form_resume.is_valid():
                         # Delete old resume if exists and new one is uploaded
                         if 'resume' in request.FILES and profile.resume:
-                            if os.path.isfile(profile.resume.path):
-                                os.remove(profile.resume.path)
+                            try:
+                                if os.path.isfile(profile.resume.path):
+                                    os.remove(profile.resume.path)
+                            except Exception:
+                                pass  # Continue even if old file deletion fails
                         
                         # Save the resume file
                         saved_profile = form_resume.save()
@@ -247,15 +249,19 @@ def candidate_profile_detail(request, username):
                         # Create ResumeProcessing entry for the new upload
                         if 'resume' in request.FILES:
                             resume_file = request.FILES['resume']
-                            ResumeProcessing.objects.create(
-                                user=request.user,
-                                profile=profile,
-                                resume_path=saved_profile.resume.path if saved_profile.resume else '',
-                                original_filename=resume_file.name,
-                                file_size=resume_file.size,
-                                file_extension=os.path.splitext(resume_file.name)[1].lower(),
-                                status='pending'
-                            )
+                            try:
+                                ResumeProcessing.objects.create(
+                                    user=request.user,
+                                    profile=profile,
+                                    resume_path=saved_profile.resume.path if saved_profile.resume else '',
+                                    original_filename=resume_file.name,
+                                    file_size=resume_file.size,
+                                    file_extension=os.path.splitext(resume_file.name)[1].lower(),
+                                    status='pending'
+                                )
+                            except Exception as db_error:
+                                # Log error but don't fail the upload
+                                print(f"Warning: Could not create ResumeProcessing record: {db_error}")
                         
                         MessageMixin.success_message(request, "Resume uploaded successfully! Processing will start automatically.")
                         saved = True
@@ -267,7 +273,14 @@ def candidate_profile_detail(request, username):
                     return redirect('App:candidate_profile_detail', username=username)
                     
         except Exception as e:
-            MessageMixin.error_message(request, f"An error occurred: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            error_msg = str(e)
+            if "database is locked" in error_msg.lower():
+                MessageMixin.error_message(request, "The database is temporarily busy. Please try again in a moment.")
+            else:
+                MessageMixin.error_message(request, f"An error occurred: {error_msg}")
+
     
     # Initialize forms
     form_basic = CandidateProfileBasicForm(instance=profile)
