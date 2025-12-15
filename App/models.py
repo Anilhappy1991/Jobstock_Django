@@ -1,8 +1,29 @@
 from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+import os
 
 # Create your models here.
+
+def validate_resume_file(file):
+    """Validate resume file type and size"""
+    # Maximum file size: 5MB
+    max_size = 5 * 1024 * 1024  # 5MB in bytes
+    
+    # Allowed file extensions
+    allowed_extensions = ['.pdf', '.doc', '.docx', '.txt']
+    
+    # Check file size
+    if file.size > max_size:
+        raise ValidationError(f'Resume file size cannot exceed 5MB. Current size: {file.size / (1024*1024):.2f}MB')
+    
+    # Check file extension
+    ext = os.path.splitext(file.name)[1].lower()
+    if ext not in allowed_extensions:
+        raise ValidationError(f'Unsupported file type. Allowed types: PDF, DOC, DOCX, TXT')
+    
+    return file
 
 class Blog(models.Model):
     id = models.AutoField(primary_key=True)
@@ -188,7 +209,13 @@ class Profile(models.Model):
     
     # Profile Management
     profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
-    resume = models.FileField(upload_to='resumes/', blank=True, null=True)
+    resume = models.FileField(
+        upload_to='candidate-resume/', 
+        blank=True, 
+        null=True,
+        validators=[validate_resume_file],
+        help_text="Upload your resume (PDF, DOC, DOCX, or TXT - Max 5MB)"
+    )
     profile_completion = models.IntegerField(default=0, help_text="Profile completion percentage")
     is_active = models.BooleanField(default=True)
     

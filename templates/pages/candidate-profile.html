@@ -1,5 +1,6 @@
 ﻿{% extends "Base/base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 {% block hero_content %}
 
@@ -496,6 +497,80 @@
 				</div>
 			</div>
 			<!-- Card Row End -->
+			
+			<!-- Card Row - Resume Upload -->
+			<div class="card profile-card">
+				<div class="card-header">
+					<h4><i class="fas fa-file-upload"></i> Resume / CV</h4>
+				</div>
+				<div class="card-body">
+					<form method="POST" action="" enctype="multipart/form-data">
+						{% csrf_token %}
+						<input type="hidden" name="form_type" value="resume">
+						<div class="row">
+						
+							<div class="col-xl-12 col-lg-12 col-md-12">
+								<div class="alert alert-info mb-3">
+									<i class="fas fa-info-circle"></i>
+									<strong>Supported formats:</strong> PDF, DOC, DOCX, TXT &nbsp;|&nbsp; <strong>Max size:</strong> 5MB
+								</div>
+							</div>
+							
+							{% if profile.resume %}
+							<div class="col-xl-12 col-lg-12 col-md-12">
+								<div class="alert alert-success d-flex align-items-center justify-content-between mb-3">
+									<div>
+										<i class="fas fa-check-circle"></i>
+										<strong>Current Resume:</strong> 
+										<span class="ms-2">{{ profile.resume.name|filename }}</span>
+										<small class="text-muted ms-2">({{ profile.resume.size|filesizeformat }})</small>
+									</div>
+									<a href="{{ profile.resume.url }}" class="btn btn-sm btn-outline-success" download>
+										<i class="fas fa-download"></i> Download
+									</a>
+								</div>
+							</div>
+							{% endif %}
+							
+							<div class="col-xl-12 col-lg-12 col-md-12">
+								<div class="form-group">
+									<label><i class="fas fa-upload"></i> {{ form_resume.resume.label }}</label>
+									<div class="input-with-tooltip">
+										<div class="custom-file-upload">
+											{{ form_resume.resume }}
+											<label for="resume-upload" class="file-upload-label">
+												<i class="fas fa-cloud-upload-alt"></i>
+												<span class="file-name">Choose file or drag here</span>
+											</label>
+										</div>
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Upload your latest resume in PDF, DOC, DOCX, or TXT format</span>
+										</span>
+									</div>
+									{% if form_resume.resume.errors %}
+										<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_resume.resume.errors.0 }}</div>
+									{% endif %}
+								</div>
+							</div>
+							
+							<div class="col-lg-12 col-md-12">
+								<button type="submit" class="btn ft--medium btn-main">
+									<i class="fas fa-upload"></i> Upload Resume
+								</button>
+								{% if profile.resume %}
+								<a href="?delete_resume=true" class="btn ft--medium btn-outline-danger ms-2" 
+								   onclick="return confirm('Are you sure you want to delete your current resume?')">
+									<i class="fas fa-trash-alt"></i> Delete Current Resume
+								</a>
+								{% endif %}
+							</div>
+							
+						</div> 
+					</form>
+				</div>
+			</div>
+			<!-- Card Row End -->
 
 		</div>
 		
@@ -516,6 +591,92 @@
 		
 <!-- Components/For-Candidate/candidate-dashboard/files.html -->
 {% include 'Components/For-Candidate/candidate-dashboard/files.html' %}
+
+<!-- Resume Upload JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const resumeInput = document.getElementById('resume-upload');
+    const fileUploadContainer = resumeInput ? resumeInput.closest('.custom-file-upload') : null;
+    const fileNameDisplay = document.querySelector('.file-upload-label .file-name');
+    
+    if (resumeInput && fileUploadContainer && fileNameDisplay) {
+        resumeInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Update file name display
+                fileNameDisplay.textContent = file.name;
+                fileUploadContainer.classList.add('has-file');
+                
+                // Validate file type
+                const allowedTypes = ['application/pdf', 'application/msword', 
+                                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                                     'text/plain'];
+                const fileExt = file.name.split('.').pop().toLowerCase();
+                const allowedExts = ['pdf', 'doc', 'docx', 'txt'];
+                
+                if (!allowedExts.includes(fileExt)) {
+                    alert('Invalid file type. Please upload PDF, DOC, DOCX, or TXT files only.');
+                    resumeInput.value = '';
+                    fileNameDisplay.textContent = 'Choose file or drag here';
+                    fileUploadContainer.classList.remove('has-file');
+                    return;
+                }
+                
+                // Validate file size (5MB)
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                if (file.size > maxSize) {
+                    alert('File size too large. Maximum size is 5MB. Your file: ' + (file.size / (1024*1024)).toFixed(2) + 'MB');
+                    resumeInput.value = '';
+                    fileNameDisplay.textContent = 'Choose file or drag here';
+                    fileUploadContainer.classList.remove('has-file');
+                    return;
+                }
+            } else {
+                fileNameDisplay.textContent = 'Choose file or drag here';
+                fileUploadContainer.classList.remove('has-file');
+            }
+        });
+        
+        // Drag and drop functionality
+        const dropZone = document.querySelector('.file-upload-label');
+        if (dropZone) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.style.borderColor = '#2563eb';
+                    dropZone.style.backgroundColor = '#eff6ff';
+                }, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.style.borderColor = '';
+                    dropZone.style.backgroundColor = '';
+                }, false);
+            });
+            
+            dropZone.addEventListener('drop', function(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length > 0) {
+                    resumeInput.files = files;
+                    // Trigger change event
+                    const event = new Event('change', { bubbles: true });
+                    resumeInput.dispatchEvent(event);
+                }
+            }, false);
+        }
+    }
+});
+</script>
 
 {% endblock %}
 

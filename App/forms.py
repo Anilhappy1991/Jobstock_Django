@@ -235,6 +235,45 @@ class CandidateProfileSocialForm(BaseModelForm):
         }
 
 
+class CandidateResumeForm(forms.ModelForm):
+    """Form for resume upload with file validation"""
+    
+    class Meta:
+        model = Profile
+        fields = ['resume']
+        widgets = {
+            'resume': forms.FileInput(attrs={
+                'class': 'form-control',
+                'accept': '.pdf,.doc,.docx,.txt',
+                'id': 'resume-upload'
+            })
+        }
+        labels = {
+            'resume': 'Upload Resume',
+        }
+    
+    def clean_resume(self):
+        resume = self.cleaned_data.get('resume')
+        if resume:
+            # Additional validation if needed
+            import os
+            ext = os.path.splitext(resume.name)[1].lower()
+            allowed_extensions = ['.pdf', '.doc', '.docx', '.txt']
+            
+            if ext not in allowed_extensions:
+                raise forms.ValidationError(
+                    'Invalid file type. Please upload PDF, DOC, DOCX, or TXT files only.'
+                )
+            
+            # Check file size (5MB limit)
+            if resume.size > 5 * 1024 * 1024:
+                raise forms.ValidationError(
+                    f'File size too large. Maximum size is 5MB. Your file: {resume.size / (1024*1024):.2f}MB'
+                )
+        
+        return resume
+
+
 class CandidateSkillForm(BaseModelForm):
     """Form for adding skills"""
     

@@ -1,0 +1,47 @@
+# Django specific
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Virtual Environment
+venv/
+venv0/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Media files (uploaded content)
+data/candidate-resume/*
+!data/candidate-resume/README.md
+data/profile_images/*
+data/blog_images/*
+data/candidate_images/*
+data/employer_images/*
+
+# Static files
+staticfiles/
+static_collected/
+
+# Sensitive files
+*.env
+.env
+secrets.json
+user-password.txt
+
+# Backup files
+*.bak
+*.backup

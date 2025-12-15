@@ -6,7 +6,7 @@ from .models import Job
 from .models import DropdownGroup, DropdownMaster
 from .forms import (
     SignUpForm, CandidateProfileBasicForm, CandidateProfileContactForm,
-    CandidateProfileSocialForm
+    CandidateProfileSocialForm, CandidateResumeForm
 )
 from .utils import MessageMixin, FormHandlerMixin, generic_profile_save
 from django.contrib.auth.models import User
@@ -186,6 +186,17 @@ def candidate_profile_detail(request, username):
         MessageMixin.error_message(request, "You don't have permission to edit this profile.")
         return redirect('App:candidate_profile')
     
+    # Handle resume deletion
+    if request.GET.get('delete_resume') == 'true':
+        if profile.resume:
+            import os
+            if os.path.isfile(profile.resume.path):
+                os.remove(profile.resume.path)
+            profile.resume = None
+            profile.save()
+            MessageMixin.success_message(request, "Resume deleted successfully!")
+        return redirect('App:candidate_profile_detail', username=username)
+    
     # Handle form submissions
     saved = False
     if request.method == 'POST':
@@ -221,6 +232,21 @@ def candidate_profile_detail(request, username):
                     else:
                         MessageMixin.error_message(request, "Please correct the errors in social links.")
                 
+                elif form_type == 'resume':
+                    form_resume = CandidateResumeForm(request.POST, request.FILES, instance=profile)
+                    if form_resume.is_valid():
+                        # Delete old resume if exists and new one is uploaded
+                        if 'resume' in request.FILES and profile.resume:
+                            import os
+                            if os.path.isfile(profile.resume.path):
+                                os.remove(profile.resume.path)
+                        
+                        form_resume.save()
+                        MessageMixin.success_message(request, "Resume uploaded successfully!")
+                        saved = True
+                    else:
+                        MessageMixin.error_message(request, "Please correct the errors in resume upload.")
+                
                 # If saved successfully, redirect to refresh the page
                 if saved:
                     return redirect('App:candidate_profile_detail', username=username)
@@ -232,6 +258,7 @@ def candidate_profile_detail(request, username):
     form_basic = CandidateProfileBasicForm(instance=profile)
     form_contact = CandidateProfileContactForm(instance=profile)
     form_social = CandidateProfileSocialForm(instance=profile)
+    form_resume = CandidateResumeForm(instance=profile)
     
     # Get all dropdown items for the template
     education_items = DropdownMaster.objects.filter(group__text='Education', is_active=True)
@@ -245,6 +272,7 @@ def candidate_profile_detail(request, username):
         'form_basic': form_basic,
         'form_contact': form_contact,
         'form_social': form_social,
+        'form_resume': form_resume,
         'education_items': education_items,
         'experience_items': experience_items,
         'country_items': country_items,
