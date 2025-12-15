@@ -1,0 +1,9 @@
+Option 1: Run command after uploads
+
+Option 2: Set up automatic processing with file watcher
+
+(Keep this running in the background - it will auto-process new uploads)
+
+Option 3: Schedule with Task Scheduler (Windows)
+
+Schedule python [manage.py](http://_vscodecontentref_/1) process_resumes to run every 5-10 minutes

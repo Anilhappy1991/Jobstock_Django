@@ -20,7 +20,11 @@ from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.core.management import call_command
 import os
+import subprocess
+import sys
+import threading
 
 # Create your views here.
 
@@ -237,11 +241,8 @@ def candidate_profile_detail(request, username):
                     if form_resume.is_valid():
                         # Delete old resume if exists and new one is uploaded
                         if 'resume' in request.FILES and profile.resume:
-                            try:
-                                if os.path.isfile(profile.resume.path):
-                                    os.remove(profile.resume.path)
-                            except Exception:
-                                pass  # Continue even if old file deletion fails
+                            if os.path.isfile(profile.resume.path):
+                                os.remove(profile.resume.path)
                         
                         # Save the resume file
                         saved_profile = form_resume.save()
@@ -249,21 +250,29 @@ def candidate_profile_detail(request, username):
                         # Create ResumeProcessing entry for the new upload
                         if 'resume' in request.FILES:
                             resume_file = request.FILES['resume']
-                            try:
-                                ResumeProcessing.objects.create(
-                                    user=request.user,
-                                    profile=profile,
-                                    resume_path=saved_profile.resume.path if saved_profile.resume else '',
-                                    original_filename=resume_file.name,
-                                    file_size=resume_file.size,
-                                    file_extension=os.path.splitext(resume_file.name)[1].lower(),
-                                    status='pending'
-                                )
-                            except Exception as db_error:
-                                # Log error but don't fail the upload
-                                print(f"Warning: Could not create ResumeProcessing record: {db_error}")
+                            resume_record = ResumeProcessing.objects.create(
+                                user=request.user,
+                                profile=profile,
+                                resume_path=saved_profile.resume.path if saved_profile.resume else '',
+                                original_filename=resume_file.name,
+                                file_size=resume_file.size,
+                                file_extension=os.path.splitext(resume_file.name)[1].lower(),
+                                status='pending'
+                            )
+                            
+                            # Trigger automatic processing in background thread
+                            def process_in_background():
+                                try:
+                                    # Use Django's call_command for cleaner execution
+                                    call_command('process_resumes', user=request.user.username, verbosity=0)
+                                except Exception as e:
+                                    print(f"Background processing error: {e}")
+                            
+                            # Start processing in background thread
+                            thread = threading.Thread(target=process_in_background, daemon=True)
+                            thread.start()
                         
-                        MessageMixin.success_message(request, "Resume uploaded successfully! Processing will start automatically.")
+                        MessageMixin.success_message(request, "Resume uploaded successfully! Processing started in background.")
                         saved = True
                     else:
                         MessageMixin.error_message(request, "Please correct the errors in resume upload.")
@@ -273,14 +282,7 @@ def candidate_profile_detail(request, username):
                     return redirect('App:candidate_profile_detail', username=username)
                     
         except Exception as e:
-            import traceback
-            traceback.print_exc()
-            error_msg = str(e)
-            if "database is locked" in error_msg.lower():
-                MessageMixin.error_message(request, "The database is temporarily busy. Please try again in a moment.")
-            else:
-                MessageMixin.error_message(request, f"An error occurred: {error_msg}")
-
+            MessageMixin.error_message(request, f"An error occurred: {str(e)}")
     
     # Initialize forms
     form_basic = CandidateProfileBasicForm(instance=profile)
