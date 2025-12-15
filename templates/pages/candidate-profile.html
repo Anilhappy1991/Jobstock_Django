@@ -4,9 +4,10 @@
 
 {% block hero_content %}
 
-{% include 'Base/navbar.html' %}
+
 {% include 'Components/snackbar.html' %}
 {% include 'Components/validation.html' %}
+{% include 'Base/navbar.html' %}
 
 <!-- Font Awesome 6.4.0 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,10 +20,10 @@
 
 <!-- dashboard Detail -->
 <div class="dashboard-wrap bg-light">
-	<a class="mobNavigation" data-bs-toggle="collapse" href="#MobNav" role="button" aria-expanded="false" aria-controls="MobNav">
+	<a class="mobNavigation d-lg-none" data-bs-toggle="collapse" href="#MobNav" role="button" aria-expanded="false" aria-controls="MobNav">
 		<i class="fas fa-bars mr-2"></i>Dashboard Navigation
 	</a>
-		<div class="collapse" id="MobNav">
+	<div class="collapse" id="MobNav">
 		<div class="dashboard-nav">
 			<div class="dash-user-blocks pt-5">
 				<div class="jbs-grid-usrs-thumb">
@@ -42,12 +43,39 @@
 						</div>
 					</div>
 					<div class="jbs-tiosk">
-						<h4 class="jbs-tiosk-title"><a href="{% url 'App:candidate_list_or_default' %}">{{ profile_user.get_full_name|default:profile_user.username }}</a></h4>
+						<h4 class="jbs-tiosk-title"><a href="{% url 'App:candidate_list_or_default' %}">Linda D. Strong</a></h4>
 						<div class="jbs-tiosk-subtitle"><span>Front-End Developer</span></div>
 					</div>
 				</div>
 			</div>
 			{% include 'Components/For-Candidate/dashboard_nav.html' with dashboard_active='profile' %}
+		</div>
+	</div>
+		<div class="dashboard-nav">
+			<div class="dash-user-blocks pt-5">
+				<div class="jbs-grid-usrs-thumb">
+					<div class="jbs-grid-yuo">
+						<a href="{% url 'App:candidate_list_or_default' %}"><figure><img src="{% static 'app/img/user-5.png' %}" class="img-fluid circle" alt=""></figure></a>
+					</div>
+				</div>
+				<div class="jbs-grid-usrs-caption mb-3">
+					<div class="jbs-kioyer">
+						<div class="jbs-kioyer-groups">
+							<span class="fa-solid fa-star active"></span>
+							<span class="fa-solid fa-star active"></span>
+							<span class="fa-solid fa-star active"></span>
+							<span class="fa-solid fa-star active"></span>
+							<span class="fa-solid fa-star"></span>
+							<span class="aal-reveis">4.7</span>
+						</div>
+					</div>
+					<div class="jbs-tiosk">
+						<h4 class="jbs-tiosk-title"><a href="{% url 'App:candidate_list_or_default' %}">Linda D. Strong</a></h4>
+						<div class="jbs-tiosk-subtitle"><span>Front-End Developer</span></div>
+					</div>
+				</div>
+			</div>
+			{% include 'Components/For-Candidate/dashboard_nav.html' with dashboard_active='dashboard' %}
 		</div>
 	</div>
 	
@@ -523,7 +551,7 @@
 										<i class="fas fa-check-circle"></i>
 										<strong>Current Resume:</strong> 
 										<span class="ms-2">{{ profile.resume.name|filename }}</span>
-										<small class="text-muted ms-2">({{ profile.resume.size|filesizeformat }})</small>
+									{% with size=profile.resume|safe_filesize %}{% if size %}<small class="text-muted ms-2">({{ size|filesizeformat }})</small>{% endif %}{% endwith %}
 									</div>
 									<a href="{{ profile.resume.url }}" class="btn btn-sm btn-outline-success" download>
 										<i class="fas fa-download"></i> Download

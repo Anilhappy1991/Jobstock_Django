@@ -48,3 +48,19 @@ def get_file_extension(filepath):
     if not filepath:
         return ''
     return os.path.splitext(str(filepath))[1].upper().replace('.', '')
+
+
+@register.filter(name='safe_filesize')
+def safe_filesize(file_field):
+    """
+    Safely get file size even if file doesn't exist on filesystem.
+    Returns None if file doesn't exist or can't be accessed.
+    Usage: {{ profile.resume|safe_filesize }}
+    """
+    if not file_field:
+        return None
+    
+    try:
+        return file_field.size
+    except (FileNotFoundError, OSError, AttributeError):
+        return None
