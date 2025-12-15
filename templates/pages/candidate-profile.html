@@ -10,6 +10,12 @@
 <!-- Font Awesome 6.4.0 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Candidate Profile Custom Styles -->
+<link rel="stylesheet" href="{% static 'app/css/candidate-profile.css' %}">
+
 <!-- dashboard Detail -->
 <div class="dashboard-wrap bg-light">
 	<a class="mobNavigation" data-bs-toggle="collapse" href="#MobNav" role="button" aria-expanded="false" aria-controls="MobNav">
@@ -154,33 +160,48 @@
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label><i class="fas fa-user"></i> {{ form_basic.full_name.label }} <span class="required">*</span></label>
-									{{ form_basic.full_name }}
+									<div class="input-with-tooltip">
+										{{ form_basic.full_name }}
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Enter your full name as it appears on official documents</span>
+										</span>
+									</div>
 									{% if form_basic.full_name.errors %}
-										<div class="text-danger small">{{ form_basic.full_name.errors }}</div>
+										<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_basic.full_name.errors.0 }}</div>
 									{% endif %}
-									<small class="form-text"><i class="fas fa-info-circle"></i> Enter your full name as it appears on official documents</small>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label><i class="fas fa-briefcase"></i> {{ form_basic.job_title.label }}</label>
-									{{ form_basic.job_title }}
+									<div class="input-with-tooltip">
+										{{ form_basic.job_title }}
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Your current or desired job title</span>
+										</span>
+									</div>
 									{% if form_basic.job_title.errors %}
-										<div class="text-danger small">{{ form_basic.job_title.errors }}</div>
+										<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_basic.job_title.errors.0 }}</div>
 									{% endif %}
-									<small class="form-text"><i class="fas fa-info-circle"></i> Your current or desired job title</small>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label><i class="fas fa-birthday-cake"></i> {{ form_basic.age.label }}</label>
-									{{ form_basic.age }}
+									<div class="input-with-tooltip">
+										{{ form_basic.age }}
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Must be at least 18 years old</span>
+										</span>
+									</div>
 									{% if form_basic.age.errors %}
-										<div class="text-danger small">{{ form_basic.age.errors }}</div>
+										<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_basic.age.errors.0 }}</div>
 									{% endif %}
-									<small class="form-text"><i class="fas fa-info-circle"></i> Must be at least 18 years old</small>
 								</div>
 							</div>
 							
@@ -211,22 +232,32 @@
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label><i class="fas fa-language"></i> {{ form_basic.languages.label }}</label>
-									{{ form_basic.languages }}
+									<div class="input-with-tooltip">
+										{{ form_basic.languages }}
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Enter languages separated by commas (e.g., English, Spanish)</span>
+										</span>
+									</div>
 									{% if form_basic.languages.errors %}
-										<div class="text-danger small">{{ form_basic.languages.errors }}</div>
+										<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_basic.languages.errors.0 }}</div>
 									{% endif %}
-									<small class="form-text"><i class="fas fa-info-circle"></i> Enter languages separated by commas (e.g., English, Spanish)</small>
 								</div>
 							</div>
 							
 							<div class="col-xl-12 col-lg-12 col-md-12">
 								<div class="form-group">
 									<label><i class="fas fa-align-left"></i> {{ form_basic.about.label }}</label>
-									{{ form_basic.about }}
+									<div class="input-with-tooltip">
+										{{ form_basic.about }}
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Tell us about yourself and your professional background</span>
+										</span>
+									</div>
 									{% if form_basic.about.errors %}
-										<div class="text-danger small">{{ form_basic.about.errors }}</div>
+										<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_basic.about.errors.0 }}</div>
 									{% endif %}
-									<small class="form-text"><i class="fas fa-info-circle"></i> Tell us about yourself and your professional background</small>
 								</div>
 							</div>
 							
@@ -254,18 +285,28 @@
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label><i class="fas fa-envelope"></i> {{ form_contact.email.label }}</label>
-									{{ form_contact.email }}
-									{% if form_contact.email.errors %}<div class="text-danger small">{{ form_contact.email.errors }}</div>{% endif %}
-									<small class="form-text"><i class="fas fa-info-circle"></i> Your primary email address for communication</small>
+									<div class="input-with-tooltip">
+										{{ form_contact.email }}
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Your primary email address for communication</span>
+										</span>
+									</div>
+									{% if form_contact.email.errors %}<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_contact.email.errors.0 }}</div>{% endif %}
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label><i class="fas fa-phone"></i> {{ form_contact.phone.label }}</label>
-									{{ form_contact.phone }}
-									{% if form_contact.phone.errors %}<div class="text-danger small">{{ form_contact.phone.errors }}</div>{% endif %}
-									<small class="form-text"><i class="fas fa-info-circle"></i> Format: 123-456-7890</small>
+									<div class="input-with-tooltip">
+										{{ form_contact.phone }}
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Format: 123-456-7890</span>
+										</span>
+									</div>
+									{% if form_contact.phone.errors %}<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_contact.phone.errors.0 }}</div>{% endif %}
 								</div>
 							</div>
 							
@@ -316,27 +357,42 @@
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label><i class="fas fa-map"></i> {{ form_contact.zip_code.label }}</label>
-									{{ form_contact.zip_code }}
-									{% if form_contact.zip_code.errors %}<div class="text-danger small">{{ form_contact.zip_code.errors }}</div>{% endif %}
-									<small class="form-text"><i class="fas fa-info-circle"></i> Postal/ZIP code (5-6 digits)</small>
+									<div class="input-with-tooltip">
+										{{ form_contact.zip_code }}
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Postal/ZIP code (5-6 digits)</span>
+										</span>
+									</div>
+									{% if form_contact.zip_code.errors %}<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_contact.zip_code.errors.0 }}</div>{% endif %}
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label><i class="fas fa-compass"></i> {{ form_contact.latitude.label }}</label>
-									{{ form_contact.latitude }}
-									{% if form_contact.latitude.errors %}<div class="text-danger small">{{ form_contact.latitude.errors }}</div>{% endif %}
-									<small class="form-text"><i class="fas fa-info-circle"></i> Range: -90 to 90 (Optional)</small>
+									<div class="input-with-tooltip">
+										{{ form_contact.latitude }}
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Range: -90 to 90 (Optional)</span>
+										</span>
+									</div>
+									{% if form_contact.latitude.errors %}<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_contact.latitude.errors.0 }}</div>{% endif %}
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label><i class="fas fa-location-arrow"></i> {{ form_contact.longitude.label }}</label>
-									{{ form_contact.longitude }}
-									{% if form_contact.longitude.errors %}<div class="text-danger small">{{ form_contact.longitude.errors }}</div>{% endif %}
-									<small class="form-text"><i class="fas fa-info-circle"></i> Range: -180 to 180 (Optional)</small>
+									<div class="input-with-tooltip">
+										{{ form_contact.longitude }}
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Range: -180 to 180 (Optional)</span>
+										</span>
+									</div>
+									{% if form_contact.longitude.errors %}<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_contact.longitude.errors.0 }}</div>{% endif %}
 								</div>
 							</div>
 							
@@ -364,45 +420,70 @@
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label><i class="fab fa-facebook-square"></i> {{ form_social.facebook.label }}</label>
-									{{ form_social.facebook }}
-									{% if form_social.facebook.errors %}<div class="text-danger small">{{ form_social.facebook.errors }}</div>{% endif %}
-									<small class="form-text"><i class="fas fa-info-circle"></i> Your Facebook profile URL</small>
+									<div class="input-with-tooltip">
+										{{ form_social.facebook }}
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Your Facebook profile URL</span>
+										</span>
+									</div>
+									{% if form_social.facebook.errors %}<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_social.facebook.errors.0 }}</div>{% endif %}
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label><i class="fab fa-twitter-square"></i> {{ form_social.twitter.label }}</label>
-									{{ form_social.twitter }}
-									{% if form_social.twitter.errors %}<div class="text-danger small">{{ form_social.twitter.errors }}</div>{% endif %}
-									<small class="form-text"><i class="fas fa-info-circle"></i> Your Twitter/X profile URL</small>
+									<div class="input-with-tooltip">
+										{{ form_social.twitter }}
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Your Twitter/X profile URL</span>
+										</span>
+									</div>
+									{% if form_social.twitter.errors %}<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_social.twitter.errors.0 }}</div>{% endif %}
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label><i class="fab fa-instagram-square"></i> {{ form_social.instagram.label }}</label>
-									{{ form_social.instagram }}
-									{% if form_social.instagram.errors %}<div class="text-danger small">{{ form_social.instagram.errors }}</div>{% endif %}
-									<small class="form-text"><i class="fas fa-info-circle"></i> Your Instagram profile URL</small>
+									<div class="input-with-tooltip">
+										{{ form_social.instagram }}
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Your Instagram profile URL</span>
+										</span>
+									</div>
+									{% if form_social.instagram.errors %}<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_social.instagram.errors.0 }}</div>{% endif %}
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label><i class="fab fa-linkedin"></i> {{ form_social.linkedin.label }}</label>
-									{{ form_social.linkedin }}
-									{% if form_social.linkedin.errors %}<div class="text-danger small">{{ form_social.linkedin.errors }}</div>{% endif %}
-									<small class="form-text"><i class="fas fa-info-circle"></i> Your LinkedIn profile URL</small>
+									<div class="input-with-tooltip">
+										{{ form_social.linkedin }}
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Your LinkedIn profile URL</span>
+										</span>
+									</div>
+									{% if form_social.linkedin.errors %}<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_social.linkedin.errors.0 }}</div>{% endif %}
 								</div>
 							</div>
 							
 							<div class="col-xl-12 col-lg-12 col-md-12">
 								<div class="form-group">
 									<label><i class="fab fa-google-plus-square"></i> {{ form_social.google_plus.label }}</label>
-									{{ form_social.google_plus }}
-									{% if form_social.google_plus.errors %}<div class="text-danger small">{{ form_social.google_plus.errors }}</div>{% endif %}
-									<small class="form-text"><i class="fas fa-info-circle"></i> Your Google+ profile URL</small>
+									<div class="input-with-tooltip">
+										{{ form_social.google_plus }}
+										<span class="info-tooltip">
+											<i class="fas fa-info-circle"></i>
+											<span class="tooltip-text">Your Google+ profile URL</span>
+										</span>
+									</div>
+									{% if form_social.google_plus.errors %}<div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ form_social.google_plus.errors.0 }}</div>{% endif %}
 								</div>
 							</div>
 							
@@ -437,4 +518,5 @@
 {% include 'Components/For-Candidate/candidate-dashboard/files.html' %}
 
 {% endblock %}
+
 

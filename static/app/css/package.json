@@ -1,0 +1,25 @@
+{
+  "name": "jobstock-candidate-profile-styles",
+  "version": "1.0.0",
+  "description": "SCSS compilation setup for candidate profile styles with Tailwind CSS",
+  "scripts": {
+    "build:css": "sass static/app/css/candidate-profile.scss:static/app/css/candidate-profile.css",
+    "watch:css": "sass --watch static/app/css/candidate-profile.scss:static/app/css/candidate-profile.css",
+    "build:css:min": "sass static/app/css/candidate-profile.scss:static/app/css/candidate-profile.min.css --style compressed",
+    "build:tailwind": "tailwindcss -i static/app/css/tailwind-input.css -o static/app/css/candidate-profile.css",
+    "watch:tailwind": "tailwindcss -i static/app/css/tailwind-input.css -o static/app/css/candidate-profile.css --watch"
+  },
+  "devDependencies": {
+    "sass": "^1.69.5",
+    "tailwindcss": "^3.3.5"
+  },
+  "keywords": [
+    "scss",
+    "tailwind",
+    "django",
+    "forms",
+    "tooltips"
+  ],
+  "author": "ReetechUSA",
+  "license": "MIT"
+}

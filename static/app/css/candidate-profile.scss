@@ -1,0 +1,222 @@
+// Candidate Profile Tooltips and Form Styling
+// Using Tailwind CSS utilities with custom SCSS
+
+/* Input wrapper with tooltip on right side */
+.input-with-tooltip {
+  @apply flex items-start gap-3 relative;
+
+  input,
+  textarea,
+  select {
+    @apply flex-1;
+    max-width: calc(100% - 40px);
+  }
+}
+
+/* Make inputs slightly smaller */
+.form-group {
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  input[type="url"],
+  textarea,
+  select {
+    @apply text-sm px-4 py-2.5 rounded-md border border-gray-300 
+           transition-all duration-200 ease-in-out
+           focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none;
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+
+  textarea {
+    @apply resize-y min-h-[100px];
+  }
+}
+
+/* Tooltip icon positioning */
+.info-tooltip {
+  @apply relative inline-flex items-center justify-center 
+         flex-shrink-0 mt-2.5 cursor-help;
+
+  i.fa-info-circle {
+    @apply text-blue-500 text-lg transition-colors duration-200
+           hover:text-blue-600;
+    font-size: 18px;
+  }
+}
+
+/* Tooltip text */
+.info-tooltip .tooltip-text {
+  @apply invisible absolute z-[1000] opacity-0 
+         bg-gray-800 text-white text-left rounded-lg
+         px-4 py-3 shadow-xl whitespace-normal pointer-events-none
+         transition-all duration-300 ease-in-out;
+  
+  width: 280px;
+  top: 50%;
+  left: calc(100% + 15px);
+  transform: translateY(-50%);
+  font-size: 13px;
+  line-height: 1.5;
+
+  /* Tooltip arrow */
+  &::before {
+    content: "";
+    @apply absolute border-solid;
+    top: 50%;
+    right: 100%;
+    margin-top: -6px;
+    border-width: 6px;
+    border-color: transparent #1f2937 transparent transparent;
+  }
+}
+
+/* Show tooltip on hover */
+.info-tooltip:hover .tooltip-text {
+  @apply visible opacity-100;
+}
+
+/* Error message styling - positioned below input */
+.error-message {
+  @apply flex items-center gap-2 mt-2 px-3 py-2 
+         rounded border-l-4 border-red-500
+         text-red-700 text-sm font-medium
+         animate-slideDown;
+  
+  background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);
+
+  i {
+    @apply text-red-500;
+    font-size: 14px;
+  }
+}
+
+/* Slide down animation */
+@keyframes slideDown {
+  from {
+    @apply opacity-0;
+    transform: translateY(-10px);
+  }
+  to {
+    @apply opacity-100;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideDown {
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Focus state for inputs with errors */
+.form-group {
+  input.is-invalid,
+  textarea.is-invalid,
+  select.is-invalid {
+    @apply border-red-500;
+
+    &:focus {
+      @apply border-red-500 ring-2 ring-red-200;
+      box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.15);
+    }
+  }
+}
+
+/* Form group with error - full width layout */
+.form-group-with-error {
+  @apply w-full;
+
+  .input-wrapper-full {
+    @apply w-full;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .info-tooltip .tooltip-text {
+    left: auto;
+    right: calc(100% + 15px);
+    transform: translateY(-50%);
+
+    &::before {
+      right: auto;
+      left: 100%;
+      border-color: transparent transparent transparent #1f2937;
+    }
+  }
+
+  .input-with-tooltip {
+    @apply flex-col gap-2;
+
+    input,
+    textarea,
+    select {
+      max-width: 100%;
+    }
+
+    .info-tooltip {
+      @apply mt-0;
+    }
+  }
+}
+
+/* Label styling */
+.form-group label {
+  @apply text-gray-700 font-medium mb-2 inline-flex items-center gap-2;
+  
+  i {
+    @apply text-blue-600;
+  }
+
+  .required {
+    @apply text-red-500;
+  }
+}
+
+/* Select dropdown styling */
+.select-ops {
+  select {
+    @apply appearance-none bg-white;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+  }
+}
+
+/* Button styling */
+.btn-main {
+  @apply inline-flex items-center gap-2 px-6 py-2.5 
+         bg-blue-600 text-white rounded-md font-medium
+         transition-all duration-200 ease-in-out
+         hover:bg-blue-700 hover:shadow-lg
+         focus:outline-none focus:ring-2 focus:ring-blue-300;
+
+  i {
+    @apply text-base;
+  }
+}
+
+/* Card styling improvements */
+.card {
+  @apply bg-white rounded-lg shadow-sm border border-gray-200
+         transition-shadow duration-200
+         hover:shadow-md;
+
+  .card-header {
+    @apply px-6 py-4 border-b border-gray-200 bg-gray-50;
+
+    h4 {
+      @apply text-lg font-semibold text-gray-800 flex items-center gap-2;
+
+      i {
+        @apply text-blue-600;
+      }
+    }
+  }
+
+  .card-body {
+    @apply p-6;
+  }
+}
