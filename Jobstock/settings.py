@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "App",
+    "django_celery_results",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -279,3 +281,39 @@ JAZZMIN_SETTINGS = {
 #     "brand_small_text": False,
 #     "sidebar_nav_child_indent": True,
 # }
+
+
+# ============================================
+# CELERY CONFIGURATION
+# ============================================
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'default'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60  # 30 minutes
+CELERY_RESULT_EXTENDED = True
+
+# Celery Beat Schedule (for periodic tasks)
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+
+# ============================================
+# DOCUMENT PROCESSING CONFIGURATION
+# ============================================
+# Directory for temporary document processing
+DOCUMENT_PROCESSING_DIR = os.path.join(BASE_DIR, 'temp_processing')
+if not os.path.exists(DOCUMENT_PROCESSING_DIR):
+    os.makedirs(DOCUMENT_PROCESSING_DIR)
+
+# SpaCy model to use
+SPACY_MODEL = 'en_core_web_sm'  # You'll need to download this: python -m spacy download en_core_web_sm
+
+# Transformers model for document understanding
+TRANSFORMERS_MODEL = 'microsoft/layoutlm-base-uncased'
+
+# LayoutParser configuration
+LAYOUTPARSER_MODEL = 'lp://PubLayNet/faster_rcnn_R_50_FPN_3x/config'

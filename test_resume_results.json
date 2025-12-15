@@ -1,0 +1,429 @@
+{
+  "text_length": 1805,
+  "contact_info": {
+    "emails": [
+      "john.doe@email.com"
+    ],
+    "phones": [
+      "+1-"
+    ],
+    "linkedin": [
+      "linkedin.com/in/johndoe"
+    ],
+    "github": [
+      "github.com/johndoe"
+    ]
+  },
+  "skills": {
+    "skills": [
+      "Python",
+      "Java",
+      "JavaScript",
+      "React",
+      "Angular",
+      "Vue",
+      "Node.js",
+      "Django",
+      "Flask",
+      "Spring",
+      "HTML",
+      "CSS",
+      "Bootstrap",
+      "Tailwind",
+      "SQL",
+      "MySQL",
+      "PostgreSQL",
+      "MongoDB",
+      "Redis",
+      "AWS",
+      "Azure",
+      "Docker",
+      "Kubernetes",
+      "Jenkins",
+      "Git",
+      "GitHub",
+      "Machine Learning",
+      "AI",
+      "NLP",
+      "TensorFlow",
+      "PyTorch",
+      "Scikit-learn",
+      "Pandas",
+      "NumPy",
+      "Microservices",
+      "Agile",
+      "Scrum"
+    ],
+    "total_skills": 37,
+    "experience_years": [
+      8,
+      5,
+      3
+    ]
+  },
+  "entities": {
+    "total_entities": 62,
+    "entities": [
+      {
+        "text": "Sample",
+        "label": "PERSON"
+      },
+      {
+        "text": "Resume John Doe",
+        "label": "PERSON"
+      },
+      {
+        "text": "New York",
+        "label": "GPE"
+      },
+      {
+        "text": "Python",
+        "label": "GPE"
+      },
+      {
+        "text": "JavaScript",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "TECHNICAL",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Python",
+        "label": "PERSON"
+      },
+      {
+        "text": "JavaScript",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Java",
+        "label": "PERSON"
+      },
+      {
+        "text": "TypeScript",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "SQL",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Angular",
+        "label": "PERSON"
+      },
+      {
+        "text": "HTML",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "CSS",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Bootstrap",
+        "label": "PERSON"
+      },
+      {
+        "text": "Tailwind Backend",
+        "label": "PERSON"
+      },
+      {
+        "text": "Django",
+        "label": "PERSON"
+      },
+      {
+        "text": "Flask",
+        "label": "GPE"
+      },
+      {
+        "text": "Express",
+        "label": "PERSON"
+      },
+      {
+        "text": "Spring Boot",
+        "label": "PERSON"
+      },
+      {
+        "text": "MySQL",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "MongoDB",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Redis Cloud",
+        "label": "PERSON"
+      },
+      {
+        "text": "DevOps",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Docker",
+        "label": "GPE"
+      },
+      {
+        "text": "Kubernetes",
+        "label": "GPE"
+      },
+      {
+        "text": "Jenkins",
+        "label": "PERSON"
+      },
+      {
+        "text": "Git",
+        "label": "PERSON"
+      },
+      {
+        "text": "GitHub Machine",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "TensorFlow",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "PyTorch",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Pandas",
+        "label": "PERSON"
+      },
+      {
+        "text": "NumPy",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "TechCorp Inc.",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "New York",
+        "label": "GPE"
+      },
+      {
+        "text": "NY",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Led",
+        "label": "GPE"
+      },
+      {
+        "text": "Mentored",
+        "label": "GPE"
+      },
+      {
+        "text": "Python",
+        "label": "PERSON"
+      },
+      {
+        "text": "Django",
+        "label": "GPE"
+      },
+      {
+        "text": "React",
+        "label": "PERSON"
+      },
+      {
+        "text": "AWS",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Docker",
+        "label": "GPE"
+      },
+      {
+        "text": "PostgreSQL Software Developer",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Boston",
+        "label": "GPE"
+      },
+      {
+        "text": "MA",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "RESTful",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Agile",
+        "label": "PERSON"
+      },
+      {
+        "text": "JavaScript",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "MongoDB",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Angular",
+        "label": "PERSON"
+      },
+      {
+        "text": "EDUCATION Bachelor",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Science",
+        "label": "GPE"
+      },
+      {
+        "text": "Computer Science Massachusetts Institute",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Technology",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "CERTIFICATIONS",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "AWS",
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Architect",
+        "label": "PERSON"
+      },
+      {
+        "text": "Microsoft Azure Developer Associate",
+        "label": "PERSON"
+      },
+      {
+        "text": "Certified Scrum Master",
+        "label": "PERSON"
+      },
+      {
+        "text": "Python",
+        "label": "PERSON"
+      },
+      {
+        "text": "TensorFlow",
+        "label": "ORGANIZATION"
+      }
+    ],
+    "persons": [
+      "React",
+      "Python",
+      "Certified Scrum Master",
+      "Java",
+      "Architect",
+      "Jenkins",
+      "Bootstrap",
+      "Django",
+      "Redis Cloud",
+      "Microsoft Azure Developer Associate",
+      "Resume John Doe",
+      "Pandas",
+      "Tailwind Backend",
+      "Agile",
+      "Angular",
+      "Express",
+      "Spring Boot",
+      "Git",
+      "Sample"
+    ],
+    "organizations": [
+      "JavaScript",
+      "DevOps",
+      "PostgreSQL Software Developer",
+      "CSS",
+      "AWS",
+      "PyTorch",
+      "MySQL",
+      "HTML",
+      "TECHNICAL",
+      "RESTful",
+      "SQL",
+      "CERTIFICATIONS",
+      "MA",
+      "Computer Science Massachusetts Institute",
+      "NumPy",
+      "TensorFlow",
+      "MongoDB",
+      "TechCorp Inc.",
+      "Technology",
+      "GitHub Machine",
+      "NY",
+      "TypeScript",
+      "EDUCATION Bachelor"
+    ],
+    "locations": [
+      "Django",
+      "Led",
+      "Docker",
+      "Science",
+      "Mentored",
+      "New York",
+      "Python",
+      "Flask",
+      "Kubernetes",
+      "Boston"
+    ]
+  },
+  "statistics": {
+    "character_count": 1805,
+    "word_count": 296,
+    "sentence_count": 4,
+    "avg_words_per_sentence": 74.0,
+    "unique_words": 139,
+    "most_common_words": [
+      {
+        "word": "python",
+        "count": 4
+      },
+      {
+        "word": "developer",
+        "count": 3
+      },
+      {
+        "word": "years",
+        "count": 3
+      },
+      {
+        "word": "javascript",
+        "count": 3
+      },
+      {
+        "word": "technologies",
+        "count": 3
+      },
+      {
+        "word": "aws",
+        "count": 3
+      },
+      {
+        "word": "new",
+        "count": 2
+      },
+      {
+        "word": "york",
+        "count": 2
+      },
+      {
+        "word": "ny",
+        "count": 2
+      },
+      {
+        "word": "professional",
+        "count": 2
+      }
+    ]
+  },
+  "sentiment": {
+    "polarity": 0.13388429752066114,
+    "subjectivity": 0.35991735537190084,
+    "sentiment_label": "positive"
+  }
+}

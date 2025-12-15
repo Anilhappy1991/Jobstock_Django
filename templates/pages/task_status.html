@@ -1,0 +1,177 @@
+{% extends "Base/base.html" %}
+{% load static %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar.html' %}
+
+<!-- Task Status Page -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-main text-white">
+                    <h4 class="mb-0"><i class="fas fa-tasks"></i> Task Status</h4>
+                </div>
+                <div class="card-body p-4">
+                    <div id="task-status-container">
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-main" role="status" style="width: 3rem; height: 3rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-3 text-muted">Checking task status...</p>
+                        </div>
+                    </div>
+                    
+                    <div id="task-details" style="display: none;">
+                        <div class="mb-4">
+                            <h5 class="border-bottom pb-2">Task Information</h5>
+                            <div class="row">
+                                <div class="col-md-4 mb-2">
+                                    <strong>Task ID:</strong>
+                                </div>
+                                <div class="col-md-8 mb-2">
+                                    <code id="task-id">{{ task_id }}</code>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <strong>Status:</strong>
+                                </div>
+                                <div class="col-md-8 mb-2">
+                                    <span id="task-status-badge" class="badge bg-secondary">Unknown</span>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <strong>Message:</strong>
+                                </div>
+                                <div class="col-md-8 mb-2">
+                                    <span id="task-message">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="task-progress" style="display: none;">
+                            <div class="progress mb-3" style="height: 25px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-main" 
+                                     role="progressbar" 
+                                     style="width: 0%"
+                                     id="progress-bar">
+                                    <span id="progress-text">Processing...</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="task-result" style="display: none;">
+                            <h5 class="border-bottom pb-2">Results</h5>
+                            <pre id="result-content" class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;"></pre>
+                        </div>
+                        
+                        <div id="task-error" style="display: none;">
+                            <div class="alert alert-danger">
+                                <h5><i class="fas fa-exclamation-triangle"></i> Error</h5>
+                                <p id="error-content"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <a href="{% url 'App:candidate_profile_detail' request.user.username %}" class="btn btn-main">
+                            <i class="fas fa-arrow-left"></i> Back to Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const taskId = '{{ task_id }}';
+    let checkInterval;
+    
+    function checkTaskStatus() {
+        fetch(`/app/task-status/${taskId}/`)
+            .then(response => response.json())
+            .then(data => {
+                updateUI(data);
+                
+                // Stop checking if task is complete or failed
+                if (data.status === 'SUCCESS' || data.status === 'FAILURE') {
+                    clearInterval(checkInterval);
+                }
+            })
+            .catch(error => {
+                console.error('Error checking task status:', error);
+                showError('Failed to check task status');
+            });
+    }
+    
+    function updateUI(data) {
+        // Hide loading, show details
+        document.getElementById('task-status-container').style.display = 'none';
+        document.getElementById('task-details').style.display = 'block';
+        
+        // Update status badge
+        const statusBadge = document.getElementById('task-status-badge');
+        const statusMessage = document.getElementById('task-message');
+        
+        statusBadge.textContent = data.status;
+        statusMessage.textContent = data.message || '-';
+        
+        // Update badge color based on status
+        statusBadge.className = 'badge';
+        if (data.status === 'SUCCESS') {
+            statusBadge.classList.add('bg-success');
+            showResults(data.result);
+        } else if (data.status === 'FAILURE') {
+            statusBadge.classList.add('bg-danger');
+            showError(data.error);
+        } else if (data.status === 'PROCESSING') {
+            statusBadge.classList.add('bg-info');
+            showProgress(data.current);
+        } else if (data.status === 'PENDING') {
+            statusBadge.classList.add('bg-warning');
+        } else {
+            statusBadge.classList.add('bg-secondary');
+        }
+    }
+    
+    function showProgress(currentStatus) {
+        const progressDiv = document.getElementById('task-progress');
+        const progressText = document.getElementById('progress-text');
+        
+        progressDiv.style.display = 'block';
+        progressText.textContent = currentStatus || 'Processing...';
+    }
+    
+    function showResults(result) {
+        const resultDiv = document.getElementById('task-result');
+        const resultContent = document.getElementById('result-content');
+        
+        document.getElementById('task-progress').style.display = 'none';
+        resultDiv.style.display = 'block';
+        resultContent.textContent = JSON.stringify(result, null, 2);
+    }
+    
+    function showError(error) {
+        const errorDiv = document.getElementById('task-error');
+        const errorContent = document.getElementById('error-content');
+        
+        document.getElementById('task-progress').style.display = 'none';
+        errorDiv.style.display = 'block';
+        errorContent.textContent = error;
+    }
+    
+    // Start checking status
+    checkTaskStatus();
+    checkInterval = setInterval(checkTaskStatus, 2000); // Check every 2 seconds
+    
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', function() {
+        if (checkInterval) {
+            clearInterval(checkInterval);
+        }
+    });
+});
+</script>
+
+{% endblock %}

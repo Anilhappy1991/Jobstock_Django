@@ -1,0 +1,47 @@
+Sample Resume
+
+John Doe
+john.doe@email.com | +1-555-123-4567 | linkedin.com/in/johndoe | github.com/johndoe
+New York, NY 10001
+
+PROFESSIONAL SUMMARY
+Senior Full Stack Developer with 8+ years of experience building scalable web applications. 
+Expertise in Python, JavaScript, and cloud technologies. Passionate about creating efficient 
+and user-friendly solutions.
+
+TECHNICAL SKILLS
+Programming Languages: Python, JavaScript, Java, TypeScript, SQL
+Frontend: React, Angular, Vue.js, HTML, CSS, Bootstrap, Tailwind
+Backend: Django, Flask, Node.js, Express, Spring Boot
+Databases: PostgreSQL, MySQL, MongoDB, Redis
+Cloud & DevOps: AWS, Docker, Kubernetes, Jenkins, Git, GitHub
+Machine Learning: TensorFlow, PyTorch, Scikit-learn, Pandas, NumPy
+
+PROFESSIONAL EXPERIENCE
+
+Senior Software Engineer | TechCorp Inc. | New York, NY
+January 2020 - Present (5 years)
+- Led development of microservices architecture serving 2M+ users
+- Implemented CI/CD pipeline reducing deployment time by 60%
+- Mentored team of 5 junior developers
+- Technologies: Python, Django, React, AWS, Docker, PostgreSQL
+
+Software Developer | WebSolutions LLC | Boston, MA
+June 2017 - December 2019 (3 years)
+- Developed RESTful APIs and responsive web applications
+- Optimized database queries improving performance by 40%
+- Collaborated with cross-functional teams using Agile methodology
+- Technologies: JavaScript, Node.js, MongoDB, Angular
+
+EDUCATION
+Bachelor of Science in Computer Science
+Massachusetts Institute of Technology | 2013 - 2017
+
+CERTIFICATIONS
+- AWS Certified Solutions Architect
+- Microsoft Azure Developer Associate
+- Certified Scrum Master
+
+PROJECTS
+E-Commerce Platform: Built full-stack e-commerce solution with payment integration
+AI Chatbot: Developed NLP-based customer service chatbot using Python and TensorFlow

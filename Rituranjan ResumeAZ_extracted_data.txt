@@ -1,0 +1,198 @@
+================================================================================
+RESUME EXTRACTION RESULTS
+File: Rituranjan ResumeAZ.pdf
+Extracted: 2025-12-16 00:05:28
+================================================================================
+
+CONTACT INFORMATION
+--------------------------------------------------------------------------------
+Emails: None found
+Phones: None found
+LinkedIn: None found
+GitHub: None found
+
+TECHNICAL SKILLS
+--------------------------------------------------------------------------------
+Total: 19
+Skills: Python, C#, React, Angular, Django, Flask, CSS, jQuery, SQL, MySQL, Oracle, Azure, Git, Machine Learning, AI, NLP, Computer Vision, TensorFlow, REST API
+Experience Years: 14, 5, 3
+
+NAMED ENTITIES
+--------------------------------------------------------------------------------
+Total: 153
+Persons: Rituranjan, Angular Material Project, Solution Developer L2 Sapient Gurgaon, Technology MS-Azure, Himachal Specialism, Quality Process, Anjular, Technology Angular, Team Size, Months, Cloud Computing, Failover Cluster, Hanu Insight, Microsoft, Azure, Team Lead, Marathi, Gupta Python, Data Analysis Engineer, Hindi, Web API, Microsoft Azure Data Engineering Associate Work, Microsoft Azure Fundamentals Developing Solutions, Bharti University Solan, App, Angular JS, Table, Power Bi, Self Finance School, App Store Link, Outlook, Load, Microsoft Azure, Principal Consultant Audax Labs, Power Shell, Cloud Government, Written Power, Han, Luz Capital, Client, Python, Angular Data Tables, Team, Sikkim Manipal University Machine Learning, Reacts, Dynapt Solution Technology, Client Media Valet, Load Balance, App Store Link Client Portal, Window Azure
+Organizations: OpenCV, Central University Of Kashmir, MVC5, SQL, EDA, XML, SRS, JQuery App Store Link, SCVMM, NLP, ReactJS, NIC, Failover Cluster, Configuration Private, ML, Maintenance Provide L3, SharePoint Add, CNN, SQLite, Cloud Services, jQuery, MUV, MySQL, UAT Server, SAMPARK, Media Valet Plugin, Maharashtra, CSS, TensorFlow, LINQ, MVC, PowerShell, ICT, Microsoft Azure, IIS, VM, API, Senior Software Engineer Havells India Ltd, ERP, Development, National Information Center, SCOM, AZURE, XSLT, SUV
+Locations: Power, Indian, India, Sedan, Hatchback, English, Azure, Information, Django, Team
+
+TEXT STATISTICS
+--------------------------------------------------------------------------------
+Characters: 7,497
+Words: 1,313
+Sentences: 27
+Unique Words: 393
+Most Common Words:
+  - azure: 19 times
+  - technology: 14 times
+  - web: 13 times
+  - https: 12 times
+  - python: 11 times
+  - app: 10 times
+  - cloud: 9 times
+  - api: 9 times
+  - c: 8 times
+  - development: 8 times
+
+SENTIMENT ANALYSIS
+--------------------------------------------------------------------------------
+Sentiment: POSITIVE
+Polarity: 0.156 (range: -1 to 1)
+Subjectivity: 0.381 (range: 0 to 1)
+
+FULL TEXT CONTENT
+================================================================================
+Rituranjan Gupta
+Python & Data Analysis Engineer
+A Cloud, Python, PL/SQL, C#, engineer passionate about cutting-edge technology
+and solving real-world problems, with 14+ years of experience in predictive
+modelling, object detection, and computer vision.
+Expertise in the development & implementation of ML models in real-time projects.
+Microsoft Azure certified Microsoft Azure Fundamentals Developing Solutions for
+Microsoft Azure (AZ-204) Microsoft Azure Data Engineering Associate
+Work experience
+Principal Consultant
+Audax Labs / Since July 2020
+• Designed and developed Microsoft live Traffic/Accident predictive object
+detection and tracking system based on yolov4 & TensorFlow architecture.
+technology was used Azure, python , Django, SQL-Server, Power bi, Reacts
+• Designed and developed Luz Capital fund and asset management system
+technology was used, python , Django, C#, SQL-Server, Power bi, Reacts
+• Designed and developed a form & bill recognition system on Azure cognitive
+services the technology used AZURE, Python, NLP, and ReactJS.
+• Managing the team of more than 10 people involved in the technical
+recruitment process.
+Solution Developer L2
+Sapient Gurgaon Oct 2019 - Jul 2020
+• Design & develop automatic dispatch, & inspection portal using face
+recognition technology was used AZURE, web-logic, serverless function
+Python, SQL server, Power Bi, Team size -30
+• Inspection mobile app ( Python, React-Native ,SQLite, rest api)
+Senior Software Engineer
+Havells India Ltd Jan 2019 - Sep 2019
+• Design & develop real time vehicle & goods management system technology
+was used firebase, react-native flask google map, AZURE, web-logic, serverless
+function.
+• Design & develop SAMPARK loyalty program(earn reward Points) technology
+was used python flask ,MySQL, Anjular. Team Lead
+NYSA Communication Pvt. Ltd.
+• Self Finance School (Maharashtra Government)Multilanguage language input
+& display(Hindi,English,Marathi) Application for new school or up gradation
+for existing seven layer of school approval process block level to ministry if
+any one reject than recycle process for reapprove and maintain the reason,
+technology used for Python,XML,XSLT,C#,MVC
+• Central University Of Kashmir (ERP) Automate admissions. Eliminate manual processes and
+save significant staff time by enabling prospective students to apply online through a
+selfservice portal Provide one-stop student access. Allow students to enrol, register, and pay
+for courses through the portal Python,XML,XSLT,C#.net core
+Web portal# Media Valet Plugin Development
+Client Media Valet (https://www.mediavalet.com/)
+Technology MS-Azure,MVC5,Web API ,Angular-JS, JQuery
+App Store Link https://papps.mediavalet.com/
+Office Store- https://store.office.com/search.aspx?qu=mediavalet
+https://play.google.com/store/apps/details?id=com.
+mediavalet.mobileapp&hl=en
+Abstract: World to 20 digital asset management in Azure Cloud Plugin development
+1) Office Add In,https://store.office.com/search.aspx?qu=mediavalet
+2) SharePoint Add In,
+3) Marketing Automation Oracle Eloqua
+4) Outlook Integration
+5) WordPressess
+6) Drupal
+7) Work-front
+My Role 1)Team Management 2)
+Design & Development
+Web App# Media Valet Plugin Development
+Client Media Valet (https://www.mediavalet.com/)
+Technology MS-Azure,MVC5,Web API ,Angular-JS, JQuery
+App Store Link https://papps.mediavalet.com/
+Office Store- https://store.office.com/search.aspx?qu=mediavalet
+https://play.google.com/store/apps/details?id=com.mediavalet.mobile
+app&hl=en
+Abstract: World to 20 digital asset management in Azure Cloud Plugin development
+1) Office Add In,https://store.office.com/search.aspx?qu=mediavalet
+2) SharePoint Add In,
+3) Marketing Automation Oracle Eloqua
+4) Outlook Integration
+5) WordPressess
+6) Drupal
+7) Work-front
+My Role 1)Team Management 2)
+Design & Development
+Web Han insight
+App#
+Team Size 8 Duration: 1.5 Years
+Client HANU/Dynapt Solution
+Technology MVC4 ,Web API, Angular JS, IIS 8,Microsoft Azure ,Power Shell ,C#,
+Power Bi, Cloud Services, Web job
+App Store Link https://hanu.com/insight/
+Abstract: Maximize your Azure investment with total end-to-end visibility of your
+Azure spend. Hanu Insight for Microsoft Azure delivers the cloud
+governance and financial management you need in a familiar interface
+consistent with Azure itself. Enjoy self-service simplicity and seamless
+integration into your existing environment with Hanu-Insight. OS, using
+portal)
+My Role 1)Written Power shell program for automatic VM creation,
+2)Window Azure customization(using c#, web API, jQuery, CSS)
+3)Website/Database as a services
+4)Database design(include multiple server Query, Table, view, stored
+procedure, triggers)
+Web MeghRaj ( Private/public) Cloud Government of India
+App#
+Team Size 12 Duration: 9 Months
+Client/Company Indian Government(National Information Center( NIC) )/ Dynapt Solution
+Technology C#, Web API, Configuration Private Cloud using PowerShell, Hyper-V
+,SCVMM, SCOM, Window Azure customization
+Load balancing ,Failover Cluster, Hyper-V, SCVMM, SCOM for reporting
+generation
+App Store Link Client Portal
+https://cloud.gov.in/
+Abstract: In order to utilize and harness the benefits of Cloud Computing, Governmen
+of India has embarked upon an ambitious initiative - "GI Cloud" which has
+been named as 'MeghRaj'. The focus of this initiative is to accelerate
+delivery
+of e-services in the country while optimizing ICT spending of the
+Government.
+My Role 1) Window Azure customization(using C#, web API, jQuery, CSS)
+2) Design infrastructure (Failover Cluster, Hyper-V, SCVMM)
+3) Written Power shell program for VM creation ,Load Balance,
+connect with Hyper-V,SCOM,SCVMM
+Web App# Central University Of Kashmir (ERP)
+Technology Angular 7.0.0,,Python, Web API, LINQ, , Angular Data Tables, Angular Material
+Project • Automate admissions. Eliminate manual processes and save significant staff time by enabling prospective students to
+Descriptions: apply online through a self-service portal
+• Provide one-stop student access. Allow students to enroll, register, and pay for courses through the portal
+• Simplify records management. With a single system for all data needs—and a single digital record for each student
+—any department on campus can find the student information they need
+• Engage faculty. Give faculty the means to enter and update grades, and have personalized access to timely, accurate,
+and institution-wide information
+• Manage resources. Manage personnel, funds and processes more transparently
+• Strengthen decision-making. Track the metrics you need to guide day-to-day operations, meet reporting
+requirements, and engage the organization.
+My Role 1) Design and development
+2) Testing & Maintenance Provide L3 level support for Application
+3) SRS documentation
+4) Followed Quality Process as per company norm
+5) Deployed Application on Production and UAT Server
+Education
+M-Tech
+Manav Bharti University Solan, Himachal
+Specialism in Information Technology
+MSc computer science (3 years)
+Sikkim Manipal University
+Machine Learning Projects
+Car identification based on body type-
+Build an extremely accurate transfer learning based CNN model for detection and
+identification of car based on body type like (Sedan,SUV,MUV, Hatchback) using
+TensorFlow object detection API, OpenCV. and python.
+Used car price prediction-
+Conducted full EDA and regression analysis of relationship between car price and features affecting the price.
+Build an advance predictive regression model that is both extremely accurate and lean.
