@@ -1,0 +1,688 @@
+<!-- Beautiful Form Validation & UI Styles -->
+<style>
+    /* ========== BEAUTIFUL FORM STYLING ========== */
+    
+    /* Card Enhancements */
+    .profile-card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .profile-card:hover {
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
+    }
+    
+    .profile-card .card-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px 30px;
+        border: none;
+    }
+    
+    .profile-card .card-header h4 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .profile-card .card-header h4 i {
+        margin-right: 12px;
+        font-size: 1.3rem;
+    }
+    
+    .profile-card .card-body {
+        padding: 30px;
+        background: #ffffff;
+    }
+    
+    /* Form Group Styling */
+    .form-group {
+        margin-bottom: 25px;
+        position: relative;
+    }
+    
+    .form-group label {
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        font-size: 0.95rem;
+    }
+    
+    .form-group label i {
+        margin-right: 8px;
+        color: #667eea;
+        font-size: 1.1rem;
+    }
+    
+    .form-group label .required {
+        color: #e53e3e;
+        margin-left: 4px;
+    }
+    
+    /* Input Field Styling */
+    .form-control {
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 12px 16px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background-color: #f7fafc;
+    }
+    
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        background-color: #ffffff;
+        outline: none;
+    }
+    
+    .form-control:hover {
+        border-color: #cbd5e0;
+    }
+    
+    /* Select Styling */
+    .select-ops select,
+    .form-control[type="date"] {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 40px;
+    }
+    
+    /* Textarea Styling */
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+    
+    /* ========== VALIDATION STYLES ========== */
+    
+    /* Input States */
+    .form-control.is-valid {
+        border-color: #48bb78;
+        background-color: #f0fff4;
+        padding-right: 45px;
+    }
+    
+    .form-control.is-invalid {
+        border-color: #f56565;
+        background-color: #fff5f5;
+        padding-right: 45px;
+    }
+    
+    .form-control.is-valid:focus {
+        border-color: #48bb78;
+        box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.1);
+    }
+    
+    .form-control.is-invalid:focus {
+        border-color: #f56565;
+        box-shadow: 0 0 0 3px rgba(245, 101, 101, 0.1);
+    }
+    
+    /* Validation Icons */
+    .form-group.has-validation {
+        position: relative;
+    }
+    
+    .validation-icon {
+        position: absolute;
+        right: 16px;
+        top: 42px;
+        font-size: 1.2rem;
+        opacity: 0;
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+    
+    .form-control.is-valid ~ .validation-icon.valid-icon {
+        opacity: 1;
+        color: #48bb78;
+    }
+    
+    .form-control.is-invalid ~ .validation-icon.invalid-icon {
+        opacity: 1;
+        color: #f56565;
+    }
+    
+    /* Validation Messages */
+    .validation-feedback {
+        font-size: 0.875rem;
+        margin-top: 6px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        animation: slideDown 0.3s ease;
+    }
+    
+    .validation-feedback i {
+        margin-right: 8px;
+        font-size: 1rem;
+    }
+    
+    .valid-feedback {
+        color: #2f855a;
+        background-color: #f0fff4;
+        border-left: 3px solid #48bb78;
+    }
+    
+    .invalid-feedback {
+        color: #c53030;
+        background-color: #fff5f5;
+        border-left: 3px solid #f56565;
+    }
+    
+    .text-danger.small {
+        display: flex;
+        align-items: center;
+        color: #c53030;
+        background-color: #fff5f5;
+        padding: 8px 12px;
+        border-radius: 8px;
+        margin-top: 6px;
+        font-size: 0.875rem;
+        border-left: 3px solid #f56565;
+    }
+    
+    .text-danger.small::before {
+        content: "⚠";
+        margin-right: 8px;
+        font-size: 1rem;
+    }
+    
+    /* Helper Text */
+    .form-text {
+        font-size: 0.85rem;
+        color: #718096;
+        margin-top: 6px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .form-text i {
+        margin-right: 6px;
+        color: #667eea;
+    }
+    
+    /* ========== BUTTON STYLING ========== */
+    
+    .btn-main {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        padding: 14px 32px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1rem;
+        color: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .btn-main:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+    
+    .btn-main:active {
+        transform: translateY(0);
+    }
+    
+    .btn-main i {
+        margin-right: 8px;
+    }
+    
+    .btn-main.loading {
+        pointer-events: none;
+        opacity: 0.7;
+    }
+    
+    .btn-main.loading::after {
+        content: "";
+        width: 16px;
+        height: 16px;
+        margin-left: 10px;
+        border: 2px solid #ffffff;
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+    }
+    
+    /* ========== ANIMATIONS ========== */
+    
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+    }
+    
+    .shake-animation {
+        animation: shake 0.5s ease;
+    }
+    
+    /* Input Focus Animation */
+    .form-control {
+        position: relative;
+    }
+    
+    .form-group::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transition: width 0.3s ease;
+    }
+    
+    .form-group:focus-within::after {
+        width: 100%;
+    }
+    
+    /* ========== PROGRESS INDICATOR ========== */
+    
+    .profile-progress {
+        background: #f7fafc;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .progress-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+    
+    .progress-header h5 {
+        margin: 0;
+        color: #2d3748;
+        font-weight: 600;
+    }
+    
+    .progress-percentage {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #667eea;
+    }
+    
+    .progress {
+        height: 12px;
+        border-radius: 10px;
+        background: #e2e8f0;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transition: width 0.5s ease;
+        height: 100%;
+        border-radius: 10px;
+    }
+    
+    /* ========== RESPONSIVE ========== */
+    
+    @media (max-width: 768px) {
+        .profile-card .card-body {
+            padding: 20px;
+        }
+        
+        .form-control {
+            font-size: 16px; /* Prevent zoom on iOS */
+        }
+        
+        .btn-main {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+    
+    /* ========== TOOLTIP STYLES ========== */
+    
+    .tooltip-icon {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        background: #667eea;
+        color: white;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 18px;
+        font-size: 12px;
+        font-weight: bold;
+        margin-left: 6px;
+        cursor: help;
+        position: relative;
+    }
+    
+    .tooltip-icon:hover::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #2d3748;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        white-space: nowrap;
+        font-size: 0.85rem;
+        font-weight: normal;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .tooltip-icon:hover::before {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 6px solid transparent;
+        border-top-color: #2d3748;
+    }
+</style>
+
+<!-- Inline Validation JavaScript -->
+<script>
+    // ========== FORM VALIDATION UTILITIES ==========
+    
+    const FormValidator = {
+        // Validation rules
+        rules: {
+            required: (value) => value.trim() !== '',
+            email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+            phone: (value) => /^[\d\s\-\+\(\)]+$/.test(value) && value.replace(/\D/g, '').length >= 10,
+            url: (value) => !value || /^https?:\/\/.+/.test(value),
+            minLength: (value, min) => value.length >= min,
+            maxLength: (value, max) => value.length <= max,
+            number: (value) => !isNaN(value) && value !== '',
+            age: (value) => !isNaN(value) && value >= 18 && value <= 100,
+            zipCode: (value) => /^\d{5,6}$/.test(value.replace(/\s/g, '')),
+            latitude: (value) => !value || (!isNaN(value) && value >= -90 && value <= 90),
+            longitude: (value) => !value || (!isNaN(value) && value >= -180 && value <= 180),
+        },
+        
+        // Validation messages
+        messages: {
+            required: 'This field is required',
+            email: 'Please enter a valid email address',
+            phone: 'Please enter a valid phone number',
+            url: 'Please enter a valid URL (starting with http:// or https://)',
+            minLength: 'Must be at least {min} characters',
+            maxLength: 'Must not exceed {max} characters',
+            number: 'Please enter a valid number',
+            age: 'Age must be between 18 and 100',
+            zipCode: 'Please enter a valid zip code',
+            latitude: 'Latitude must be between -90 and 90',
+            longitude: 'Longitude must be between -180 and 180',
+        },
+        
+        // Validate single field
+        validateField(field, rules) {
+            const value = field.value;
+            const formGroup = field.closest('.form-group');
+            
+            for (const [ruleName, ruleValue] of Object.entries(rules)) {
+                const isValid = typeof this.rules[ruleName] === 'function' 
+                    ? this.rules[ruleName](value, ruleValue)
+                    : this.rules[ruleName](value);
+                
+                if (!isValid) {
+                    this.showError(field, formGroup, ruleName, ruleValue);
+                    return false;
+                }
+            }
+            
+            this.showSuccess(field, formGroup);
+            return true;
+        },
+        
+        // Show error state
+        showError(field, formGroup, ruleName, ruleValue) {
+            field.classList.remove('is-valid');
+            field.classList.add('is-invalid');
+            
+            // Remove existing feedback
+            const existingFeedback = formGroup.querySelector('.validation-feedback');
+            if (existingFeedback) existingFeedback.remove();
+            
+            // Add error message
+            const message = this.messages[ruleName].replace('{min}', ruleValue).replace('{max}', ruleValue);
+            const feedback = document.createElement('div');
+            feedback.className = 'validation-feedback invalid-feedback';
+            feedback.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            field.parentNode.appendChild(feedback);
+            
+            // Shake animation
+            formGroup.classList.add('shake-animation');
+            setTimeout(() => formGroup.classList.remove('shake-animation'), 500);
+        },
+        
+        // Show success state
+        showSuccess(field, formGroup) {
+            field.classList.remove('is-invalid');
+            field.classList.add('is-valid');
+            
+            // Remove existing feedback
+            const existingFeedback = formGroup.querySelector('.validation-feedback');
+            if (existingFeedback) existingFeedback.remove();
+            
+            // Add success message (optional)
+            if (field.value.trim() !== '') {
+                const feedback = document.createElement('div');
+                feedback.className = 'validation-feedback valid-feedback';
+                feedback.innerHTML = `<i class="fas fa-check-circle"></i> Looks good!`;
+                field.parentNode.appendChild(feedback);
+            }
+        },
+        
+        // Clear validation state
+        clearValidation(field) {
+            const formGroup = field.closest('.form-group');
+            field.classList.remove('is-valid', 'is-invalid');
+            const feedback = formGroup.querySelector('.validation-feedback');
+            if (feedback) feedback.remove();
+        }
+    };
+    
+    // ========== FORM SETUP ==========
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        // Field validation configurations
+        const validationConfig = {
+            'id_full_name': { required: true, minLength: 2, maxLength: 255 },
+            'id_job_title': { minLength: 2, maxLength: 255 },
+            'id_age': { age: true },
+            'id_email': { email: true },
+            'id_phone': { phone: true },
+            'id_temp_address': { maxLength: 500 },
+            'id_address': { maxLength: 500 },
+            'id_address2': { maxLength: 500 },
+            'id_zip_code': { zipCode: true },
+            'id_latitude': { latitude: true },
+            'id_longitude': { longitude: true },
+            'id_facebook': { url: true },
+            'id_twitter': { url: true },
+            'id_instagram': { url: true },
+            'id_linkedin': { url: true },
+            'id_google_plus': { url: true },
+        };
+        
+        // Add validation icons to fields
+        Object.keys(validationConfig).forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                const formGroup = field.closest('.form-group');
+                formGroup.classList.add('has-validation');
+                
+                // Add validation icons
+                const validIcon = document.createElement('span');
+                validIcon.className = 'validation-icon valid-icon';
+                validIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                formGroup.appendChild(validIcon);
+                
+                const invalidIcon = document.createElement('span');
+                invalidIcon.className = 'validation-icon invalid-icon';
+                invalidIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                formGroup.appendChild(invalidIcon);
+            }
+        });
+        
+        // Real-time validation on input
+        Object.entries(validationConfig).forEach(([fieldId, rules]) => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                // Validate on blur
+                field.addEventListener('blur', function() {
+                    if (this.value.trim() !== '' || rules.required) {
+                        FormValidator.validateField(this, rules);
+                    }
+                });
+                
+                // Clear validation on focus
+                field.addEventListener('focus', function() {
+                    FormValidator.clearValidation(this);
+                });
+                
+                // Validate on input (debounced)
+                let timeout;
+                field.addEventListener('input', function() {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        if (this.value.trim() !== '') {
+                            FormValidator.validateField(this, rules);
+                        }
+                    }, 500);
+                });
+            }
+        });
+        
+        // Form submission validation
+        document.querySelectorAll('form[method="POST"]').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+                const formType = this.querySelector('[name="form_type"]')?.value;
+                
+                // Get relevant fields for this form
+                const fields = this.querySelectorAll('.form-control');
+                fields.forEach(field => {
+                    const fieldId = field.id;
+                    if (validationConfig[fieldId]) {
+                        if (!FormValidator.validateField(field, validationConfig[fieldId])) {
+                            isValid = false;
+                        }
+                    }
+                });
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    Snackbar.error('Please correct the errors before submitting');
+                    
+                    // Scroll to first error
+                    const firstError = this.querySelector('.is-invalid');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstError.focus();
+                    }
+                } else {
+                    // Add loading state to button
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.classList.add('loading');
+                        submitBtn.disabled = true;
+                    }
+                }
+            });
+        });
+        
+        // Character counter for textareas
+        document.querySelectorAll('textarea.form-control').forEach(textarea => {
+            const maxLength = textarea.getAttribute('maxlength') || 1000;
+            const formGroup = textarea.closest('.form-group');
+            
+            const counter = document.createElement('div');
+            counter.className = 'form-text';
+            counter.innerHTML = `<i class="fas fa-info-circle"></i> <span class="char-count">0</span> / ${maxLength} characters`;
+            formGroup.appendChild(counter);
+            
+            textarea.addEventListener('input', function() {
+                const count = this.value.length;
+                counter.querySelector('.char-count').textContent = count;
+                
+                if (count > maxLength * 0.9) {
+                    counter.style.color = '#f56565';
+                } else {
+                    counter.style.color = '#718096';
+                }
+            });
+        });
+        
+        // Enhance select dropdowns
+        document.querySelectorAll('select.form-control').forEach(select => {
+            select.addEventListener('change', function() {
+                if (this.value) {
+                    this.classList.add('is-valid');
+                    this.classList.remove('is-invalid');
+                }
+            });
+        });
+        
+        // Phone number formatting
+        const phoneField = document.getElementById('id_phone');
+        if (phoneField) {
+            phoneField.addEventListener('input', function(e) {
+                let value = this.value.replace(/\D/g, '');
+                if (value.length > 10) value = value.slice(0, 10);
+                
+                if (value.length > 6) {
+                    this.value = value.slice(0, 3) + '-' + value.slice(3, 6) + '-' + value.slice(6);
+                } else if (value.length > 3) {
+                    this.value = value.slice(0, 3) + '-' + value.slice(3);
+                } else {
+                    this.value = value;
+                }
+            });
+        }
+        
+        // URL validation helper
+        document.querySelectorAll('input[type="url"]').forEach(urlField => {
+            urlField.addEventListener('blur', function() {
+                if (this.value && !this.value.startsWith('http://') && !this.value.startsWith('https://')) {
+                    this.value = 'https://' + this.value;
+                }
+            });
+        });
+    });
+</script>

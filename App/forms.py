@@ -1,7 +1,10 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import (
+    Profile, CandidateSkill, CandidateEducation, 
+    CandidateExperience, CandidateCertification, DropdownMaster
+)
 
 WORK_STATUS_CHOICES = (
     ('findjob', "I'm looking for a job"),
@@ -110,3 +113,205 @@ class SignUpForm(UserCreationForm):
 class RoleAssignForm(forms.Form):
     username = forms.CharField(widget=forms.HiddenInput)
     role = forms.ChoiceField(choices=Profile.ROLE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+
+
+# ============== GENERIC BASE FORM ==============
+class BaseModelForm(forms.ModelForm):
+    """Generic base form with common functionality"""
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Add form-control class to all fields
+        for field_name, field in self.fields.items():
+            if isinstance(field.widget, (forms.TextInput, forms.EmailInput, 
+                                        forms.NumberInput, forms.Textarea, 
+                                        forms.Select, forms.URLInput, forms.DateInput)):
+                field.widget.attrs['class'] = field.widget.attrs.get('class', '') + ' form-control'
+            
+            # Add placeholders from field labels
+            if not field.widget.attrs.get('placeholder') and field.label:
+                field.widget.attrs['placeholder'] = f"Enter {field.label}"
+    
+    def save(self, commit=True):
+        """Generic save with error handling"""
+        try:
+            instance = super().save(commit=commit)
+            return instance
+        except Exception as e:
+            raise forms.ValidationError(f"Error saving data: {str(e)}")
+
+
+# ============== CANDIDATE PROFILE FORMS ==============
+class CandidateProfileBasicForm(BaseModelForm):
+    """Form for basic profile information"""
+    
+    class Meta:
+        model = Profile
+        fields = [
+            'full_name', 'job_title', 'age', 'education', 'experience',
+            'languages', 'about'
+        ]
+        widgets = {
+            'about': forms.Textarea(attrs={'rows': 4, 'class': 'form-control ht-80'}),
+            'education': forms.Select(attrs={'class': 'form-control'}),
+            'experience': forms.Select(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            'full_name': 'Your Name',
+            'job_title': 'Job Title',
+            'age': 'Age',
+            'education': 'Education',
+            'experience': 'Experience',
+            'languages': 'Languages',
+            'about': 'About Info',
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set queryset for dropdown fields
+        self.fields['education'].queryset = DropdownMaster.objects.filter(
+            group__text='Education', is_active=True
+        )
+        self.fields['education'].empty_label = "Select Education"
+        
+        self.fields['experience'].queryset = DropdownMaster.objects.filter(
+            group__text='Experience', is_active=True
+        )
+        self.fields['experience'].empty_label = "Select Experience"
+
+
+class CandidateProfileContactForm(BaseModelForm):
+    """Form for contact details"""
+    
+    class Meta:
+        model = Profile
+        fields = [
+            'email', 'phone', 'temp_address', 'address', 'address2',
+            'country', 'city', 'zip_code', 'latitude', 'longitude'
+        ]
+        widgets = {
+            'country': forms.Select(attrs={'class': 'form-control'}),
+            'city': forms.Select(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            'email': 'Your Email',
+            'phone': 'Phone No.',
+            'temp_address': 'Temporary Address',
+            'address': 'Address',
+            'address2': 'Address 2',
+            'country': 'Country',
+            'city': 'State/City',
+            'zip_code': 'Zip Code',
+            'latitude': 'Latitude',
+            'longitude': 'Longitude',
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set queryset for dropdown fields
+        self.fields['country'].queryset = DropdownMaster.objects.filter(
+            group__text='Country', is_active=True
+        )
+        self.fields['country'].empty_label = "Select Country"
+        
+        self.fields['city'].queryset = DropdownMaster.objects.filter(
+            group__text='State/City', is_active=True
+        )
+        self.fields['city'].empty_label = "Select State/City"
+
+
+class CandidateProfileSocialForm(BaseModelForm):
+    """Form for social links"""
+    
+    class Meta:
+        model = Profile
+        fields = ['facebook', 'twitter', 'instagram', 'linkedin', 'google_plus']
+        labels = {
+            'facebook': 'Facebook',
+            'twitter': 'Twitter',
+            'instagram': 'Instagram',
+            'linkedin': 'Linked In',
+            'google_plus': 'Google Plus',
+        }
+
+
+class CandidateSkillForm(BaseModelForm):
+    """Form for adding skills"""
+    
+    class Meta:
+        model = CandidateSkill
+        fields = ['skill_name', 'proficiency']
+        widgets = {
+            'proficiency': forms.Select(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            'skill_name': 'Skill Name',
+            'proficiency': 'Proficiency Level',
+        }
+
+
+class CandidateEducationForm(BaseModelForm):
+    """Form for education history"""
+    
+    class Meta:
+        model = CandidateEducation
+        fields = ['degree', 'institution', 'field_of_study', 'start_date', 'end_date', 'is_current', 'description']
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'end_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'is_current': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'description': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+        }
+        labels = {
+            'degree': 'Degree',
+            'institution': 'Institution/University',
+            'field_of_study': 'Field of Study',
+            'start_date': 'Start Date',
+            'end_date': 'End Date',
+            'is_current': 'Currently Studying',
+            'description': 'Description',
+        }
+
+
+class CandidateExperienceForm(BaseModelForm):
+    """Form for work experience"""
+    
+    class Meta:
+        model = CandidateExperience
+        fields = ['job_title', 'company_name', 'location', 'start_date', 'end_date', 'is_current', 'description']
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'end_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'is_current': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'description': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+        }
+        labels = {
+            'job_title': 'Job Title',
+            'company_name': 'Company Name',
+            'location': 'Location',
+            'start_date': 'Start Date',
+            'end_date': 'End Date',
+            'is_current': 'Currently Working',
+            'description': 'Job Description',
+        }
+
+
+class CandidateCertificationForm(BaseModelForm):
+    """Form for certifications"""
+    
+    class Meta:
+        model = CandidateCertification
+        fields = ['certification_name', 'issuing_organization', 'issue_date', 'expiry_date', 'credential_id', 'credential_url']
+        widgets = {
+            'issue_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'expiry_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
+        labels = {
+            'certification_name': 'Certification Name',
+            'issuing_organization': 'Issuing Organization',
+            'issue_date': 'Issue Date',
+            'expiry_date': 'Expiry Date',
+            'credential_id': 'Credential ID',
+            'credential_url': 'Credential URL',
+        }
+

@@ -4,7 +4,11 @@ from .models import Candidate
 from .models import Employer
 from .models import Job
 from .models import DropdownGroup, DropdownMaster
-from .forms import SignUpForm
+from .forms import (
+    SignUpForm, CandidateProfileBasicForm, CandidateProfileContactForm,
+    CandidateProfileSocialForm
+)
+from .utils import MessageMixin, FormHandlerMixin, generic_profile_save
 from django.contrib.auth.models import User
 from .models import Profile
 from .forms import RoleAssignForm
@@ -14,6 +18,8 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
 
 # Create your views here.
 
@@ -169,12 +175,65 @@ def candidate_profile(request):
     return redirect('App:index')
 
 
+@login_required
 def candidate_profile_detail(request, username):
-    # Show the profile for the given username
+    """Show and update the profile for the given username"""
     user = get_object_or_404(User, username=username)
-    profile = Profile.objects.filter(user=user).first()
+    profile, created = Profile.objects.get_or_create(user=user)
     
-    # Get all dropdown groups and their items
+    # Prevent users from editing other users' profiles
+    if request.user != user and not request.user.is_staff:
+        MessageMixin.error_message(request, "You don't have permission to edit this profile.")
+        return redirect('App:candidate_profile')
+    
+    # Handle form submissions
+    saved = False
+    if request.method == 'POST':
+        # Determine which form was submitted
+        form_type = request.POST.get('form_type', 'basic')
+        
+        try:
+            with transaction.atomic():
+                if form_type == 'basic':
+                    form_basic = CandidateProfileBasicForm(request.POST, instance=profile)
+                    if form_basic.is_valid():
+                        form_basic.save()
+                        MessageMixin.success_message(request, "Basic information updated successfully!")
+                        saved = True
+                    else:
+                        MessageMixin.error_message(request, "Please correct the errors in basic information.")
+                
+                elif form_type == 'contact':
+                    form_contact = CandidateProfileContactForm(request.POST, instance=profile)
+                    if form_contact.is_valid():
+                        form_contact.save()
+                        MessageMixin.success_message(request, "Contact details updated successfully!")
+                        saved = True
+                    else:
+                        MessageMixin.error_message(request, "Please correct the errors in contact details.")
+                
+                elif form_type == 'social':
+                    form_social = CandidateProfileSocialForm(request.POST, instance=profile)
+                    if form_social.is_valid():
+                        form_social.save()
+                        MessageMixin.success_message(request, "Social links updated successfully!")
+                        saved = True
+                    else:
+                        MessageMixin.error_message(request, "Please correct the errors in social links.")
+                
+                # If saved successfully, redirect to refresh the page
+                if saved:
+                    return redirect('App:candidate_profile_detail', username=username)
+                    
+        except Exception as e:
+            MessageMixin.error_message(request, f"An error occurred: {str(e)}")
+    
+    # Initialize forms
+    form_basic = CandidateProfileBasicForm(instance=profile)
+    form_contact = CandidateProfileContactForm(instance=profile)
+    form_social = CandidateProfileSocialForm(instance=profile)
+    
+    # Get all dropdown items for the template
     education_items = DropdownMaster.objects.filter(group__text='Education', is_active=True)
     experience_items = DropdownMaster.objects.filter(group__text='Experience', is_active=True)
     country_items = DropdownMaster.objects.filter(group__text='Country', is_active=True)
@@ -183,10 +242,14 @@ def candidate_profile_detail(request, username):
     context = {
         'profile_user': user,
         'profile': profile,
+        'form_basic': form_basic,
+        'form_contact': form_contact,
+        'form_social': form_social,
         'education_items': education_items,
         'experience_items': experience_items,
         'country_items': country_items,
         'city_items': city_items,
+        'profile_completion': profile.profile_completion,
     }
     
     return render(request, 'pages/candidate-profile.html', context)

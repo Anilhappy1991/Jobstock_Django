@@ -1,0 +1,285 @@
+<!-- Generic Snackbar/Toast Notification Component -->
+<!-- Include this in your base.html or any page that needs notifications -->
+
+<style>
+    /* Snackbar Container */
+    .snackbar-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 400px;
+    }
+
+    /* Snackbar Base Style */
+    .snackbar {
+        background-color: #323232;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-width: 300px;
+        animation: slideIn 0.3s ease-in-out;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Snackbar Variants */
+    .snackbar.success {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    }
+
+    .snackbar.error {
+        background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
+    }
+
+    .snackbar.warning {
+        background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        color: #212529;
+    }
+
+    .snackbar.info {
+        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    }
+
+    /* Snackbar Content */
+    .snackbar-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+    }
+
+    .snackbar-icon {
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+
+    .snackbar-message {
+        flex: 1;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    /* Close Button */
+    .snackbar-close {
+        background: none;
+        border: none;
+        color: inherit;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 0;
+        margin-left: 12px;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+        flex-shrink: 0;
+    }
+
+    .snackbar-close:hover {
+        opacity: 1;
+    }
+
+    /* Progress Bar */
+    .snackbar-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        background-color: rgba(255, 255, 255, 0.3);
+        animation: progressBar 3s linear;
+    }
+
+    /* Animations */
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+
+    @keyframes progressBar {
+        from {
+            width: 100%;
+        }
+        to {
+            width: 0%;
+        }
+    }
+
+    .snackbar.hiding {
+        animation: slideOut 0.3s ease-in-out;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .snackbar-container {
+            left: 10px;
+            right: 10px;
+            top: 10px;
+            max-width: calc(100% - 20px);
+        }
+
+        .snackbar {
+            min-width: auto;
+            width: 100%;
+        }
+    }
+</style>
+
+<!-- Snackbar Container -->
+<div id="snackbar-container" class="snackbar-container"></div>
+
+<script>
+    /**
+     * Generic Snackbar Notification System
+     * Can be used across all modules
+     */
+    const Snackbar = {
+        /**
+         * Show a snackbar notification
+         * @param {string} message - The message to display
+         * @param {string} type - Type: 'success', 'error', 'warning', 'info'
+         * @param {number} duration - Duration in milliseconds (default: 3000)
+         */
+        show: function(message, type = 'info', duration = 3000) {
+            const container = document.getElementById('snackbar-container');
+            if (!container) {
+                console.error('Snackbar container not found');
+                return;
+            }
+
+            // Create snackbar element
+            const snackbar = document.createElement('div');
+            snackbar.className = `snackbar ${type}`;
+            
+            // Get icon based on type
+            const icon = this.getIcon(type);
+            
+            // Set content
+            snackbar.innerHTML = `
+                <div class="snackbar-content">
+                    <span class="snackbar-icon">${icon}</span>
+                    <span class="snackbar-message">${message}</span>
+                </div>
+                <button class="snackbar-close" onclick="Snackbar.close(this.parentElement)">
+                    ×
+                </button>
+                <div class="snackbar-progress"></div>
+            `;
+            
+            // Add to container
+            container.appendChild(snackbar);
+            
+            // Auto remove after duration
+            if (duration > 0) {
+                setTimeout(() => {
+                    this.close(snackbar);
+                }, duration);
+            }
+            
+            return snackbar;
+        },
+
+        /**
+         * Close a snackbar
+         * @param {HTMLElement} snackbar - The snackbar element to close
+         */
+        close: function(snackbar) {
+            snackbar.classList.add('hiding');
+            setTimeout(() => {
+                snackbar.remove();
+            }, 300);
+        },
+
+        /**
+         * Get icon for snackbar type
+         * @param {string} type - The snackbar type
+         * @returns {string} Icon HTML
+         */
+        getIcon: function(type) {
+            const icons = {
+                'success': '✓',
+                'error': '✕',
+                'warning': '⚠',
+                'info': 'ℹ'
+            };
+            return icons[type] || icons['info'];
+        },
+
+        // Convenience methods
+        success: function(message, duration = 3000) {
+            return this.show(message, 'success', duration);
+        },
+
+        error: function(message, duration = 4000) {
+            return this.show(message, 'error', duration);
+        },
+
+        warning: function(message, duration = 3500) {
+            return this.show(message, 'warning', duration);
+        },
+
+        info: function(message, duration = 3000) {
+            return this.show(message, 'info', duration);
+        }
+    };
+
+    // Make globally available
+    window.Snackbar = Snackbar;
+
+    // Auto-show Django messages if present
+    document.addEventListener('DOMContentLoaded', function() {
+        {% if messages %}
+            {% for message in messages %}
+                // Convert Django message tags to snackbar types
+                let type = '{{ message.tags }}';
+                if (type.includes('success')) type = 'success';
+                else if (type.includes('error') || type.includes('danger')) type = 'error';
+                else if (type.includes('warning')) type = 'warning';
+                else type = 'info';
+                
+                Snackbar.show('{{ message|escapejs }}', type);
+            {% endfor %}
+        {% endif %}
+    });
+</script>
+
+<!-- Usage Examples (commented out):
+<script>
+    // Show success message
+    Snackbar.success('Profile updated successfully!');
+    
+    // Show error message
+    Snackbar.error('Failed to save data. Please try again.');
+    
+    // Show warning message
+    Snackbar.warning('Please fill all required fields.');
+    
+    // Show info message
+    Snackbar.info('Your session will expire in 5 minutes.');
+    
+    // Custom duration (0 = no auto close)
+    Snackbar.show('This will stay forever', 'info', 0);
+</script>
+-->

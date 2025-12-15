@@ -1,8 +1,14 @@
 ﻿{% extends "Base/base.html" %}
+{% load static %}
 
 {% block hero_content %}
 
 {% include 'Base/navbar.html' %}
+{% include 'Components/snackbar.html' %}
+{% include 'Components/validation.html' %}
+
+<!-- Font Awesome 6.4.0 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <!-- dashboard Detail -->
 <div class="dashboard-wrap bg-light">
@@ -135,75 +141,97 @@
 			</div>
 			
 			<!-- Card Row -->
-			<div class="card">
+			<div class="card profile-card">
 				<div class="card-header">
-					<h4>Basic Detail</h4>
+					<h4><i class="fas fa-user-circle"></i> Basic Detail</h4>
 				</div>
 				<div class="card-body">
-					<form>
+					<form method="POST" action="">
+						{% csrf_token %}
+						<input type="hidden" name="form_type" value="basic">
 						<div class="row">
 						
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Your Name</label>
-									<input type="text" class="form-control">
+									<label><i class="fas fa-user"></i> {{ form_basic.full_name.label }} <span class="required">*</span></label>
+									{{ form_basic.full_name }}
+									{% if form_basic.full_name.errors %}
+										<div class="text-danger small">{{ form_basic.full_name.errors }}</div>
+									{% endif %}
+									<small class="form-text"><i class="fas fa-info-circle"></i> Enter your full name as it appears on official documents</small>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Job Title</label>
-									<input type="text" class="form-control">
+									<label><i class="fas fa-briefcase"></i> {{ form_basic.job_title.label }}</label>
+									{{ form_basic.job_title }}
+									{% if form_basic.job_title.errors %}
+										<div class="text-danger small">{{ form_basic.job_title.errors }}</div>
+									{% endif %}
+									<small class="form-text"><i class="fas fa-info-circle"></i> Your current or desired job title</small>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Age</label>
-									<input type="text" class="form-control">
+									<label><i class="fas fa-birthday-cake"></i> {{ form_basic.age.label }}</label>
+									{{ form_basic.age }}
+									{% if form_basic.age.errors %}
+										<div class="text-danger small">{{ form_basic.age.errors }}</div>
+									{% endif %}
+									<small class="form-text"><i class="fas fa-info-circle"></i> Must be at least 18 years old</small>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Education</label>
+									<label><i class="fas fa-graduation-cap"></i> {{ form_basic.education.label }}</label>
 									<div class="select-ops">
-										<select name="education">
-											<option value="">Select Education</option>
-											{% for item in education_items %}
-											<option value="{{ item.value }}">{{ item.text }}</option>
-											{% endfor %}
-										</select>
+										{{ form_basic.education }}
+										{% if form_basic.education.errors %}
+											<div class="text-danger small">{{ form_basic.education.errors }}</div>
+										{% endif %}
 									</div>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Experience</label>
+									<label><i class="fas fa-chart-line"></i> {{ form_basic.experience.label }}</label>
 									<div class="select-ops">
-										<select name="experience">
-											<option value="">Select Experience</option>
-											{% for item in experience_items %}
-											<option value="{{ item.value }}">{{ item.text }}</option>
-											{% endfor %}
-										</select>
+										{{ form_basic.experience }}
+										{% if form_basic.experience.errors %}
+											<div class="text-danger small">{{ form_basic.experience.errors }}</div>
+										{% endif %}
 									</div>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Language</label>
-									<input type="text" class="form-control">
+									<label><i class="fas fa-language"></i> {{ form_basic.languages.label }}</label>
+									{{ form_basic.languages }}
+									{% if form_basic.languages.errors %}
+										<div class="text-danger small">{{ form_basic.languages.errors }}</div>
+									{% endif %}
+									<small class="form-text"><i class="fas fa-info-circle"></i> Enter languages separated by commas (e.g., English, Spanish)</small>
 								</div>
 							</div>
 							
 							<div class="col-xl-12 col-lg-12 col-md-12">
 								<div class="form-group">
-									<label>About Info</label>
-									<textarea class="form-control ht-80"></textarea>
+									<label><i class="fas fa-align-left"></i> {{ form_basic.about.label }}</label>
+									{{ form_basic.about }}
+									{% if form_basic.about.errors %}
+										<div class="text-danger small">{{ form_basic.about.errors }}</div>
+									{% endif %}
+									<small class="form-text"><i class="fas fa-info-circle"></i> Tell us about yourself and your professional background</small>
 								</div>
+							</div>
+							
+							<div class="col-lg-12 col-md-12">
+								<button type="submit" class="btn ft--medium btn-main"><i class="fas fa-save"></i> Save Basic Details</button>
 							</div>
 							
 						</div> 
@@ -213,96 +241,107 @@
 			<!-- Card Row End -->
 			
 			<!-- Card Row -->
-			<div class="card">
+			<div class="card profile-card">
 				<div class="card-header">
-					<h4>Contact Detail</h4>
+					<h4><i class="fas fa-address-book"></i> Contact Detail</h4>
 				</div>
 				<div class="card-body">
-					<form>
+					<form method="POST" action="">
+						{% csrf_token %}
+						<input type="hidden" name="form_type" value="contact">
 						<div class="row">
 						
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Your Email</label>
-									<input type="text" class="form-control">
+									<label><i class="fas fa-envelope"></i> {{ form_contact.email.label }}</label>
+									{{ form_contact.email }}
+									{% if form_contact.email.errors %}<div class="text-danger small">{{ form_contact.email.errors }}</div>{% endif %}
+									<small class="form-text"><i class="fas fa-info-circle"></i> Your primary email address for communication</small>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Phone no.</label>
-									<input type="text" class="form-control">
+									<label><i class="fas fa-phone"></i> {{ form_contact.phone.label }}</label>
+									{{ form_contact.phone }}
+									{% if form_contact.phone.errors %}<div class="text-danger small">{{ form_contact.phone.errors }}</div>{% endif %}
+									<small class="form-text"><i class="fas fa-info-circle"></i> Format: 123-456-7890</small>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Temporary Address</label>
-									<input type="text" class="form-control">
+									<label><i class="fas fa-home"></i> {{ form_contact.temp_address.label }}</label>
+									{{ form_contact.temp_address }}
+									{% if form_contact.temp_address.errors %}<div class="text-danger small">{{ form_contact.temp_address.errors }}</div>{% endif %}
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Address</label>
-									<input type="text" class="form-control">
+									<label><i class="fas fa-map-marker-alt"></i> {{ form_contact.address.label }}</label>
+									{{ form_contact.address }}
+									{% if form_contact.address.errors %}<div class="text-danger small">{{ form_contact.address.errors }}</div>{% endif %}
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Address 2</label>
-									<input type="text" class="form-control">
+									<label><i class="fas fa-map-pin"></i> {{ form_contact.address2.label }}</label>
+									{{ form_contact.address2 }}
+									{% if form_contact.address2.errors %}<div class="text-danger small">{{ form_contact.address2.errors }}</div>{% endif %}
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Country</label>
+									<label><i class="fas fa-globe"></i> {{ form_contact.country.label }}</label>
 									<div class="select-ops">
-										<select name="country">
-											<option value="">Select Country</option>
-											{% for item in country_items %}
-											<option value="{{ item.value }}">{{ item.text }}</option>
-											{% endfor %}
-										</select>
+										{{ form_contact.country }}
+										{% if form_contact.country.errors %}<div class="text-danger small">{{ form_contact.country.errors }}</div>{% endif %}
 									</div>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>State/City</label>
+									<label><i class="fas fa-city"></i> {{ form_contact.city.label }}</label>
 									<div class="select-ops">
-										<select name="city">
-											<option value="">Select State/City</option>
-											{% for item in city_items %}
-											<option value="{{ item.value }}">{{ item.text }}</option>
-											{% endfor %}
-										</select>
+										{{ form_contact.city }}
+										{% if form_contact.city.errors %}<div class="text-danger small">{{ form_contact.city.errors }}</div>{% endif %}
 									</div>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Zip Code</label>
-									<input type="text" class="form-control">
+									<label><i class="fas fa-map"></i> {{ form_contact.zip_code.label }}</label>
+									{{ form_contact.zip_code }}
+									{% if form_contact.zip_code.errors %}<div class="text-danger small">{{ form_contact.zip_code.errors }}</div>{% endif %}
+									<small class="form-text"><i class="fas fa-info-circle"></i> Postal/ZIP code (5-6 digits)</small>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Latitude</label>
-									<input type="text" class="form-control">
+									<label><i class="fas fa-compass"></i> {{ form_contact.latitude.label }}</label>
+									{{ form_contact.latitude }}
+									{% if form_contact.latitude.errors %}<div class="text-danger small">{{ form_contact.latitude.errors }}</div>{% endif %}
+									<small class="form-text"><i class="fas fa-info-circle"></i> Range: -90 to 90 (Optional)</small>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>longitude</label>
-									<input type="text" class="form-control">
+									<label><i class="fas fa-location-arrow"></i> {{ form_contact.longitude.label }}</label>
+									{{ form_contact.longitude }}
+									{% if form_contact.longitude.errors %}<div class="text-danger small">{{ form_contact.longitude.errors }}</div>{% endif %}
+									<small class="form-text"><i class="fas fa-info-circle"></i> Range: -180 to 180 (Optional)</small>
 								</div>
+							</div>
+							
+							<div class="col-lg-12 col-md-12">
+								<button type="submit" class="btn ft--medium btn-main"><i class="fas fa-save"></i> Save Contact Details</button>
 							</div>
 							
 						</div> 
@@ -312,54 +351,63 @@
 			<!-- Card Row End -->
 			
 			<!-- Card Row -->
-			<div class="card">
+			<div class="card profile-card">
 				<div class="card-header">
-					<h4>Social Login</h4>
+					<h4><i class="fas fa-share-alt"></i> Social Links</h4>
 				</div>
 				<div class="card-body">
-					<form>
+					<form method="POST" action="">
+						{% csrf_token %}
+						<input type="hidden" name="form_type" value="social">
 						<div class="row">
 						
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Facebook</label>
-									<input type="text" class="form-control">
+									<label><i class="fab fa-facebook-square"></i> {{ form_social.facebook.label }}</label>
+									{{ form_social.facebook }}
+									{% if form_social.facebook.errors %}<div class="text-danger small">{{ form_social.facebook.errors }}</div>{% endif %}
+									<small class="form-text"><i class="fas fa-info-circle"></i> Your Facebook profile URL</small>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Twitter</label>
-									<input type="text" class="form-control">
+									<label><i class="fab fa-twitter-square"></i> {{ form_social.twitter.label }}</label>
+									{{ form_social.twitter }}
+									{% if form_social.twitter.errors %}<div class="text-danger small">{{ form_social.twitter.errors }}</div>{% endif %}
+									<small class="form-text"><i class="fas fa-info-circle"></i> Your Twitter/X profile URL</small>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Instagram</label>
-									<input type="text" class="form-control">
+									<label><i class="fab fa-instagram-square"></i> {{ form_social.instagram.label }}</label>
+									{{ form_social.instagram }}
+									{% if form_social.instagram.errors %}<div class="text-danger small">{{ form_social.instagram.errors }}</div>{% endif %}
+									<small class="form-text"><i class="fas fa-info-circle"></i> Your Instagram profile URL</small>
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
-									<label>Linked In</label>
-									<input type="text" class="form-control">
+									<label><i class="fab fa-linkedin"></i> {{ form_social.linkedin.label }}</label>
+									{{ form_social.linkedin }}
+									{% if form_social.linkedin.errors %}<div class="text-danger small">{{ form_social.linkedin.errors }}</div>{% endif %}
+									<small class="form-text"><i class="fas fa-info-circle"></i> Your LinkedIn profile URL</small>
 								</div>
 							</div>
 							
-							<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="col-xl-12 col-lg-12 col-md-12">
 								<div class="form-group">
-									<label>Twitter</label>
-									<input type="text" class="form-control">
+									<label><i class="fab fa-google-plus-square"></i> {{ form_social.google_plus.label }}</label>
+									{{ form_social.google_plus }}
+									{% if form_social.google_plus.errors %}<div class="text-danger small">{{ form_social.google_plus.errors }}</div>{% endif %}
+									<small class="form-text"><i class="fas fa-info-circle"></i> Your Google+ profile URL</small>
 								</div>
 							</div>
 							
-							<div class="col-xl-6 col-lg-6 col-md-12">
-								<div class="form-group">
-									<label>Google Plus</label>
-									<input type="text" class="form-control">
-								</div>
+							<div class="col-lg-12 col-md-12">
+								<button type="submit" class="btn ft--medium btn-main"><i class="fas fa-save"></i> Save Social Links</button>
 							</div>
 							
 						</div> 
@@ -367,13 +415,6 @@
 				</div>
 			</div>
 			<!-- Card Row End -->
-			
-			<!-- Submit Busston -->
-			<div class="row">
-				<div class="col-lg-12 col-md-12">
-					<button type="submit" class="btn ft--medium btn-main">Save Profile</button>
-				</div>	
-			</div>
 
 		</div>
 		
