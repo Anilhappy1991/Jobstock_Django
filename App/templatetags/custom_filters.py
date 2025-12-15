@@ -50,6 +50,28 @@ def get_file_extension(filepath):
     return os.path.splitext(str(filepath))[1].upper().replace('.', '')
 
 
+@register.filter(name='split')
+def split_string(value, delimiter=','):
+    """
+    Split a string by delimiter.
+    Usage: {{ string|split:',' }}
+    """
+    if not value:
+        return []
+    return [item.strip() for item in str(value).split(delimiter)]
+
+
+@register.filter(name='trim')
+def trim_string(value):
+    """
+    Trim whitespace from a string.
+    Usage: {{ string|trim }}
+    """
+    if not value:
+        return ''
+    return str(value).strip()
+
+
 @register.filter(name='safe_filesize')
 def safe_filesize(file_field):
     """

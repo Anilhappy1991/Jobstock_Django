@@ -599,6 +599,138 @@
 				</div>
 			</div>
 			<!-- Card Row End -->
+			
+			<!-- Card Row - Resume Processing Status -->
+			{% if latest_resume_processing %}
+			<div class="card profile-card">
+				<div class="card-header">
+					<h4><i class="fas fa-cogs"></i> Resume Processing Status</h4>
+				</div>
+				<div class="card-body">
+					<div class="alert alert-{{ latest_resume_processing.get_status_badge_class|slice:'3:' }} d-flex align-items-center justify-content-between">
+						<div>
+							<strong>Latest Upload:</strong> {{ latest_resume_processing.original_filename }}
+							<br>
+							<small class="text-muted">
+								<i class="far fa-clock"></i> Uploaded: {{ latest_resume_processing.created_at|date:"M d, Y H:i" }}
+							</small>
+						</div>
+						<span class="badge {{ latest_resume_processing.get_status_badge_class }} fs-6">
+							{% if latest_resume_processing.status == 'pending' %}
+								<i class="fas fa-hourglass-half"></i> Pending
+							{% elif latest_resume_processing.status == 'processing' %}
+								<i class="fas fa-spinner fa-spin"></i> Processing
+							{% elif latest_resume_processing.status == 'completed' %}
+								<i class="fas fa-check-circle"></i> Completed
+							{% elif latest_resume_processing.status == 'failed' %}
+								<i class="fas fa-times-circle"></i> Failed
+							{% endif %}
+						</span>
+					</div>
+					
+					{% if latest_resume_processing.status == 'completed' and latest_resume_processing.resume_json %}
+					<div class="row mt-3">
+						<div class="col-md-3 col-6 mb-3">
+							<div class="stat-box text-center p-3 border rounded">
+								<i class="fas fa-tools text-primary fs-4"></i>
+								<h5 class="mt-2 mb-0">{{ latest_resume_processing.resume_json.skills.total_skills|default:"0" }}</h5>
+								<small class="text-muted">Skills Found</small>
+							</div>
+						</div>
+						<div class="col-md-3 col-6 mb-3">
+							<div class="stat-box text-center p-3 border rounded">
+								<i class="fas fa-file-word text-info fs-4"></i>
+								<h5 class="mt-2 mb-0">{{ latest_resume_processing.word_count|default:"0" }}</h5>
+								<small class="text-muted">Words</small>
+							</div>
+						</div>
+						<div class="col-md-3 col-6 mb-3">
+							<div class="stat-box text-center p-3 border rounded">
+								<i class="fas fa-briefcase text-success fs-4"></i>
+								<h5 class="mt-2 mb-0">{{ latest_resume_processing.years_of_experience|default:"-" }}</h5>
+								<small class="text-muted">Years Exp.</small>
+							</div>
+						</div>
+						<div class="col-md-3 col-6 mb-3">
+							<div class="stat-box text-center p-3 border rounded">
+								<i class="fas fa-smile text-warning fs-4"></i>
+								<h5 class="mt-2 mb-0">
+									{% if latest_resume_processing.resume_json.sentiment.sentiment_label %}
+										{{ latest_resume_processing.resume_json.sentiment.sentiment_label|title }}
+									{% else %}-{% endif %}
+								</h5>
+								<small class="text-muted">Sentiment</small>
+							</div>
+						</div>
+					</div>
+					
+					{% if latest_resume_processing.extracted_skills %}
+					<div class="mt-3">
+						<h6><i class="fas fa-tags"></i> Extracted Skills:</h6>
+						<div class="skills-container d-flex flex-wrap gap-2">
+							{% for skill in latest_resume_processing.extracted_skills|split:',' %}
+								<span class="badge bg-primary">{{ skill }}</span>
+							{% endfor %}
+						</div>
+					</div>
+					{% endif %}
+					
+					{% if latest_resume_processing.extracted_email or latest_resume_processing.extracted_phone %}
+					<div class="mt-3">
+						<h6><i class="fas fa-id-card"></i> Contact Information:</h6>
+						<ul class="list-unstyled mb-0">
+							{% if latest_resume_processing.extracted_email %}
+								<li><i class="fas fa-envelope text-muted"></i> {{ latest_resume_processing.extracted_email }}</li>
+							{% endif %}
+							{% if latest_resume_processing.extracted_phone %}
+								<li><i class="fas fa-phone text-muted"></i> {{ latest_resume_processing.extracted_phone }}</li>
+							{% endif %}
+						</ul>
+					</div>
+					{% endif %}
+					{% elif latest_resume_processing.status == 'failed' %}
+					<div class="alert alert-danger mt-3">
+						<i class="fas fa-exclamation-triangle"></i>
+						<strong>Processing Error:</strong> {{ latest_resume_processing.error_message|default:"An unknown error occurred during processing." }}
+					</div>
+					{% elif latest_resume_processing.status == 'pending' or latest_resume_processing.status == 'processing' %}
+					<div class="alert alert-info mt-3">
+						<i class="fas fa-info-circle"></i>
+						Your resume is being processed. This usually takes a few seconds. The page will automatically update once processing is complete.
+					</div>
+					{% endif %}
+					
+					{% if resume_processing_records|length > 1 %}
+					<div class="mt-4">
+						<h6><i class="fas fa-history"></i> Processing History:</h6>
+						<div class="table-responsive">
+							<table class="table table-sm table-bordered">
+								<thead>
+									<tr>
+										<th>File</th>
+										<th>Date</th>
+										<th>Status</th>
+										<th>Skills</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for record in resume_processing_records %}
+									<tr>
+										<td>{{ record.original_filename }}</td>
+										<td>{{ record.created_at|date:"M d, Y" }}</td>
+										<td><span class="badge {{ record.get_status_badge_class }}">{{ record.status|title }}</span></td>
+										<td>{{ record.resume_json.skills.total_skills|default:"-" }}</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+			{% endif %}
+			<!-- Card Row End -->
 
 		</div>
 		

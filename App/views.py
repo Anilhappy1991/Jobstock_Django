@@ -3,7 +3,7 @@ from .models import Blog
 from .models import Candidate
 from .models import Employer
 from .models import Job
-from .models import DropdownGroup, DropdownMaster
+from .models import DropdownGroup, DropdownMaster, ResumeProcessing
 from .forms import (
     SignUpForm, CandidateProfileBasicForm, CandidateProfileContactForm,
     CandidateProfileSocialForm, CandidateResumeForm
@@ -20,6 +20,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+import os
 
 # Create your views here.
 
@@ -237,12 +238,26 @@ def candidate_profile_detail(request, username):
                     if form_resume.is_valid():
                         # Delete old resume if exists and new one is uploaded
                         if 'resume' in request.FILES and profile.resume:
-                            import os
                             if os.path.isfile(profile.resume.path):
                                 os.remove(profile.resume.path)
                         
-                        form_resume.save()
-                        MessageMixin.success_message(request, "Resume uploaded successfully!")
+                        # Save the resume file
+                        saved_profile = form_resume.save()
+                        
+                        # Create ResumeProcessing entry for the new upload
+                        if 'resume' in request.FILES:
+                            resume_file = request.FILES['resume']
+                            ResumeProcessing.objects.create(
+                                user=request.user,
+                                profile=profile,
+                                resume_path=saved_profile.resume.path if saved_profile.resume else '',
+                                original_filename=resume_file.name,
+                                file_size=resume_file.size,
+                                file_extension=os.path.splitext(resume_file.name)[1].lower(),
+                                status='pending'
+                            )
+                        
+                        MessageMixin.success_message(request, "Resume uploaded successfully! Processing will start automatically.")
                         saved = True
                     else:
                         MessageMixin.error_message(request, "Please correct the errors in resume upload.")
@@ -266,6 +281,10 @@ def candidate_profile_detail(request, username):
     country_items = DropdownMaster.objects.filter(group__text='Country', is_active=True)
     city_items = DropdownMaster.objects.filter(group__text='State/City', is_active=True)
     
+    # Get resume processing history for this user
+    resume_processing_records = ResumeProcessing.objects.filter(user=user).order_by('-created_at')[:5]
+    latest_resume_processing = resume_processing_records.first() if resume_processing_records else None
+    
     context = {
         'profile_user': user,
         'profile': profile,
@@ -278,6 +297,8 @@ def candidate_profile_detail(request, username):
         'country_items': country_items,
         'city_items': city_items,
         'profile_completion': profile.profile_completion,
+        'resume_processing_records': resume_processing_records,
+        'latest_resume_processing': latest_resume_processing,
     }
     
     return render(request, 'pages/candidate-profile.html', context)

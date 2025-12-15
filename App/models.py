@@ -343,3 +343,76 @@ class CandidateCertification(models.Model):
         verbose_name = 'Certification'
         verbose_name_plural = 'Certifications'
         ordering = ['-issue_date']
+
+
+class ResumeProcessing(models.Model):
+    """Resume Processing Tracking and Results"""
+    
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('processing', 'Processing'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+    )
+    
+    # Core Fields
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='resume_processing')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='resume_processing', null=True, blank=True)
+    
+    # File Information
+    resume_path = models.CharField(max_length=500, help_text="Path to the uploaded resume file")
+    original_filename = models.CharField(max_length=255, blank=True)
+    file_size = models.IntegerField(default=0, help_text="File size in bytes")
+    file_extension = models.CharField(max_length=10, blank=True)
+    
+    # Processing Status
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    processing_started_at = models.DateTimeField(null=True, blank=True)
+    processing_completed_at = models.DateTimeField(null=True, blank=True)
+    error_message = models.TextField(blank=True, null=True)
+    
+    # Extracted Data
+    resume_text = models.TextField(blank=True, null=True, help_text="Full extracted text from resume")
+    resume_json = models.JSONField(blank=True, null=True, help_text="Structured JSON data extracted from resume")
+    
+    # Quick Access Fields (extracted from JSON for faster queries)
+    extracted_skills = models.TextField(blank=True, null=True, help_text="Comma-separated skills")
+    extracted_email = models.EmailField(blank=True, null=True)
+    extracted_phone = models.CharField(max_length=50, blank=True, null=True)
+    years_of_experience = models.CharField(max_length=50, blank=True, null=True)
+    sentiment_score = models.FloatField(null=True, blank=True, help_text="Resume sentiment polarity score")
+    word_count = models.IntegerField(default=0)
+    
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.original_filename} ({self.status})"
+    
+    def get_status_badge_class(self):
+        """Return Bootstrap badge class based on status"""
+        status_classes = {
+            'pending': 'bg-warning',
+            'processing': 'bg-info',
+            'completed': 'bg-success',
+            'failed': 'bg-danger',
+        }
+        return status_classes.get(self.status, 'bg-secondary')
+    
+    def get_processing_duration(self):
+        """Calculate processing duration in seconds"""
+        if self.processing_started_at and self.processing_completed_at:
+            delta = self.processing_completed_at - self.processing_started_at
+            return delta.total_seconds()
+        return None
+    
+    class Meta:
+        db_table = 'resume_processing'
+        verbose_name = 'Resume Processing'
+        verbose_name_plural = 'Resume Processings'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['user', 'status']),
+            models.Index(fields=['status', 'created_at']),
+        ]

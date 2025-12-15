@@ -1,7 +1,8 @@
 from django.contrib import admin
 from .models import (
     Blog, Candidate, Employer, Job, Profile, DropdownGroup, DropdownMaster,
-    CandidateSkill, CandidateEducation, CandidateExperience, CandidateCertification
+    CandidateSkill, CandidateEducation, CandidateExperience, CandidateCertification,
+    ResumeProcessing
 )
 
 admin.site.register(Blog)
@@ -57,4 +58,33 @@ class CandidateExperienceAdmin(admin.ModelAdmin):
 class CandidateCertificationAdmin(admin.ModelAdmin):
 	list_display = ('profile', 'certification_name', 'issuing_organization', 'issue_date', 'expiry_date')
 	search_fields = ('profile__user__username', 'certification_name', 'issuing_organization')
+
+
+@admin.register(ResumeProcessing)
+class ResumeProcessingAdmin(admin.ModelAdmin):
+	list_display = ('user', 'original_filename', 'status', 'file_size', 'word_count', 'created_at', 'processing_completed_at')
+	list_filter = ('status', 'created_at')
+	search_fields = ('user__username', 'original_filename', 'extracted_email', 'extracted_phone')
+	readonly_fields = ('created_at', 'updated_at', 'processing_started_at', 'processing_completed_at')
+	fieldsets = (
+		('User Information', {
+			'fields': ('user', 'profile')
+		}),
+		('File Information', {
+			'fields': ('resume_path', 'original_filename', 'file_size', 'file_extension')
+		}),
+		('Processing Status', {
+			'fields': ('status', 'processing_started_at', 'processing_completed_at', 'error_message')
+		}),
+		('Extracted Data', {
+			'fields': ('resume_text', 'resume_json'),
+			'classes': ('collapse',)
+		}),
+		('Quick Access Fields', {
+			'fields': ('extracted_skills', 'extracted_email', 'extracted_phone', 'years_of_experience', 'sentiment_score', 'word_count')
+		}),
+		('Timestamps', {
+			'fields': ('created_at', 'updated_at')
+		}),
+	)
 

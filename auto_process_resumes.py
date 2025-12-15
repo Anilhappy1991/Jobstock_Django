@@ -1,6 +1,7 @@
 """
 Automatic Resume Processing with File Watcher
 Monitors data/candidate-resume folder and automatically processes new resumes
+Updates ResumeProcessing model with extracted data
 """
 import os
 import sys
@@ -19,6 +20,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Jobstock.settings')
 django.setup()
 
 from App.tasks_simple import SimpleDocumentProcessor
+from App.models import ResumeProcessing, Profile
+from django.contrib.auth.models import User
 
 # Define paths
 BASE_DIR = Path(__file__).parent
@@ -40,8 +43,20 @@ def setup_folders():
     RESULTS_FOLDER.mkdir(parents=True, exist_ok=True)
 
 
-def process_resume_file(file_path):
+def process_resume_file(file_path, resume_processing_id=None):
     """Process a single resume file and extract data"""
+    
+    # Update status to processing if we have a database record
+    if resume_processing_id:
+        try:
+            resume_record = ResumeProcessing.objects.get(id=resume_processing_id)
+            resume_record.status = 'processing'
+            resume_record.processing_started_at = datetime.now()
+            resume_record.save()
+        except ResumeProcessing.DoesNotExist:
+            resume_record = None
+    else:
+        resume_record = None
     
     print("\n" + "=" * 80)
     print(f"📄 PROCESSING: {file_path.name}")
@@ -57,7 +72,13 @@ def process_resume_file(file_path):
         text = processor.extract_text(str(file_path))
         
         if not text or len(text.strip()) < 50:
-            print(f"⚠️  Warning: Extracted text is too short ({len(text)} chars)")
+            error_msg = f"Extracted text is too short ({len(text)} chars)"
+            print(f"⚠️  Warning: {error_msg}")
+            if resume_record:
+                resume_record.status = 'failed'
+                resume_record.error_message = error_msg
+                resume_record.processing_completed_at = datetime.now()
+                resume_record.save()
             return None
         
         print(f"   ✅ Extracted {len(text)} characters")
@@ -107,13 +128,37 @@ def process_resume_file(file_path):
             'sentiment': sentiment
         }
         
+        # Update database record if exists
+        if resume_record:
+            resume_record.resume_text = text
+            resume_record.resume_json = results
+            resume_record.extracted_skills = ', '.join(skills_results['skills'][:30])  # Limit to 30 skills
+            resume_record.extracted_email = contact_info['emails'][0] if contact_info['emails'] else None
+            resume_record.extracted_phone = contact_info['phones'][0] if contact_info['phones'] else None
+            resume_record.years_of_experience = ', '.join(map(str, skills_results['experience_years'][:3]))
+            resume_record.sentiment_score = sentiment['polarity']
+            resume_record.word_count = stats['word_count']
+            resume_record.status = 'completed'
+            resume_record.processing_completed_at = datetime.now()
+            resume_record.save()
+            print(f"\n✅ Database record updated (ID: {resume_record.id})")
+        
         print("✅ Processing complete!")
         return results
         
     except Exception as e:
-        print(f"❌ Error processing {file_path.name}: {str(e)}")
+        error_msg = str(e)
+        print(f"❌ Error processing {file_path.name}: {error_msg}")
         import traceback
         traceback.print_exc()
+        
+        # Update database record with error
+        if resume_record:
+            resume_record.status = 'failed'
+            resume_record.error_message = error_msg
+            resume_record.processing_completed_at = datetime.now()
+            resume_record.save()
+        
         return None
 
 
@@ -175,20 +220,54 @@ def save_results(results, original_filename):
 
 def move_to_processed(file_path):
     """Move processed file to the 'process' folder"""
-    
-    destination = PROCESSED_FOLDER / file_path.name
-    
-    # If file already exists, add timestamp
-    if destination.exists():
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        stem = file_path.stem
-        suffix = file_path.suffix
-        destination = PROCESSED_FOLDER / f"{stem}_{timestamp}{suffix}"
-    
-    shutil.move(str(file_path), str(destination))
-    return destination
-
-
+    Try to find or create a ResumeProcessing record
+        resume_record = None
+        try:
+            # Look for pending record with this file path
+            resume_record = ResumeProcessing.objects.filter(
+                resume_path=str(file_path),
+                status='pending'
+            ).first()
+            
+            if not resume_record:
+                # Create a new record (for files dropped directly in folder)
+                print(f"\n⚠️  No database record found for {file_path.name}, creating one...")
+                # Try to find user by filename pattern or use first active user
+                user = User.objects.filter(is_active=True).first()
+                if user:
+                    profile = Profile.objects.filter(user=user).first()
+                    resume_record = ResumeProcessing.objects.create(
+                        user=user,
+                        profile=profile,
+                        resume_path=str(file_path),
+                        original_filename=file_path.name,
+                        file_size=file_path.stat().st_size,
+                        file_extension=file_path.suffix.lower(),
+                        status='pending'
+                    )
+                    print(f"✅ Created database record (ID: {resume_record.id})")
+        except Exception as e:
+            print(f"⚠️  Could not create database record: {e}")
+        
+        # Process the resume
+        results = process_resume_file(file_path, resume_record.id if resume_record else None)
+        
+        if results:
+            # Save results to files
+            print("\n💾 Saving results to files...")
+            json_path, txt_path = save_results(results, file_path.name)
+            print(f"   ✅ JSON: {json_path.name}")
+            print(f"   ✅ TXT: {txt_path.name}")
+            
+            # Move to processed folder
+            print("\n📦 Moving to processed folder...")
+            new_location = move_to_processed(file_path)
+            print(f"   ✅ Moved to: {new_location.name}")
+            
+            # Update resume_path in database to new location
+            if resume_record:
+                resume_record.resume_path = str(new_location)
+                resume_record.save(
 def process_single_resume(file_path):
     """Process a single resume and handle all steps"""
     
