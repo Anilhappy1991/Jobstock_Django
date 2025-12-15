@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -167,6 +168,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -181,3 +183,99 @@ STATICFILES_DIRS = [
 # Media files (User uploaded files)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'data')
+
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# JAZZMIN_SETTINGS = {
+#     # 🎯 Branding
+#     "site_title": "AI CRM Admin",
+#     "site_header": "AI CRM",
+#     "site_brand": "AI CRM",
+#     "site_logo": "img/logo.png",
+#     "site_logo_classes": "img-circle",
+#     "site_icon": "img/favicon.ico",   # favicon
+#     "welcome_sign": "Welcome to AI CRM Admin",
+#     "copyright": "AI CRM Ltd",
+
+#     # 🌙 UI
+#     "theme": "darkly",
+#     "show_sidebar": True,
+#     "navigation_expanded": True,
+
+#     # 🔍 Search
+#     "search_model": ["auth.User", "crm.Customer"],
+
+#     # 📌 Top Menu
+#     "topmenu_links": [
+#         {"name": "Dashboard", "url": "admin:index", "permissions": ["auth.view_user"]},
+#         {"model": "auth.User"},
+#         {"app": "crm"},
+#     ],
+
+#     # 📂 Sidebar Menu Control
+#     "order_with_respect_to": [
+#         "auth",
+#         "crm",
+#         "sales",
+#     ],
+
+#     "hide_apps": ["sessions"],
+#     "hide_models": ["auth.Group"],
+
+#     # 🧩 Icons
+#     "icons": {
+#         "auth": "fas fa-users-cog",
+#         "auth.user": "fas fa-user",
+#         "crm.customer": "fas fa-address-book",
+#         "sales.order": "fas fa-shopping-cart",
+#     },
+
+#     # 🚀 Custom Links
+#     "custom_links": {
+#         "crm": [{
+#             "name": "Reports",
+#             "url": "/admin/crm/reports/",
+#             "icon": "fas fa-chart-line",
+#             "permissions": ["crm.view_customer"],
+#         }]
+#     },
+
+#     # 🔐 User menu
+#     "usermenu_links": [
+#         {"name": "Change Password", "url": "admin:password_change"},
+#         {"name": "Logout", "url": "admin:logout"},
+#     ],
+# }
+
+# JAZZMIN_UI_TWEAKS = {
+#     "theme": "darkly",
+#     "navbar_fixed": True,
+#     "sidebar_fixed": True,
+#     "footer_fixed": False,
+#     "sidebar_nav_child_indent": True,
+#     "sidebar_nav_compact_style": False,
+# }
+
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "My Admin",
+    "site_header": "My Admin Panel",
+    "site_brand": "MyApp",
+    "welcome_sign": "Welcome to MyApp Admin",
+    "search_model": ["auth.User"],
+    "topmenu_links": [
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "theme": "darkly",  # dark mode
+}
+# JAZZMIN_UI_TWEAKS = {
+#     "theme": "darkly",
+#     "navbar_small_text": False,
+#     "sidebar_small_text": False,
+#     "brand_small_text": False,
+#     "sidebar_nav_child_indent": True,
+# }
