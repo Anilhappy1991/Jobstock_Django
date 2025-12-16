@@ -1,47 +1,251 @@
-# Django specific
+# ============================================================================
+# PYTHON SPECIFIC
+# ============================================================================
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# ============================================================================
+# DJANGO SPECIFIC
+# ============================================================================
+# Logs
 *.log
 *.pot
-*.pyc
-__pycache__/
-local_settings.py
+
+# Database
 db.sqlite3
 db.sqlite3-journal
+*.db
 
-# Virtual Environment
-venv/
-venv0/
-env/
-ENV/
+# Local settings
+local_settings.py
+settings_local.py
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
+# Static files (collected)
+staticfiles/
+static_collected/
+/static/
 
 # Media files (uploaded content)
+media/
+uploads/
+
+# Django migrations (optional - comment out if you want to commit migrations)
+# */migrations/*.py
+# !*/migrations/__init__.py
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# ============================================================================
+# DATA FOLDER (User Uploads & Sensitive Data)
+# ============================================================================
+# All data folder contents
+data/
+!data/README.md
+
+# Specific data folders
 data/candidate-resume/*
 !data/candidate-resume/README.md
 data/profile_images/*
 data/blog_images/*
 data/candidate_images/*
 data/employer_images/*
+data/job_images/*
 
-# Static files
-staticfiles/
-static_collected/
+# Text data files
+data/*.txt
+data/**/*.txt
 
-# Sensitive files
+# ============================================================================
+# VIRTUAL ENVIRONMENT
+# ============================================================================
+venv/
+venv0/
+venv*/
+env/
+ENV/
+.venv/
+.ENV/
+virtualenv/
+
+# Pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ============================================================================
+# IDE & EDITOR
+# ============================================================================
+# VSCode
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+.*.swp
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# ============================================================================
+# OPERATING SYSTEM
+# ============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.directory
+.Trash-*
+
+# ============================================================================
+# SENSITIVE FILES & CREDENTIALS
+# ============================================================================
+# Environment variables
 *.env
 .env
-secrets.json
-user-password.txt
+.env.local
+.env.*.local
 
-# Backup files
+# Secrets & passwords
+secrets.json
+secret_key.txt
+user-password.txt
+credentials.json
+*.key
+*.pem
+*.cer
+*.crt
+
+# Configuration files with secrets
+config.ini
+config.json
+settings_secrets.py
+
+# ============================================================================
+# BACKUP & TEMPORARY FILES
+# ============================================================================
 *.bak
 *.backup
+*.tmp
+*.temp
+*.old
+*.orig
+*.save
+*~
+*.swp
+
+# ============================================================================
+# TESTING & COVERAGE
+# ============================================================================
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.pytest_cache/
+.pytest/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# ============================================================================
+# DOCUMENTATION BUILD
+# ============================================================================
+docs/_build/
+docs/_static/
+docs/_templates/
+site/
+
+# ============================================================================
+# NODE.JS (if using frontend tools)
+# ============================================================================
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# ============================================================================
+# REDIS DUMP
+# ============================================================================
+dump.rdb
+
+# ============================================================================
+# ERROR LOGS & DEBUG FILES
+# ============================================================================
+debug.log
+error.log
+*.log.*
+
+# Test scripts (optional - remove if you want to commit tests)
+test_*.py
+diagnose_*.py
+check_*.py
+verify_*.py
+
+# ============================================================================
+# PROJECT SPECIFIC
+# ============================================================================
+# Uploaded resumes and files
+*.pdf
+*.doc
+*.docx
+data/**/*.pdf
+data/**/*.doc
+data/**/*.docx
+
+# Large files
+*.zip
+*.tar.gz
+*.rar
+
+# Compiled translations
+*.mo
+
+# Cache directories
+.cache/
+*.cache
+
+# Local development files
+local/
+local_*
