@@ -416,3 +416,209 @@ class ResumeProcessing(models.Model):
             models.Index(fields=['user', 'status']),
             models.Index(fields=['status', 'created_at']),
         ]
+
+
+class ErrorLog(models.Model):
+    """
+    Comprehensive error logging model for tracking application errors.
+    Captures internal errors only (excludes library/framework errors).
+    """
+    # User Information
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='error_logs',
+        help_text="User who encountered the error (if authenticated)"
+    )
+    
+    # Error Details
+    error_type = models.CharField(
+        max_length=255,
+        db_index=True,
+        help_text="Type of exception (e.g., ValueError, KeyError)"
+    )
+    error_message = models.TextField(
+        help_text="Error message from the exception"
+    )
+    error_traceback = models.TextField(
+        help_text="Full traceback of the error"
+    )
+    error_hash = models.CharField(
+        max_length=64,
+        db_index=True,
+        help_text="Unique hash for error deduplication (file+function+line+type)"
+    )
+    
+    # Source Location (Internal Files Only)
+    file_path = models.CharField(
+        max_length=500,
+        db_index=True,
+        help_text="Relative path to the file where error occurred"
+    )
+    function_name = models.CharField(
+        max_length=255,
+        db_index=True,
+        help_text="Function/method name where error occurred"
+    )
+    line_number = models.IntegerField(
+        help_text="Line number where error occurred"
+    )
+    
+    # Request Context
+    request_method = models.CharField(
+        max_length=10,
+        blank=True,
+        null=True,
+        help_text="HTTP method (GET, POST, PUT, DELETE, etc.)"
+    )
+    request_path = models.CharField(
+        max_length=2000,
+        blank=True,
+        null=True,
+        db_index=True,
+        help_text="URL path that triggered the error"
+    )
+    request_data = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text="Request GET/POST data (sensitive data filtered)"
+    )
+    
+    # Client Information
+    ip_address = models.GenericIPAddressField(
+        null=True,
+        blank=True,
+        help_text="Client IP address"
+    )
+    user_agent = models.TextField(
+        blank=True,
+        null=True,
+        help_text="Browser user agent string"
+    )
+    
+    # Response Information
+    status_code = models.IntegerField(
+        default=500,
+        help_text="HTTP status code returned"
+    )
+    
+    # Resolution Tracking
+    is_resolved = models.BooleanField(
+        default=False,
+        db_index=True,
+        help_text="Whether this error has been resolved"
+    )
+    resolved_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="When the error was marked as resolved"
+    )
+    resolved_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='resolved_errors',
+        help_text="User who resolved the error"
+    )
+    resolution_notes = models.TextField(
+        blank=True,
+        null=True,
+        help_text="Notes about how the error was resolved"
+    )
+    
+    # Occurrence Tracking
+    occurrence_count = models.IntegerField(
+        default=1,
+        help_text="Number of times this exact error has occurred"
+    )
+    first_occurred = models.DateTimeField(
+        auto_now_add=True,
+        help_text="When this error first occurred"
+    )
+    last_occurred = models.DateTimeField(
+        auto_now=True,
+        db_index=True,
+        help_text="Most recent occurrence of this error"
+    )
+    
+    # Severity Level
+    SEVERITY_CHOICES = [
+        ('low', 'Low'),
+        ('medium', 'Medium'),
+        ('high', 'High'),
+        ('critical', 'Critical'),
+    ]
+    severity = models.CharField(
+        max_length=20,
+        choices=SEVERITY_CHOICES,
+        default='medium',
+        db_index=True,
+        help_text="Error severity level"
+    )
+    
+    # Environment Information
+    environment = models.CharField(
+        max_length=50,
+        default='development',
+        help_text="Environment where error occurred (development/production)"
+    )
+    
+    # Timestamps
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True,
+        help_text="When this error record was created"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        help_text="When this error record was last updated"
+    )
+    
+    class Meta:
+        db_table = 'error_logs'
+        verbose_name = 'Error Log'
+        verbose_name_plural = 'Error Logs'
+        ordering = ['-last_occurred']
+        indexes = [
+            models.Index(fields=['error_type', 'is_resolved']),
+            models.Index(fields=['file_path', 'function_name']),
+            models.Index(fields=['is_resolved', '-last_occurred']),
+            models.Index(fields=['severity', '-created_at']),
+            models.Index(fields=['error_hash', '-last_occurred']),
+        ]
+    
+    def __str__(self):
+        return f"{self.error_type} in {self.function_name} (Line {self.line_number}) - {self.last_occurred.strftime('%Y-%m-%d %H:%M:%S')}"
+    
+    def get_severity_badge_class(self):
+        """Get Bootstrap badge class for severity level"""
+        severity_classes = {
+            'low': 'bg-info',
+            'medium': 'bg-warning',
+            'high': 'bg-danger',
+            'critical': 'bg-dark'
+        }
+        return severity_classes.get(self.severity, 'bg-secondary')
+    
+    def get_short_file_path(self):
+        """Get shortened file path for display"""
+        if len(self.file_path) > 50:
+            return '...' + self.file_path[-47:]
+        return self.file_path
+    
+    def mark_resolved(self, user=None, notes=''):
+        """Mark this error as resolved"""
+        from django.utils import timezone
+        self.is_resolved = True
+        self.resolved_at = timezone.now()
+        self.resolved_by = user
+        self.resolution_notes = notes
+        self.save()
+    
+    def increment_occurrence(self):
+        """Increment occurrence count for duplicate errors"""
+        self.occurrence_count += 1
+        self.save(update_fields=['occurrence_count', 'last_occurred', 'updated_at'])
