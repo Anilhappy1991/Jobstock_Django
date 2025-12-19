@@ -1,0 +1,25 @@
+{% for item in jobs9 %}
+    <div class="col-xl-6 col-lg-12 col-md-12">
+        <div class="jbs-list-box border">
+            <div class="jbs-list-head">
+                <div class="jbs-list-head-thunner">
+                    <div class="jbs-list-emp-thumb jbs-verified"><a href="{% url 'App:job_detail' title=item.title|slugify %}"><figure><img src="{{ item.img }}" class="img-fluid" alt=""></figure></a></div>
+                    <div class="jbs-list-job-caption">
+                        <div class="jbs-job-employer-wrap"><span>{{ item.name }}</span></div>
+                        <div class="jbs-job-title-wrap"><h4><a href="{% url 'App:job_detail' title=item.title|slugify %}" class="jbs-job-title">{{ item.title }}</a></h4></div>
+                    </div>
+                </div>
+                <div class="jbs-list-head-last">
+                    <a href="JavaScript:Void(0);" class="btn btn-md btn-main px-4">Quick Apply</a>
+                </div>
+            </div>
+            <div class="jbs-list-caption">
+                <div class="jbs-info-ico-style">
+                    <div class="jbs-single-y1 style-1"><span><i class="fa-solid fa-location-dot"></i></span>{{ item.location }}</div>
+                    <div class="jbs-single-y1 style-2"><span><i class="fa-solid fa-clock"></i></span>{{ item.time }}</div>
+                    <div class="jbs-single-y1 style-3"><span><i class="fa-solid fa-coins"></i></span>{{ item.years }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

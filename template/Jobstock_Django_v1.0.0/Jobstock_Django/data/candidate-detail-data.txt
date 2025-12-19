@@ -1,0 +1,175 @@
+from App.models import Candidate
+from django.utils.text import slugify
+
+# Define the candidate data
+candidates = [
+        {
+            'id' : 1,
+            'img' : '/static/app/img/team-1.jpg', 
+            'title' : 'Kr. Shaurya Preet',
+            'subtitle' : 'Sr. Web Designer',
+            'number' : '70/H',
+            'years' : '5 Years exp.',
+            'btn' : 'Message',
+            'btn1' : 'View Detail',
+        },
+        {
+            'id' : 2,
+            'img' : '/static/app/img/team-2.jpg', 
+            'title' : 'Leila T. Lindsey',
+            'subtitle' : 'Magento Expert',
+            'number' : '70/H',
+            'years' : '5 Years exp.',
+            'btn' : 'Message',
+            'btn1' : 'View Detail',
+        },
+        {
+            'id' : 3,
+            'img' : '/static/app/img/team-3.jpg', 
+            'title' : 'Amie L. Brown',
+            'subtitle' : 'WordPress Developer',
+            'number' : '70/H',
+            'years' : '5 Years exp.',
+            'btn' : 'Message',
+            'btn1' : 'View Detail',
+        },
+        {
+            'id' : 4,
+            'img' : '/static/app/img/team-4.jpg', 
+            'title' : 'Darrel T. Turner',
+            'subtitle' : 'Jr. SEO Expert',
+            'number' : '70/H',
+            'years' : '5 Years exp.',
+            'btn' : 'Message',
+            'btn1' : 'View Detail',
+        },
+        {
+            'id' : 5,
+            'img' : '/static/app/img/team-5.jpg', 
+            'title' : 'Michael B. Arellano',
+            'subtitle' : 'Front Designer',
+            'number' : '70/H',
+            'years' : '5 Years exp.',
+            'btn' : 'Message',
+            'btn1' : 'View Detail',
+        },
+        {
+            'id' : 6,
+            'img' : '/static/app/img/team-6.jpg', 
+            'title' : 'Kum K. Sellers',
+            'subtitle' : 'PHP Developer',
+            'number' : '70/H',
+            'years' : '5 Years exp.',
+            'btn' : 'Message',
+            'btn1' : 'View Detail',
+        },
+        {
+            'id' : 7,
+            'img' : '/static/app/img/team-7.jpg', 
+            'title' : 'Debbie W. Wilson',
+            'subtitle' : 'App Developer',
+            'number' : '70/H',
+            'years' : '5 Years exp.',
+            'btn' : 'Message',
+            'btn1' : 'View Detail',
+        },
+        {
+            'id' : 8,
+            'img' : '/static/app/img/team-8.jpg', 
+            'title' : 'Peggy J. Arnold',
+            'subtitle' : 'Content Writer',
+            'number' : '70/H',
+            'years' : '5 Years exp.',
+            'btn' : 'Message',
+            'btn1' : 'View Detail',
+        },
+        {
+            'id' : 9,
+            'img' : '/static/app/img/team-9.jpg', 
+            'title' : 'Wanda D. Smith',
+            'subtitle' : 'Sr. PHP Developer',
+            'number' : '40/H',
+            'years' : '2 Years exp.',
+            'btn' : 'Message',
+            'btn1' : 'View Detail',
+        },
+        {
+            'id' : 10,
+            'img' : '/static/app/img/team-10.jpg', 
+            'title' : 'Elaine W. Cook',
+            'subtitle' : 'Sr. Team Leader',
+            'number' : '65/H',
+            'years' : '7 Years exp.',
+            'btn' : 'Message',
+            'btn1' : 'View Detail',
+        },
+        {
+            'id' : 11,
+            'img' : '/static/app/img/team-11.jpg', 
+            'title' : 'Raymond H. Cato',
+            'subtitle' : 'UI/UX Designer',
+            'number' : '50/H',
+            'years' : '4 Years exp.',
+            'btn' : 'Message',
+            'btn1' : 'View Detail',
+        },
+        {
+            'id' : 12,
+            'img' : '/static/app/img/team-12.jpg', 
+            'title' : 'Ruth W. Guzman',
+            'subtitle' : 'UI/UX Designer',
+            'number' : '40/H',
+            'years' : '3 Years exp.',
+        },
+        {
+            'id' : 13,
+            'img' : '/static/app/img/team-13.jpg', 
+            'title' : 'Shawnda J. Turner',
+            'subtitle' : 'WordPress Developer',
+            'number' : '35/H',
+            'years' : '2 Years exp.',
+        },
+        {
+            'id' : 14,
+            'img' : '/static/app/img/team-14.jpg', 
+            'title' : 'Wlaine W. Cooke',
+            'subtitle' : 'PHP Developer',
+            'number' : '30/H',
+            'years' : '2 Years exp.',
+        },
+        {
+            'id' : 15,
+            'img' : '/static/app/img/team-15.jpg', 
+            'title' : 'Jean H. Meyer',
+            'subtitle' : 'Front-End Designer',
+            'number' : '45/H',
+            'years' : '5 Years exp.',
+        }
+    ]
+
+# Loop through the data and create candidate entries
+for candidate in candidates:
+    new_candidate = Candidate.objects.create(
+        id=candidate['id'],
+        title=candidate['title'],
+        subtitle=candidate['subtitle'],
+        img=candidate['img'],
+    )
+    
+    new_candidate.slug = slugify(new_candidate.title)
+    new_candidate.save()
+----------------------------------------------
+#check candidate data
+-----------------------------------------------
+from App.models import Candidate
+
+candidates = Candidate.objects.all()
+for candidate in candidates:
+    print(candidate.title, candidate.subtitle, candidate.img, candidate.slug)
+
+-------------------------------------------------
+#delete candidate data
+-------------------------------------------------
+from App.models import Candidate
+
+Candidate.objects.all().delete()

@@ -1,0 +1,281 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar2.html' %}
+			
+<!-- Hero Banner Start -->
+<div class="image-cover hero-header">
+	<div class="container">
+
+		<div class="row justify-content-between align-items-center">
+			<div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 pe-xl-5 pe-lg-4">
+				<h6 class="text-main bg-light-main py-2 pe-3 ps-2 rounded-5 fw-medium d-inline-flex align-items-center mb-3"><span class="bg-main label rounded-pill me-2">New</span>Hire with hourly basis</h6>
+				<h1 class="mb-4">Remote Work Platform For Digital Team</h1>
+				<p class="fs-5">Getting a new job is never easy. Check what new jobs we have in store for you on JobStock.</p>
+				<div class="position-relative mt-4">
+					<div class="bg-dot light w-100 h-2 position-relative"><span class="escolls square--30 circle d-inline-flex align-items-center justify-content-center bg-white fw-medium text-main position-absolute start-50 top-5">OR</span></div>
+				</div>
+				<div class="upload-boxs">
+					<div class="filedrop_box">
+						<header>
+							<h4>Select File here</h4>
+						</header>
+						<p>Files Supported: PDF, TEXT, DOC , DOCX</p>
+						<input type="file" hidden accept=".doc,.docx,.pdf" id="fileID" style="display:none;">
+						<button class="btn btn-md btn-main fw-medium rounded-1">Choose Your File</button>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xl-5 col-lg-5 col-md-12 col-sm-12">
+				<div class="exluo-bg bg-cover p-xl-5 p-3 rounded-5 position-relative mt-lg-0 mt-4" style="background:url({% static 'app/img/form-bg-2.png' %})no-repeat;">
+					<div class="hero-search-wrap shadow">
+						<div class="hero-search">
+							<h1>Find Your job</h1>
+							<p>There are millions of jobs for your career and future. Apply and injoy now.</p>
+						</div>
+						<div class="hero-search-content verticle-space">
+							<div class="row">
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+									<div class="form-group">
+										<div class="input-with-icon">
+											<input type="text" class="form-control border" placeholder="Search Job Keywords..">
+											<i class="bi bi-search text-main fs-5"></i>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+									<div class="form-group">
+										<div class="input-with-icon">
+											<input type="text" class="form-control border" placeholder="Location">
+											<i class="bi bi-crosshair fs-5 text-main"></i>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+									<div class="form-group">
+										<label>Specialist</label>
+										<select class="form-control">
+											<option value="1">Banking & Tech</option>
+											<option value="2">IT & Consultancy</option>
+											<option value="3">Auto & Mobile</option>
+											<option value="4">Health Care</option>
+											<option value="5">Finance Services</option>
+											<option value="6">Marketing Jobs</option>
+											<option value="7">Graphic Design</option>
+										</select>
+									</div>
+								</div>
+								
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+									<button type="submit" class="btn btn-main full-width">Search Result</button>
+								</div>
+							
+							</div>
+						</div>
+				
+					</div>
+					
+					<div class="position-absolute start-0 top-0"><div class="square--50 bg-white shadow circle text-info fs-4 animate-bounce"><i class="fa-brands fa-algolia"></i></div></div>
+					<div class="position-absolute start-0 bottom-0 pb-4 ps-4"><div class="square--50 shadow circle bg-white text-danger fs-4 animate-leftright"><i class="fa-solid fa-fire"></i></div></div>
+					<div class="position-absolute end-0 top-0 pt-5 pe-4"><div class="square--50 shadow circle bg-white text-warning fs-4 animate-leftright"><i class="fa-solid fa-business-time"></i></div></div>
+					<div class="position-absolute end-0 bottom-0"><div class="square--50 shadow circle bg-white text-main fs-4 animate-bounce"><i class="fa-solid fa-layer-group"></i></div></div>
+				</div>
+			</div>
+			
+		</div>
+			
+	</div>
+</div>
+<!-- Hero Banner End -->
+
+<!-- Our Partners Start -->
+<section class="bg-second min">
+	<div class="container">
+		
+		<div class="row justify-content-center mb-2">
+			<div class="col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center mb-4">
+					<h5 class="text-light opacity-75 fw-medium">The fastedt-growing companies use JobStock</h5>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row align-items-center justify-content-center row-cols-xl-5 row-cols-lg-5 row-cols-md-3 row-cols-3 gx-3 gy-3">
+				
+			<!-- Components/Home/home-2/companies2.html -->
+            {% include 'Components/Home/home-2/companies2.html' %}
+
+		</div>
+		
+	</div>
+</section>
+<div class="clearfix"></div>
+<!-- Our Partners End -->
+
+<!-- Explore Categories Start -->
+<section>
+	<div class="container">
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Explore Best Categories</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row gx-4 gy-4 justify-content-center">
+				
+			<!-- Components/Home/index/categories.html -->
+            {% include 'Components/Home/index/categories.html' %}
+			
+		</div>
+		
+	</div>	
+</section>
+<!-- Explore Categories End -->
+
+<!-- Valuable Step Start -->
+<section class="bg-second">
+	<div class="container">
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center light">
+					<h2>Choose What You Need</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row align-items-center gx-4 gy-4">
+		
+			<!-- Components/Home/home-2/need.html -->
+            {% include 'Components/Home/home-2/need.html' %}
+		
+		</div>
+		
+	</div>
+</section>
+<!-- Valuable Step End -->
+
+<!-- Featured Jobs Start -->
+<section>
+	<div class="container">
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Featured Jobs</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-xl-3 gx-3 gy-4">
+		
+			<!-- Components/Home/index/jobs.html -->
+            {% include 'Components/Home/index/jobs.html' %}				
+			
+		</div>
+		
+	</div>
+</section>
+<!-- Featured Jobs End -->
+
+<!-- Explore Top Companies Start -->
+<section class="gray-simple">
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Explore Top Companies</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row justify-content-center gx-xl-3 gx-3 gy-4">
+		
+			<!-- Components/Home/home-4/employer.html -->
+            {% include 'Components/Home/home-4/employer.html' %}						
+			
+		</div>
+		
+	</div>		
+</section>
+<!-- Explore Top Companies End -->
+
+<!-- Hire Experts Start -->
+<section>
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Hire Talents & Experts</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row justify-content-center gx-4 gy-4">
+		
+			<!-- Components/Home/home-5/candidate2.html -->
+            {% include 'Components/Home/home-5/candidate2.html' %}
+			
+		</div>
+		
+	</div>		
+</section>
+<!-- Hire Experts End -->
+
+<!-- Side Caption Start -->
+<div class="position-relative">
+	<div class="container">
+			
+		<!-- Components/Home/home-5/platform.html -->
+        {% include 'Components/Home/home-5/platform.html' %}
+		
+		<!-- End Row -->
+	</div>
+</div>
+<!-- Side Caption End -->
+
+<!-- Good Reviews By Customers -->
+<section>
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<div class="col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Good Reviews By Customers</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-4 gy-4">
+			
+			<!-- Components/Home/index/reviews.html -->
+			{% include 'Components/Home/index/reviews.html' %}
+			
+		</div>
+		
+	</div>	
+</section>
+<!-- Good Reviews By Customers -->
+			
+<!-- Components/Home/home-5/find3.html -->
+{% include 'Components/Home/home-5/find3.html' %}
+				
+<!-- Components/Home/index/log.html -->
+{% include 'Components/Home/index/log.html' %}
+
+{% include 'Base/footer.html' %} 
+
+{% endblock %}

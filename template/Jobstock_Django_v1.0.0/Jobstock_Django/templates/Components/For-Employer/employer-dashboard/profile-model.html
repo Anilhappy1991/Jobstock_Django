@@ -1,0 +1,170 @@
+<!-- Award Modal -->
+<div class="modal fade" id="award" tabindex="-1" role="dialog" aria-labelledby="messagemodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered award-pop-form" role="document">
+        <div class="modal-content" id="awardmodal">
+            <span class="mod-close" data-bs-dismiss="modal" aria-hidden="true"><i class="fas fa-close"></i></span>
+            <div class="modal-body">
+                <div class="text-center">
+                    <h4 class="mb-3">Add your Award</h4>
+                </div>
+                <div class="added-form">
+                    <form>
+                        <div class="row mb-3">
+                            <label class="col-md-12 col-form-label">Award Title</label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control">
+                            </div>
+                        </div> 
+                        <div class="row mb-3">
+                            <label class="col-md-12 col-form-label">Award Year</label>
+                            <div class="col-md-12">
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-md-12 col-form-label">Description</label>
+                            <div class="col-md-12">
+                                <textarea class="form-control ht-80"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn full-width btn-main">Save Award</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
+<!-- Verify Email Modal -->
+<div class="modal modal-lg fade" id="verifyemail" tabindex="-1" role="dialog" aria-labelledby="verifyemailmodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" id="verifyemailmodal">
+            <span class="mod-close" data-bs-dismiss="modal" aria-hidden="true"><i class="fas fa-close"></i></span>
+            <div class="modal-body p-5">
+                <div class="verify-email-wrap mb-5">
+                    <div class="icon-wrap text-center mb-4">
+                        <img src="{% static 'app/img/verify-email-icon.svg' %}" class="img-fluid mx-auto" width="140" alt="Image">
+                    </div>
+                    
+                    <div class="message-wrap text-center d-block mb-4">
+                        <h4 class="mb-4">Verify your email address</h4>
+                        <h6 class="fw-normal">You've entered shreethemes@gmail.com as the email address for your account.</h6>
+                        <p>Please verify this email adress by clicking button bellow</p>
+                    </div>
+                    
+                    <div class="button-wrap text-center">
+                        <a href="#" class="btn btn-main px-5">Verify your email</a>
+                    </div>
+                    
+                </div>
+                
+                <div class="other-option text-center">
+                    <p class="m-0"><span class="text-md">Or copy and paste this link into your browser</span><a/p>
+                    <p class="m-0">
+                        <a href="#" class="text-main">https://www.Email-Verification-Verifying-your-email-address-when-you-sign-up</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
+<!-- Verify Mobile Modal -->
+<div class="modal fade" id="verifyphone" tabindex="-1" role="dialog" aria-labelledby="verifyphonemodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" id="verifyphonemodal">
+            <span class="mod-close" data-bs-dismiss="modal" aria-hidden="true"><i class="fas fa-close"></i></span>
+            <div class="modal-body py-5 px-md-5 px-4">
+                <div class="verify-email-wrap mb-5">
+                    <div class="icon-wrap text-center mb-4">
+                        <img src="{% static 'app/img/mobile-verify-1.png' %}" class="img-fluid mx-auto" width="140" alt="Image">
+                    </div>
+                    
+                    <div class="message-wrap text-center d-block mb-4">
+                        <h4 class="mb-1">Verify your Mobile Number</h4>
+                        <p class="fw-normal">Please enter your mobile number to recieve a verification code.</p>
+                    </div>
+                    
+                    <div class="button-wrap text-center d-flex flex-column gap-4">
+                        <div class="form-group position-relative m-0">
+                            <input type="tel" class="form-control ps-5 fs-6" placeholder="586 875 9523">
+                            <div class="mobile-prefix position-absolute top-50 start-0 translate-middle-y ms-3"><span class="fw-medium">+91</span></div>
+                        </div>
+                        <button type="button" class="btn btn-main px-5" data-bs-target="#otpmodal" data-bs-toggle="modal">Continue<i class="bi bi-arrow-right ms-2"></i></button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
+<!-- OTP Verification Modal -->
+<div class="modal fade" id="otpmodal" tabindex="-1" role="dialog" aria-labelledby="otpmodalmodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" id="otpmodalmodal">
+            <span class="mod-close" data-bs-dismiss="modal" aria-hidden="true"><i class="fas fa-close"></i></span>
+            <div class="modal-body py-5 px-md-5 px-4">
+                <div class="verify-email-wrap mb-5">
+                    <div class="icon-wrap text-center mb-4">
+                        <img src="{% static 'app/img/mobile-verify-2.png' %}" class="img-fluid mx-auto" width="140" alt="Image">
+                    </div>
+                    
+                    <div class="message-wrap text-center d-block mb-4">
+                        <h4 class="mb-1">OTP Verification</h4>
+                        <p class="fw-normal">An 6-digit code has been send to <a href="#" class="text-dark fw-medium">+91 256 584 5236</a>.<a href="#" class="text-main">Change</a></p>
+                    </div>
+                    
+                    <div class="button-wrap text-center d-flex flex-column gap-2">
+                        <div class="form-group mb-3 d-flex align-items-center justify-content-center gap-3">
+                            <input type="text" class="form-control fs-6 text-center" maxlength="1" oninput="moveToNext(this)" autofocus placeholder="-">
+                            <input type="text" class="form-control fs-6 text-center" maxlength="1" oninput="moveToNext(this)" placeholder="-">
+                            <input type="text" class="form-control fs-6 text-center" maxlength="1" oninput="moveToNext(this)" placeholder="-">
+                            <input type="text" class="form-control fs-6 text-center" maxlength="1" oninput="moveToNext(this)" placeholder="-">
+                            <input type="text" class="form-control fs-6 text-center" maxlength="1" oninput="moveToNext(this)" placeholder="-">
+                            <input type="text" class="form-control fs-6 text-center" maxlength="1" oninput="moveToNext(this)" placeholder="-">
+                        </div>
+                        <button type="button" class="btn btn-main px-5" data-bs-target="#successmodal" data-bs-toggle="modal">Verify & Proceed</button>
+                        <p class="fw-normal">Don't recieve the OTP? <a href="#" class="text-main fw-medium text-uppercase">Resend OTP</a></p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
+<!-- Success Modal -->
+<div class="modal fade" id="successmodal" tabindex="-1" role="dialog" aria-labelledby="successmodalmodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" id="successmodalmodal">
+            <span class="mod-close" data-bs-dismiss="modal" aria-hidden="true"><i class="fas fa-close"></i></span>
+            <div class="modal-body py-5 px-md-5 px-4">
+                <div class="verify-email-wrap mb-5">
+                    <div class="icon-wrap text-center mb-4">
+                        <img src="{% static 'app/img/successfully.png' %}" class="img-fluid mx-auto" width="140" alt="Image">
+                    </div>
+                    
+                    <div class="message-wrap text-center d-block mb-4">
+                        <h4 class="mb-1">Mobile Number Verified Successfully</h4>
+                        <p class="fw-normal">Now go to your profile and search & apply jobs.</p>
+                    </div>
+                    
+                    <div class="button-wrap text-center d-flex flex-column">
+                        <a href="{% url 'App:index' %}" class="btn btn-main px-5">Go To Home</a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->

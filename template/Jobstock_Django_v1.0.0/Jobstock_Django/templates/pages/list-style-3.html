@@ -1,0 +1,98 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar5.html' %}
+			
+<!-- Page Title Start -->
+<div class="page-title bg-main" style="background:url({% static 'app/img/bg2.png' %}) no-repeat;">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12">
+				
+				<h2 class="ipt-title">Job Style List 03</h2>
+				<div class="breadcrumbs light">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="JavaScript:Void(0);">Home</a></li>
+							<li class="breadcrumb-item"><a href="JavaScript:Void(0);">Candidate</a></li>
+							<li class="breadcrumb-item active" aria-current="page">Job List 03</li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Page Title End -->
+
+<!-- All List Wrap -->
+<section>
+	<div class="container">
+		<div class="row">
+		
+			<!-- Search Sidebar -->
+			<div class="col-lg-3 col-md-12 col-sm-12">
+				<div class="side-widget-blocks">							
+				
+					<!-- Components/For-Candidate/Browse-Jobs/grid-style-1/search.html -->
+           	 		{% include 'Components/For-Candidate/Browse-Jobs/grid-style-1/search.html' %}
+												
+					<!-- Components/For-Candidate/Browse-Jobs/list-style-1/property2.html -->
+           	 		{% include 'Components/For-Candidate/Browse-Jobs/list-style-1/property2.html' %}
+
+				</div>							
+			</div>
+			<!-- Sidebar End -->
+			
+			<!-- Job List Wrap -->
+			<div class="col-lg-9 col-md-12 col-sm-12">
+				<!-- Job Alert Box -->
+				<div class="row justify-content-center">
+				
+					<!-- Components/For-Candidate/Browse-Jobs/list-style-1/alert2.html -->
+           	 		{% include 'Components/For-Candidate/Browse-Jobs/list-style-1/alert2.html' %}
+					
+				</div>
+				<!-- Job Alert Box End -->
+				
+				<!-- Shorting Box -->
+				<div class="row justify-content-center mb-4">
+					<div class="col-lg-12 col-md-12">
+							
+						<!-- Components/For-Candidate/Browse-Jobs/grid-style-1/results.html -->
+           	 			{% include 'Components/For-Candidate/Browse-Jobs/grid-style-1/results.html' %}
+
+					</div>
+				</div>
+				<!-- Shorting Wrap End -->
+				
+				<!-- Start All List -->
+				<div class="row justify-content-start gx-3 gy-4">
+
+					<!-- Components/For-Candidate/Browse-Jobs/list-style-3/jobs14.html -->
+           	 		{% include 'Components/For-Candidate/Browse-Jobs/list-style-3/jobs14.html' %}
+					
+				</div>
+				<!-- End All Job List -->
+				
+				<!-- Components/For-Candidate/Browse-Jobs/grid-style-1/pagination.html -->
+           	 	{% include 'Components/For-Candidate/Browse-Jobs/grid-style-1/pagination.html' %}
+
+			</div>
+			<!-- Job List Wrap End-->
+			
+		</div>
+	</div>		
+</section>
+<!-- All List Wrap -->
+			
+<!-- Components/Home/home-4/find2.html -->
+{% include 'Components/Home/home-4/find2.html' %}
+			
+<!-- Components/Home/index/log.html -->
+{% include 'Components/Home/index/log.html' %}
+
+{% include 'Base/footer2.html' %} 
+
+{% endblock %}

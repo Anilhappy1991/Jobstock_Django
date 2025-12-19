@@ -1,0 +1,27 @@
+{% for item in employers|slice:"0:8" %}
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+        <div class="emp-grid-blocs border">
+            
+            <div class="emp-grid-thumbs">
+                <a href="{% url 'App:employer_detail' title=item.title|slugify %}"><figure><img src="{{ item.img }}" class="img-fluid" alt=""></figure></a>	
+            </div>
+            
+            <div class="emp-grid-captions">
+                <div class="emplors-job-types-wrap"><span class="text-sm-muted">{{ item.name }}</span></div>
+                <div class="emplors-job-title-wrap mb-1">
+                    <h4><a href="{% url 'App:employer_detail' title=item.title|slugify %}" class="emplors-job-title">{{ item.title }}</a></h4>
+                </div>
+                <div class="emplors-job-mrch-lists">
+                    <div class="single-mrch-lists">
+                        <span><i class="fa-solid fa-location-dot me-1"></i>{{ item.location }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="emp-grid-footrs">
+                <div class="emp-flexio"><span class="label px-4 py-2 text-main bg-light-main">{{ item.open }}</span></div>
+            </div>
+            
+        </div>	
+    </div>
+{% endfor %}

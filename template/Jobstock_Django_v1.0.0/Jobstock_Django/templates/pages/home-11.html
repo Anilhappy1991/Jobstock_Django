@@ -1,0 +1,181 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar2.html' %}
+			
+<!-- Hero Banner Start -->
+<div class="image-bg py-5 bg-second position-relative" data-overlay="0">
+	<div class="container py-5 z-2 position-relative">
+		<div class="row justify-content-center">
+			<div class="col-lg-9 col-md-11 col-sm-12">
+				<div class="inner-banner-text text-center">
+					<div class="inner-banner-eclips mb-3"><span class="label p-2 px-4 rounded-5 fw-medium text-light bg-main">Get Your Hot Jobs</span></div>
+					<h1>Find Your Dream Job Today</h1>
+					<p class="fs-5">Explore Hundreds of Opportunities!</p>
+				</div>
+				<div class="search-from-clasic mt-5">
+					<div class="hero-search-content shadow-sm">
+						<div class="row">
+						
+							<div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 pe-xl-0 pe-lg-0 pe-md-0">
+								<div class="classic-search-box">
+									<div class="form-group full">
+										<div class="input-with-icon">
+											<input type="text" class="form-control fs-6" placeholder="Skills, Designations, Keyword">
+											<img src="{% static 'app/img/pin.svg' %}" width="20" alt="">
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
+								<div class="form-group">
+									<button type="submit" class="btn btn-main full-width">Search Job</button>
+								</div>
+							</div>
+									
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<div class="position-absolute start-0 bottom-0 d-none d-lg-block z-1"><img src="{% static 'app/img/banner-cap-1.png' %}" class="img-fluid" alt="Image"></div>
+	<div class="position-absolute end-0 bottom-0 d-none d-lg-block z-1"><img src="{% static 'app/img/banner-cap-2.png' %}" class="img-fluid" alt="Image"></div>
+</div>
+<!-- Hero Banner End -->
+
+<!-- Featured Jobs Start -->
+<section>
+	<div class="container">
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Featured Jobs</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-xl-3 gx-3 gy-4">
+		
+			<!-- Components/Home/index/jobs.html -->
+            {% include 'Components/Home/index/jobs.html' %}				
+			
+		</div>
+		
+	</div>
+</section>
+<!-- Featured Jobs End -->
+
+<!-- Top Job Categories Start -->
+<section class="gray-simple">
+	<div class="container">
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Explore Top Categories</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-4 gy-4">
+			
+			<!-- Components/Home/home-8/categories3.html -->
+            {% include 'Components/Home/home-8/categories3.html' %}
+		
+		</div>
+		
+	</div>
+</section>
+<!-- Top Job Categories End -->
+
+<!-- Why Choose Us Start -->
+<section class="pb-4">
+	<div class="container">
+		
+		<!-- Components/Home/home-8/popular3.html -->
+        {% include 'Components/Home/home-8/popular3.html' %}
+		
+	</div>
+</section>
+<div class="clearfix"></div>
+<!-- Why Choose Us End -->
+
+<!-- Why Choose Us Start -->
+<section class="pt-0">
+	<div class="container">
+		
+		<!-- Components/Home/home-8/platform2.html -->
+        {% include 'Components/Home/home-8/platform2.html' %}
+	
+	</div>
+</section>
+<div class="clearfix"></div>
+<!-- Why Choose Us End -->
+
+<!-- Components/Home/index/video.html -->
+{% include 'Components/Home/index/video.html' %}			
+
+<!-- Good Reviews By Customers -->
+<section class="gray">
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<div class="col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Good Reviews By Customers</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-4 gy-4">
+			
+			<!-- Components/Home/index/reviews.html -->
+			{% include 'Components/Home/index/reviews.html' %}
+			
+		</div>
+		
+	</div>	
+</section>
+<!-- Good Reviews By Customers -->
+
+<!-- Our Price End -->
+<section>
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<div class="col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Explore our Prices</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-4 gy-4">
+			
+			<!-- Components/Home/home-9/prices.html -->
+            {% include 'Components/Home/home-9/prices.html' %}
+			
+		</div>
+		
+	</div>	
+</section>
+<!-- Our Price End -->
+			
+<!-- Components/Home/home-11/working4.html -->
+{% include 'Components/Home/home-11/working4.html' %}
+
+<!-- Components/Home/index/log.html -->
+{% include 'Components/Home/index/log.html' %}
+			
+{% include 'Base/footer3.html' %} 
+
+{% endblock %}

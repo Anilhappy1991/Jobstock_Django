@@ -1,0 +1,168 @@
+[INFO] 2025-12-19 06:58:30 views ================================================================================
+[INFO] 2025-12-19 06:58:30 views EMPLOYER SUBMIT JOB VIEW CALLED
+[INFO] 2025-12-19 06:58:30 views Method: GET
+[INFO] 2025-12-19 06:58:30 views User: rituranjan.gupta2@gmail.com
+[INFO] 2025-12-19 06:58:30 views Authenticated: True
+[INFO] 2025-12-19 06:59:18 views ================================================================================
+[INFO] 2025-12-19 06:59:18 views EMPLOYER SUBMIT JOB VIEW CALLED
+[INFO] 2025-12-19 06:59:18 views Method: GET
+[INFO] 2025-12-19 06:59:18 views User: rituranjan.gupta2@gmail.com
+[INFO] 2025-12-19 06:59:18 views Authenticated: True
+[INFO] 2025-12-19 07:08:08 views ================================================================================
+[INFO] 2025-12-19 07:08:09 views EMPLOYER SUBMIT JOB VIEW CALLED
+[INFO] 2025-12-19 07:08:10 views Method: POST
+[INFO] 2025-12-19 07:08:11 views User: rituranjan.gupta2@gmail.com
+[INFO] 2025-12-19 07:08:12 views Authenticated: True
+[INFO] 2025-12-19 07:08:42 views --------------------------------------------------------------------------------
+[INFO] 2025-12-19 07:08:43 views POST REQUEST RECEIVED - FORM SUBMITTED
+[INFO] 2025-12-19 07:08:43 views POST Data:
+[INFO] 2025-12-19 07:08:57 views   company_logo: 
+[INFO] 2025-12-19 07:08:57 views   job_title: aaaaaaaaaaaaaa
+[INFO] 2025-12-19 07:08:57 views   job_summary: <p>aaaaaaaaaaaaa</p>
+[INFO] 2025-12-19 07:08:57 views   responsibilities: <p>fffffffffff</p>
+[INFO] 2025-12-19 07:08:57 views   qualifications: <p>ffffffffffffffff</p>
+[INFO] 2025-12-19 07:08:57 views   job_category: banking_services
+[INFO] 2025-12-19 07:08:57 views   job_type: part_time
+[INFO] 2025-12-19 07:08:57 views   job_level: junior
+[INFO] 2025-12-19 07:08:57 views   experience: 2plus_years
+[INFO] 2025-12-19 07:08:57 views   qualification: 10th_class
+[INFO] 2025-12-19 07:08:57 views   gender: other
+[INFO] 2025-12-19 07:08:57 views   min_salary: 
+[INFO] 2025-12-19 07:08:57 views   max_salary: 
+[INFO] 2025-12-19 07:08:57 views   start_date: 
+[INFO] 2025-12-19 07:08:57 views   deadline: 
+[INFO] 2025-12-19 07:08:57 views   total_openings: 
+[INFO] 2025-12-19 07:08:57 views   job_fee_type: 
+[INFO] 2025-12-19 07:08:57 views   skills: 
+[INFO] 2025-12-19 07:08:57 views   permanent_address: 
+[INFO] 2025-12-19 07:08:57 views   temporary_address: 
+[INFO] 2025-12-19 07:08:57 views   country: 
+[INFO] 2025-12-19 07:08:57 views   state_city: 
+[INFO] 2025-12-19 07:08:57 views   zip_code: 
+[INFO] 2025-12-19 07:08:57 views   video_url: 
+[INFO] 2025-12-19 07:08:57 views   latitude: 
+[INFO] 2025-12-19 07:08:57 views   longitude: 
+[INFO] 2025-12-19 07:09:29 views --------------------------------------------------------------------------------
+[INFO] 2025-12-19 07:09:29 views CREATING JOB OBJECT
+[INFO] 2025-12-19 07:09:29 views Job Title: aaaaaaaaaaaaaa
+[INFO] 2025-12-19 07:09:29 views Salary Range: $None - $None
+[INFO] 2025-12-19 07:09:29 views --------------------------------------------------------------------------------
+[INFO] 2025-12-19 07:09:29 views SAVING JOB TO DATABASE
+[INFO] 2025-12-19 07:09:35 views ================================================================================
+[INFO] 2025-12-19 07:12:33 views ================================================================================
+[INFO] 2025-12-19 07:12:33 views EMPLOYER SUBMIT JOB VIEW CALLED
+[INFO] 2025-12-19 07:12:33 views Method: GET
+[INFO] 2025-12-19 07:12:33 views User: rituranjan.gupta2@gmail.com
+[INFO] 2025-12-19 07:12:33 views Authenticated: True
+[INFO] 2025-12-19 07:15:25 views ================================================================================
+[INFO] 2025-12-19 07:15:25 views EMPLOYER SUBMIT JOB VIEW CALLED
+[INFO] 2025-12-19 07:15:25 views Method: POST
+[INFO] 2025-12-19 07:15:25 views User: rituranjan.gupta2@gmail.com
+[INFO] 2025-12-19 07:15:25 views Authenticated: True
+[INFO] 2025-12-19 07:15:26 views --------------------------------------------------------------------------------
+[INFO] 2025-12-19 07:15:26 views POST REQUEST RECEIVED - FORM SUBMITTED
+[INFO] 2025-12-19 07:15:26 views POST Data:
+[INFO] 2025-12-19 07:15:26 views   company_logo: 
+[INFO] 2025-12-19 07:15:26 views   job_title: xxxxxx
+[INFO] 2025-12-19 07:15:26 views   job_summary: <p>aaaaaaaaaa</p>
+[INFO] 2025-12-19 07:15:26 views   responsibilities: <p>bbbbbbbbbbbb</p>
+[INFO] 2025-12-19 07:15:26 views   qualifications: <p>ccccccccccccccccc</p>
+[INFO] 2025-12-19 07:15:26 views   job_category: web_application_development
+[INFO] 2025-12-19 07:15:26 views   job_type: full_time
+[INFO] 2025-12-19 07:15:26 views   job_level: junior
+[INFO] 2025-12-19 07:15:26 views   experience: 1plus_years
+[INFO] 2025-12-19 07:15:26 views   qualification: 12th_class
+[INFO] 2025-12-19 07:15:26 views   gender: other
+[INFO] 2025-12-19 07:15:26 views   min_salary: 8888
+[INFO] 2025-12-19 07:15:26 views   max_salary: 666666666666
+[INFO] 2025-12-19 07:15:26 views   start_date: 
+[INFO] 2025-12-19 07:15:26 views   deadline: 
+[INFO] 2025-12-19 07:15:26 views   total_openings: 
+[INFO] 2025-12-19 07:15:26 views   job_fee_type: 
+[INFO] 2025-12-19 07:15:26 views   skills: 
+[INFO] 2025-12-19 07:15:26 views   permanent_address: 
+[INFO] 2025-12-19 07:15:26 views   temporary_address: 
+[INFO] 2025-12-19 07:15:26 views   country: 
+[INFO] 2025-12-19 07:15:26 views   state_city: 
+[INFO] 2025-12-19 07:15:26 views   zip_code: 
+[INFO] 2025-12-19 07:15:26 views   video_url: 
+[INFO] 2025-12-19 07:15:26 views   latitude: 
+[INFO] 2025-12-19 07:15:26 views   longitude: 
+[INFO] 2025-12-19 07:15:27 views --------------------------------------------------------------------------------
+[INFO] 2025-12-19 07:15:27 views CREATING JOB OBJECT
+[INFO] 2025-12-19 07:15:27 views Job Title: xxxxxx
+[INFO] 2025-12-19 07:15:27 views Salary Range: $8888 - $666666666666
+[INFO] 2025-12-19 07:15:27 views --------------------------------------------------------------------------------
+[INFO] 2025-12-19 07:15:27 views SAVING JOB TO DATABASE
+[ERROR] 2025-12-19 07:15:28 views --------------------------------------------------------------------------------
+[ERROR] 2025-12-19 07:15:28 views Exception Type: InvalidOperation
+[ERROR] 2025-12-19 07:15:28 views Traceback:
+Traceback (most recent call last):
+  File "C:\RandR\Jobstock_Django_v1.0.0\Jobstock_Django\App\views.py", line 568, in employer_submit_job
+    job.save()
+    ~~~~~~~~^^
+  File "C:\RandR\Jobstock_Django_v1.0.0\Jobstock_Django\App\models.py", line 249, in save
+    super().save(*args, **kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\RandR\Jobstock_Django_v1.0.0\Jobstock_Django\venv0\Lib\site-packages\django\db\models\base.py", line 892, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\RandR\Jobstock_Django_v1.0.0\Jobstock_Django\venv0\Lib\site-packages\django\db\models\base.py", line 998, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "c:\RandR\Jobstock_Django_v1.0.0\Jobstock_Django\venv0\Lib\site-packages\django\db\models\base.py", line 1161, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "c:\RandR\Jobstock_Django_v1.0.0\Jobstock_Django\venv0\Lib\site-packages\django\db\models\base.py", line 1202, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "c:\RandR\Jobstock_Django_v1.0.0\Jobstock_Django\venv0\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\RandR\Jobstock_Django_v1.0.0\Jobstock_Django\venv0\Lib\site-packages\django\db\models\query.py", line 1852, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\RandR\Jobstock_Django_v1.0.0\Jobstock_Django\venv0\Lib\site-packages\django\db\models\sql\compiler.py", line 1835, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "c:\RandR\Jobstock_Django_v1.0.0\Jobstock_Django\venv0\Lib\site-packages\django\db\models\sql\compiler.py", line 1760, in as_sql
+    self.prepare_value(field, self.pre_save_val(field, obj))
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\RandR\Jobstock_Django_v1.0.0\Jobstock_Django\venv0\Lib\site-packages\django\db\models\sql\compiler.py", line 1699, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\RandR\Jobstock_Django_v1.0.0\Jobstock_Django\venv0\Lib\site-packages\django\db\models\fields\__init__.py", line 1829, in get_db_prep_save
+    return connection.ops.adapt_decimalfield_value(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.to_python(value), self.max_digits, self.decimal_places
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "c:\RandR\Jobstock_Django_v1.0.0\Jobstock_Django\venv0\Lib\site-packages\django\db\backends\base\operations.py", line 588, in adapt_decimalfield_value
+    return utils.format_number(value, max_digits, decimal_places)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\RandR\Jobstock_Django_v1.0.0\Jobstock_Django\venv0\Lib\site-packages\django\db\backends\utils.py", line 326, in format_number
+    value = value.quantize(
+        decimal.Decimal(1).scaleb(-decimal_places), context=context
+    )
+decimal.InvalidOperation: [<class 'decimal.InvalidOperation'>]
+
+[ERROR] 2025-12-19 07:15:28 views ================================================================================

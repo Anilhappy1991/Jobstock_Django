@@ -1,0 +1,23 @@
+{% for item in employers %}
+    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+        <div class="emplors-list-box border">
+            <div class="emplors-list-head">
+                <div class="emplors-list-head-thunner">
+                    <div class="emplors-list-emp-thumb"><a href="{% url 'App:employer_detail' title=item.title|slugify %}"><figure><img src="{{ item.img }}" class="img-fluid" alt=""></figure></a></div>
+                    <div class="emplors-list-job-caption">
+                        <div class="emplors-job-types-wrap mb-1"><span class="label text-light bg-success">{{ item.open }}</span></div>
+                        <div class="emplors-job-title-wrap mb-1"><h4><a href="{% url 'App:employer_detail' title=item.title|slugify %}" class="emplors-job-title">{{ item.title }}</a></h4></div>
+                        <div class="emplors-job-mrch-lists">
+                            <div class="single-mrch-lists">
+                                <span>{{ item.name }}</span>.<span><i class="fa-solid fa-location-dot me-1"></i>{{ item.location }}</span>.<span>Est: 1992</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="emplors-list-head-last">
+                    <a href="{% url 'App:employer_detail' title=item.title|slugify %}" class="btn btn-md btn-light-main px-3">View Company</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

@@ -1,0 +1,16 @@
+{% for item in teams %}
+    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
+        <div class="team-grid">
+
+            <div class="teamgrid-user">
+                <img src="{{ item.img }}" alt="" class="img-fluid" />
+            </div>
+            
+            <div class="teamgrid-content">
+                <h4>{{ item.name }}</h4>
+                <span class="text-main">{{ item.title }}</span>
+            </div>
+
+        </div>
+    </div>
+{% endfor %}

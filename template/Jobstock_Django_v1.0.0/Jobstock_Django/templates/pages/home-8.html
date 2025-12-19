@@ -1,0 +1,237 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar4.html' %}
+
+<!-- Hero Banner Start -->
+<div class="image-cover hero-header">
+	<div class="container">
+
+		<div class="row justify-content-between align-items-center">
+			<div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 pe-xl-5 pe-lg-4">
+				<h6 class="text-main bg-light-main py-2 pe-3 ps-2 rounded-5 fw-medium d-inline-flex align-items-center mb-3"><span class="bg-main label rounded-pill me-2">New</span>Hire with hourly basis</h6>
+				<h1 class="mb-4">Remote Work Platform For Digital Team</h1>
+				<p class="fs-5">Getting a new job is never easy. Check what new jobs we have in store for you on JobStock.</p>
+				<div class="features-groupss my-4">
+					<ul class="row gx-3 gy-4 p-0">
+						<li class="fw-medium col-xl-6 col-lg-6 col-6"><span class="square--30 circle d-inline-flex align-items-center justify-content-center text-success bg-light-success me-2"><i class="fa-solid fa-check"></i></span>5 Job Posted</li>
+						<li class="fw-medium col-xl-6 col-lg-6 col-6"><span class="square--30 circle d-inline-flex align-items-center justify-content-center text-success bg-light-success me-2"><i class="fa-solid fa-check"></i></span>Unlimited Team</li>
+						<li class="fw-medium col-xl-6 col-lg-6 col-6"><span class="square--30 circle d-inline-flex align-items-center justify-content-center text-success bg-light-success me-2"><i class="fa-solid fa-check"></i></span>10 Featured jobs</li>
+						<li class="fw-medium col-xl-6 col-lg-6 col-6"><span class="square--30 circle d-inline-flex align-items-center justify-content-center text-success bg-light-success me-2"><i class="fa-solid fa-check"></i></span>Lifetime Support</li>
+					</ul>
+				</div>
+				<div class="simple-search-wrap mb-5">
+					<div class="hero-search-2">
+						<div class="full-search-2 mt-5">
+							<div class="hero-search-content border rounded-3">
+								
+								<div class="row classic-search-box m-0 gx-2">
+										
+									<div class="col-xl-5 col-lg-5 col-md-12 col-sm-12">
+										<div class="form-group briod">
+											<div class="input-with-icon">
+												<input type="text" class="form-control" placeholder="Skills, Designations, Keyword">
+												<i class="fa-solid fa-magnifying-glass text-muted"></i>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+										<div class="form-group">
+											<div class="input-with-icon">
+												<select class="form-control">
+												<option value="1">Job Category</option>
+												<option value="2">Accounting & Finance</option>
+												<option value="3">Automotive Jobs</option>
+												<option value="4">Business Services</option>
+												<option value="5">Education Training</option>
+												<option value="6">Software Application</option>
+												<option value="7">Restaurant & Food</option>
+												<option value="8">Healthcare</option>
+												<option value="9">Transportation</option>
+												<option value="10">Telecommunications</option>
+											</select>
+											<i class="fa-solid fa-briefcase text-muted"></i>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12">
+										<div class="fliox-search-wiop">
+											<div class="form-group">
+												<button type="submit" class="btn btn-main full-width">Find Job</button>
+											</div>
+										</div>
+									</div>
+											
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xl-5 col-lg-5 col-md-12 col-sm-12">
+				<div class="row g-4 position-relative">
+					<div class="position-absolute bg-dot main start-0 top-0 w-25 h-25 opacity-50"></div>
+					<div class="col-6">
+						<div class="mb-4 position-relative z-1">
+							<img src="{% static 'app/img/bn-4.png' %}" class="img-fluid circle" alt="">
+						</div>
+						<div class="position-relative z-1">
+							<img src="{% static 'app/img/bn-2.png' %}" class="img-fluid rounded-5" alt="">
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="mb-4 position-relative z-1">
+							<img src="{% static 'app/img/bns-1.png' %}" class="img-fluid rounded-5" alt="">
+						</div>
+						<div class="position-relative z-1">
+							<img src="{% static 'app/img/bn-3.png' %}" class="img-fluid circle" alt="">
+						</div>
+					</div>
+					<div class="position-absolute bg-dot yellow end-0 bottom-0 w-25 h-25 opacity-50"></div>
+				</div>
+			</div>
+			
+		</div>
+			
+	</div>
+</div>
+<!-- Hero Banner End -->
+
+<!-- Our Partners Start -->
+<section class="bg-second min">
+	<div class="container">
+		
+		<div class="row justify-content-center mb-2">
+			<div class="col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center mb-4">
+					<h5 class="text-light opacity-75 fw-normal">The fastedt-growing companies use JobStock</h5>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row align-items-center justify-content-center row-cols-xl-5 row-cols-lg-5 row-cols-md-3 row-cols-3 gx-3 gy-3">
+				
+			<!-- Components/Home/home-2/companies2.html -->
+            {% include 'Components/Home/home-2/companies2.html' %}
+
+		</div>
+		
+	</div>
+</section>
+<div class="clearfix"></div>
+<!-- Our Partners End -->
+
+<!-- Featured Jobs Start -->
+<section>
+	<div class="container">
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Featured Jobs</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-xl-3 gx-3 gy-4">
+		
+			<!-- Components/Home/index/jobs.html -->
+            {% include 'Components/Home/index/jobs.html' %}
+				
+		</div>
+		
+	</div>
+</section>
+<!-- Featured Jobs End -->
+
+<!-- Top Job Categories Start -->
+<section class="gray-simple">
+	<div class="container">
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Explore Top Categories</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-4 gy-4">
+			
+			<!-- Components/Home/home-8/categories3.html -->
+            {% include 'Components/Home/home-8/categories3.html' %}
+			
+		</div>
+		
+	</div>
+</section>
+<!-- Top Job Categories End -->
+
+<!-- Why Choose Us Start -->
+<section class="pb-4">
+	<div class="container">
+		
+		<!-- Components/Home/home-8/popular3.html -->
+        {% include 'Components/Home/home-8/popular3.html' %}
+
+	</div>
+</section>
+<div class="clearfix"></div>
+<!-- Why Choose Us End -->
+
+<!-- Why Choose Us Start -->
+<section class="pt-0">
+	<div class="container">
+		
+		<!-- Components/Home/home-8/platform2.html -->
+        {% include 'Components/Home/home-8/platform2.html' %}
+
+	</div>
+</section>
+<div class="clearfix"></div>
+<!-- Why Choose Us End -->
+
+<!-- Components/Home/index/video.html -->
+{% include 'Components/Home/index/video.html' %}			
+
+<!-- Good Reviews By Customers -->
+<section>
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<div class="col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Good Reviews By Customers</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-4 gy-4">
+			
+			<!-- Components/Home/index/reviews.html -->
+			{% include 'Components/Home/index/reviews.html' %}
+			
+		</div>
+		
+	</div>	
+</section>
+<!-- Good Reviews By Customers -->
+			
+<!-- Components/Home/home-8/working3.html -->
+{% include 'Components/Home/home-8/working3.html' %}
+
+<!-- Components/Home/index/log.html -->
+{% include 'Components/Home/index/log.html' %}
+
+<!-- Components/Home/home-3/filter.html -->
+{% include 'Components/Home/home-3/filter.html' %}			
+	
+{% include 'Base/footer.html' %} 
+
+{% endblock %}

@@ -1,0 +1,222 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar2.html' %}
+			
+<!-- Hero Banner Start -->
+<div class="image-cover hero-header bg-second pb-lg-5 pb-0" data-overlay="0">
+	<div class="container d-flex flex-column justify-content-center position-relative zindex-2 pt-sm-3 pt-md-4 pt-xl-5">
+
+		<div class="row justify-content-between align-items-center">
+			<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 pe-xl-4 pe-lg-3">
+				<h6 class="bg-transparent rounded-pill text-light py-2 pe-3 ps-2 rounded-5 fw-medium d-inline-flex align-items-center mb-3"><span class="label rounded-pill bg-main me-2">New</span>Collaborate with team</h6>
+				<h1 class="mb-4">Remote Work Platform For Digital Team</h1>
+				<p class="fs-5">Getting a new job is never easy. Check what new jobs we have in store for you on JobStock.</p>
+				<div class="d-flex align-items-center mt-5">
+					<div class="position-relative">
+						<a href="{% url 'App:half_map' %}" class="btn btn-main fw-medium px-4">Explore All Jobs</a>
+					</div>
+					<div class="position-relative ms-4">
+						<a href="{% url 'App:half_map' %}" class="fw-medium text-light"><span class="square--50 circle d-inline-flex align-items-center justify-content-center bg-warning text-light me-2"><i class="fa-solid fa-play"></i></span>Watch Videos</a>
+					</div>
+				</div>
+				
+				<div class="d-block mt-5 mb-5">
+					<div class="exs-los mb-4">
+						<h6 class="fw-medium">Sponserd by Populars:</h6>
+					</div>
+					<div class="row align-items-center justify-content-start row-cols-xl-5 row-cols-lg-5 row-cols-md-3 row-cols-3 gx-4 gy-3">
+						<div class="col ps-0">
+							<figure class="single-brand thumb-figure">
+								<img src="{% static 'app/img/brand/layar-primary.svg' %}" class="img-fluid" alt="">
+							</figure>
+						</div>
+						<div class="col">
+							<figure class="single-brand thumb-figure">
+								<img src="{% static 'app/img/brand/mailchimp-primary.svg' %}" class="img-fluid" alt="">
+							</figure>
+						</div>
+								
+						<div class="col">
+							<figure class="single-brand thumb-figure">
+								<img src="{% static 'app/img/brand/fitbit-primary.svg' %}" class="img-fluid" alt="">
+							</figure>
+						</div>
+						
+						<div class="col">
+							<figure class="single-brand thumb-figure">
+								<img src="{% static 'app/img/brand/capsule-primary.svg' %}" class="img-fluid" alt="">
+							</figure>
+						</div>
+						
+						<div class="col">
+							<figure class="single-brand thumb-figure">
+								<img src="{% static 'app/img/brand/vidados-primary.svg' %}" class="img-fluid" alt="">
+							</figure>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 d-xl-none">
+				<img src="{% static 'app/img/author-22.png' %}" class="img-fluid" alt="">
+			</div>
+			
+		</div>
+			
+	</div>
+	<div class="d-none d-xl-block position-absolute end-0 bottom-0 pe-5">
+		<div class="square--80 circle bg-white shadow position-absolute start-0 top-0 mt-5 ms-5 animate-bounce"><img src="{% static 'app/img/l-4.png' %}" class="img-fluid" width="40" alt=""></div>
+		<div class="square--80 circle bg-white shadow position-absolute end-0 top-0 mt-5 me-5 animate-bounce"><img src="{% static 'app/img/l-7.png' %}" class="img-fluid" width="40" alt=""></div>
+		<div class="position-absolute end-0 bottom-0 mb-5 me-5">
+			<div class="d-inline-flex align-items-center bg-white shadow py-3 px-3 rounded-2 animate-leftright">
+				<div class="pls-thumb"><img src="{% static 'app/img/team-1.jpg' %}" class="img-fluid circle" width="50" alt=""></div>
+				<div class="pled ps-3">
+					<h5 class="fw-semibold m-0 text-dark">Adam Kilworn</h5>
+					<p class="m-0 text-muted">Web Designer, Canada</p>
+				</div>
+			</div>
+		</div>
+		<img src="{% static 'app/img/author-2.png' %}" class="img-fluid" width="650" alt="">
+	</div> 
+</div>
+<!-- Hero Banner End -->
+
+<!-- Our Partners Start -->
+<section class="py-4">
+	<div class="container">
+		
+		<div class="row align-items-center justify-content-center gx-3 gy-3">
+
+			<!-- Components/Home/home-9/ctr2.html -->
+            {% include 'Components/Home/home-9/ctr2.html' %}
+			
+		</div>
+		
+	</div>
+</section>
+<div class="clearfix"></div>
+<!-- Our Partners End -->
+
+<!-- Top Job Categories Start -->
+<section>
+	<div class="container">
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Explore Top Categories</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-4 gy-4">
+
+			<!-- Components/Home/home-9/categories4.html -->
+            {% include 'Components/Home/home-9/categories4.html' %}
+			
+		</div>
+		
+	</div>
+</section>
+<!-- Top Job Categories End -->
+
+<!-- Featured Jobs Start -->
+<section class="gray-simple">
+	<div class="container">
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Featured Jobs</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-xl-3 gx-3 gy-4">
+		
+			<!-- Components/Home/home-2/jobs2.html -->
+            {% include 'Components/Home/home-2/jobs2.html' %}						
+		
+		</div>
+		
+	</div>
+</section>
+<!-- Featured Jobs End -->
+
+<!-- Top Features & Process Start -->
+<section>
+	<div class="container">
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10">
+				<div class="sec-heading center">
+					<h2>What Our Clients Says</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-9 col-lg-12 col-md-12">
+
+				<div class="tab-content py-5" id="pills-tabContent">
+
+					<!-- Components/Home/home-9/clients.html -->
+            		{% include 'Components/Home/home-9/clients.html' %}
+
+				</div>
+				
+				<ul class="nav nav-pills mt-3 text-center align-items-center justify-content-center" id="pills-tab" role="tablist">
+					
+					<!-- Components/Home/home-9/tablist.html -->
+            		{% include 'Components/Home/home-9/tablist.html' %}
+
+				</ul>
+				
+			</div>
+		</div>
+		
+	</div>
+</section>
+<!-- Top Features & Process End -->
+
+<!-- Components/Home/index/video.html -->
+{% include 'Components/Home/index/video.html' %}			
+
+<!-- Our Price End -->
+<section>
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<div class="col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Explore our Prices</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-4 gy-4">
+			
+			<!-- Components/Home/home-9/prices.html -->
+            {% include 'Components/Home/home-9/prices.html' %}
+
+		</div>
+		
+	</div>	
+</section>
+<!-- Our Price End -->
+						
+<!-- Components/Home/home-8/working3.html -->
+{% include 'Components/Home/home-8/working3.html' %}
+		
+<!-- Components/Home/index/log.html -->
+{% include 'Components/Home/index/log.html' %}
+
+{% include 'Base/footer.html' %} 
+
+{% endblock %}

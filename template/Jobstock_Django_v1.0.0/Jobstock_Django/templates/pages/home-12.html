@@ -1,0 +1,341 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar5.html' %}
+
+<!-- Hero Banner Start -->
+<div class="image-cover hero-header">
+	<div class="container">
+
+		<div class="row justify-content-between align-items-center">
+			<div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 pe-xl-5 pe-lg-4 mb-lg-0 mb-4">
+				<h6 class="text-main bg-light-main py-2 pe-3 ps-2 rounded-5 fw-medium d-inline-flex align-items-center mb-3"><span class="bg-main label rounded-pill me-2">New</span>Hire with hourly basis</h6>
+				<h1 class="mb-4">Remote Work Platform For Digital Team</h1>
+				<p class="fs-5">Getting a new job is never easy. Check what new jobs we have in store for you on JobStock.</p>
+				<div class="simple-search-wrap mb-5">
+					<div class="hero-search-2">
+						<div class="full-search-2 mt-5">
+							<div class="hero-search-content border rounded-3">
+								
+								<div class="row classic-search-box m-0 gx-2">
+										
+									<div class="col-xl-10 col-lg-9 col-md-9 col-sm-12">
+										<div class="form-group">
+											<div class="input-with-icon">
+												<input type="text" class="form-control" placeholder="Skills, Designations, Keyword">
+												<i class="bi bi-search text-main fs-5"></i>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-2 col-lg-3 col-md-3 col-sm-12 ps-lg-0">
+										<div class="fliox-search-wiop">
+											<div class="form-group">
+												<button type="submit" class="btn btn-main full-width">Find Job</button>
+											</div>
+										</div>
+									</div>
+											
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="vesm-rsv-box-wrap">
+					<div class="vesm-rsv-box-head">
+						<div class="vesm-rsv-txt"><span>14k reviews on</span></div>
+						<div class="vesm-rsv-star">
+							<i class="fa-solid fa-star"></i>
+							<i class="fa-solid fa-star"></i>
+							<i class="fa-solid fa-star"></i>
+							<i class="fa-solid fa-star"></i>
+							<i class="fa-solid fa-star"></i>
+						</div>
+					</div>
+					<div class="vesm-rsv-box-caption">
+						<div class="vesm-rsv-elcox">
+							<div class="vesm-rsv-elcox-01"><span class="vshm-arrows"><i class="fa-solid fa-share"></i></span><h5 class="reviews-ctr">4.9</h5></div>
+						</div>
+						<div class="vesm-rsv-elcox-02">
+							<ul>
+								<li><figure><img src="{% static 'app/img/user-3.png' %}" class="img-fluid" alt=""></figure></li>
+								<li><figure><img src="{% static 'app/img/user-7.png' %}" class="img-fluid" alt=""></figure></li>
+								<li><figure><img src="{% static 'app/img/user-5.png' %}" class="img-fluid" alt=""></figure></li>
+								<li><figure><img src="{% static 'app/img/user-6.png' %}" class="img-fluid" alt=""></figure></li>
+								<li><div class="img-coun">12k</div></li>
+							</ul>
+						</div>
+					</div>
+				
+				</div>
+				
+			</div>
+			
+			<div class="col-xl-5 col-lg-5 col-md-12 col-sm-12">
+				<div class="row g-3 position-relative">
+					<div class="col-md-6 col-12">
+						<div class="job-instructor-layout border">
+							<div class="left-tags-capt">
+								<span class="featured-text">Featured</span>
+								<span class="urgent">Urgent</span>
+							</div>
+							<div class="brows-job-type"><span class="enternship">Enternship</span></div>
+							<div class="job-instructor-thumb">
+								<a href="{% url 'App:job_list_or_default' %}"><img src="{% static 'app/img/l-1.png' %}" class="img-fluid" width="65" alt=""></a>
+							</div>
+							<div class="job-instructor-content h-auto">
+								<h4 class="instructor-title"><a href="{% url 'App:job_list_or_default' %}">Jr. PHP Developer</a></h4>
+								<div class="instructor-skills">
+									<span><i class="fa-solid fa-location-dot me-1"></i>Canada, USA</span>
+								</div>
+							</div>
+							<div class="job-instructor-footer">
+								<div class="instructor-students">
+									<h5 class="instructor-scount">$5K - $8K</h5>
+								</div>
+								<div class="instructor-corses">
+									<span class="c-counting">6 Open</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 col-12">
+						<div class="job-instructor-layout border">
+							<div class="left-tags-capt">
+								<span class="urgent">Urgent</span>
+							</div>
+							<div class="brows-job-type"><span class="freelanc">Freelancer</span></div>
+							<div class="job-instructor-thumb">
+								<a href="{% url 'App:job_list_or_default' %}"><img src="{% static 'app/img/l-5.png' %}" class="img-fluid" width="65" alt=""></a>
+							</div>
+							<div class="job-instructor-content h-auto">
+								<h4 class="instructor-title"><a href="{% url 'App:job_list_or_default' %}">Sr. UI/UX Designer</a></h4>
+								<div class="instructor-skills">
+									<span><i class="fa-solid fa-location-dot me-1"></i>Liverpool, UK</span>
+								</div>
+							</div>
+							<div class="job-instructor-footer">
+								<div class="instructor-students">
+									<h5 class="instructor-scount">$4K - $5.5K</h5>
+								</div>
+								<div class="instructor-corses">
+									<span class="c-counting">5 Open</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-12">
+						<div class="jbs-list-box border">
+							<div class="jbs-list-head m-0">
+								<div class="d-flex align-items-center">
+									<div class="cnd-thumbr position-relative"><a href="{% url 'App:candidate_list_or_default' %}"><figure class="m-0"><img src="{% static 'app/img/team-7.jpg' %}" class="img-fluid circle" width="60" alt=""></figure></a></div>
+									<div class="jbs-list-job-caption">
+										<div class="jbs-job-title-wrap"><h4><a href="{% url 'App:candidate_list_or_default' %}" class="jbs-job-title">Kr. Calvin English</a></h4></div>
+										<div class="jbs-job-mrch-lists mt-1">
+											<div class="single-mrch-lists">
+												<span>Sr. Web Designer</span>.<span><i class="fa-solid fa-location-dot me-1"></i>London</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-12">
+						<div class="jbs-list-box border p-3">
+							<div class="jbs-list-head m-0">
+								<div class="d-flex align-items-center">
+									<div class="cnd-thumbr position-relative"><a href="{% url 'App:candidate_list_or_default' %}"><figure class="m-0"><img src="{% static 'app/img/team-8.jpg' %}" class="img-fluid circle" width="60" alt=""></figure></a></div>
+									<div class="jbs-list-job-caption">
+										<div class="jbs-job-title-wrap"><h4><a href="{% url 'App:candidate_list_or_default' %}" class="jbs-job-title">Donald J. Merrick</a></h4></div>
+										<div class="jbs-job-mrch-lists mt-1">
+											<div class="single-mrch-lists">
+												<span>Laravel Developer</span>.<span><i class="fa-solid fa-location-dot me-1"></i>California, USA</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+			
+	</div>
+</div>
+<!-- Hero Banner End -->
+
+<!-- Our Partners Start -->
+<section class="bg-second min">
+	<div class="container">
+		
+		<div class="row justify-content-center mb-2">
+			<div class="col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center mb-4">
+					<h5 class="text-light opacity-75 fw-normal">The fastedt-growing companies use JobStock</h5>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row align-items-center justify-content-center row-cols-xl-5 row-cols-lg-5 row-cols-md-3 row-cols-3 gx-3 gy-3">
+				
+			<!-- Components/Home/home-2/companies2.html -->
+            {% include 'Components/Home/home-2/companies2.html' %}
+
+		</div>
+		
+	</div>
+</section>
+<div class="clearfix"></div>
+<!-- Our Partners End -->
+
+<!-- Featured Jobs Start -->
+<section>
+	<div class="container">
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Featured Jobs</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-xl-3 gx-3 gy-4">
+		
+			<!-- Components/Home/index/jobs.html -->
+            {% include 'Components/Home/index/jobs.html' %}				
+			
+		</div>
+		
+	</div>
+</section>
+<!-- Featured Jobs End -->
+
+<!-- Top Job Categories Start -->
+<section class="gray-simple">
+	<div class="container">
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Explore Top Categories</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-4 gy-4">
+			
+			<!-- Components/Home/home-8/categories3.html -->
+            {% include 'Components/Home/home-8/categories3.html' %}
+		
+		</div>
+		
+	</div>
+</section>
+<!-- Top Job Categories End -->
+
+<!-- Why Choose Us Start -->
+<section class="pb-4">
+	<div class="container">
+		
+		<!-- Components/Home/home-8/popular3.html -->
+        {% include 'Components/Home/home-8/popular3.html' %}
+		
+	</div>
+</section>
+<div class="clearfix"></div>
+<!-- Why Choose Us End -->
+
+<!-- Why Choose Us Start -->
+<section class="pt-0">
+	<div class="container">
+		
+		<!-- Components/Home/home-8/platform2.html -->
+        {% include 'Components/Home/home-8/platform2.html' %}
+	
+	</div>
+</section>
+<div class="clearfix"></div>
+<!-- Why Choose Us End -->
+
+<!-- Components/Home/index/video.html -->
+{% include 'Components/Home/index/video.html' %}			
+
+<!-- Our Price End -->
+<section class="gray">
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<div class="col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Explore our Prices</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-4 gy-4">
+			
+			<!-- Components/Home/home-9/prices.html -->
+            {% include 'Components/Home/home-9/prices.html' %}
+		
+		</div>
+		
+	</div>	
+</section>
+<!-- Our Price End -->
+
+<!-- Testimonials Start -->
+<section>
+	<div class="container">
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10">
+				<div class="sec-heading center">
+					<h2>What Our Clients Says</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-9 col-lg-12 col-md-12">
+
+				<div class="tab-content py-5" id="pills-tabContent">
+					
+					<!-- Components/Home/home-9/clients.html -->
+            		{% include 'Components/Home/home-9/clients.html' %}
+
+				</div>
+				
+				<ul class="nav nav-pills mt-3 text-center align-items-center justify-content-center" id="pills-tab" role="tablist">
+						
+					<!-- Components/Home/home-9/tablist.html -->
+            		{% include 'Components/Home/home-9/tablist.html' %}
+
+				</ul>
+				
+			</div>
+		</div>
+		
+	</div>
+</section>
+<!-- Testimonials End -->
+
+<!-- Components/Home/home-8/working3.html -->
+{% include 'Components/Home/home-8/working3.html' %}	
+				
+<!-- Components/Home/index/log.html -->
+{% include 'Components/Home/index/log.html' %}
+
+{% include 'Base/footer3.html' %} 
+
+{% endblock %}

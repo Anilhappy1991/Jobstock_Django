@@ -1,0 +1,5 @@
+{% for item in tablists %}
+    <li class="nav-item p-2" role="presentation">
+        <a class="m-0 {{ item.class }}" href="#" id="{{ item.id }}" data-bs-toggle="pill" data-bs-target="{{ item.target }}" type="button" role="tab" aria-controls="{{ item.controls }}" aria-selected="{{ item.selected }}"><div class="p-2 border border-3 circle licroobr"><img src="{{ item.img }}" class="img-fluid circle" width="80" alt=""></div></a>
+    </li>
+{% endfor %}

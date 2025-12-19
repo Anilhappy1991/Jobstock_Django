@@ -1,0 +1,540 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar8.html' %}
+
+<!-- dashboard Detail -->
+<div class="dashboard-wrap bg-light">
+	<a class="mobNavigation" data-bs-toggle="collapse" href="#MobNav" role="button" aria-expanded="false" aria-controls="MobNav">
+		<i class="fas fa-bars mr-2"></i>Dashboard Navigation
+	</a>
+		<div class="collapse" id="MobNav">
+		<div class="dashboard-nav">
+			<div class="dash-user-blocks pt-5">
+				<div class="jbs-grid-usrs-thumb">
+					<div class="jbs-grid-yuo">
+						<a href="{% url 'App:candidate_list_or_default' %}"><figure><img src="{% static 'app/img/l-12.png' %}" class="img-fluid circle" alt=""></figure></a>
+					</div>
+				</div>
+				<div class="jbs-grid-usrs-caption mb-3">
+					<div class="jbs-kioyer">
+						<span class="label text-light bg-main">05 Openings</span>
+					</div>
+					<div class="jbs-tiosk">
+						<h4 class="jbs-tiosk-title"><a href="{% url 'App:candidate_list_or_default' %}">Instagram App</a></h4>
+						<div class="jbs-tiosk-subtitle"><span><i class="fa-solid fa-location-dot me-2"></i>Canada</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="dashboard-inner">
+				<ul data-submenu-title="Main Navigation">
+					<li><a href="{% url 'App:employer_dashboard' %}"><i class="fa-solid fa-gauge-high me-2"></i>User Dashboard</a></li>
+					<li class="active"><a href="{% url 'App:employer_profile' %}"><i class="fa-regular fa-user me-2"></i>User Profile </a></li>
+					<li><a href="{% url 'App:employer_jobs' %}"><i class="fa-solid fa-business-time me-2"></i>My Jobs</a></li>
+					<li><a href="{% url 'App:employer_submit_job' %}"><i class="fa-solid fa-pen-ruler me-2"></i>Submit Jobs</a></li>
+					<li><a href="{% url 'App:employer_applicants_jobs' %}"><i class="fa-solid fa-user-group me-2"></i>Applicants Jobs</a></li>
+					<li><a href="{% url 'App:employer_shortlist_candidates' %}"><i class="fa-solid fa-user-clock me-2"></i>Shortlisted Candidates</a></li>
+					<li><a href="{% url 'App:employer_package' %}"><i class="fa-solid fa-wallet me-2"></i>Package</a></li>
+					<li><a href="{% url 'App:employer_messages' %}"><i class="fa-solid fa-comments me-2"></i>Messages</a></li>
+					<li><a href="{% url 'App:employer_change_password' %}"><i class="fa-solid fa-unlock-keyhole me-2"></i>Change Password</a></li>
+					<li><a href="{% url 'App:employer_delete_account' %}"><i class="fa-solid fa-trash-can me-2"></i>Delete Account</a></li>
+					<li><a href="{% url 'App:index' %}"><i class="fa-solid fa-power-off me-2"></i>Log Out</a></li>
+				</ul>
+			</div>					
+		</div>
+	</div>
+	
+	<div class="dashboard-content">
+		<div class="dashboard-tlbar d-block mb-4">
+			<div class="row">
+				<div class="colxl-12 col-lg-12 col-md-12">
+					<h1 class="mb-1 fs-3 fw-medium">Update Profile</h1>
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item text-muted"><a href="#">Employer</a></li>
+							<li class="breadcrumb-item text-muted"><a href="#">Dashboard</a></li>
+							<li class="breadcrumb-item"><a href="#" class="text-main">My Profile</a></li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+		
+		<div class="dashboard-widg-bar d-block">
+
+			<div class="dashboard-profle-wrapper mb-4">
+				<div class="dash-prf-start">
+					<div class="profile-avatar position-ralative mb-3">
+						<svg>
+							<circle class="bg" cx="70" cy="70" r="60"></circle>
+							<circle class="progress" cx="70" cy="70" r="60" stroke-dasharray="326.72" stroke-dashoffset="326.72"></circle>
+						</svg>
+						<img class="avatar" src="{% static 'app/img/l-12.png' %}" alt="Avatar">
+						<div class="position-absolute bottom-0 start-50 translate-middle-x">
+							<span class="badge badge-md bg-white text-main rounded-pill fw-medium shadow-sm px-3 py-2">75%</span>
+						</div>
+					</div>
+					<div class="dash-prf-start-bottom">
+						<div class="upload-btn-wrapper small">
+							<button class="btn">Change Profile</button>
+							<input type="file" name="myfile">
+						</div>
+					</div>
+				</div>
+				<div class="dash-prf-end">
+					<div class="row gx-xl-5 g-4">
+						
+						<!-- Profile info -->
+						<div class="col-xl-8 col-lg-8">
+							<div class="dash-prfs-caption mb-4">
+								<div class="dash-prfs-title d-flex align-items-center justify-content-between">
+									<div class="avatar-title"><h4>Adobe Eluctorious</h4></div>
+									<div class="update-status"><span class="text-sm opacity-75">Last Update: Just now</span></div>
+								</div>
+								<div class="dash-prfs-subtitle">
+									<div class="jbs-job-mrch-lists mb-2">
+										<div class="single-mrch-lists">
+											<span>Software & Application <a href="#" class="text-main">@2010</a></span>
+										</div>
+										<div class="jbs-kioyer mt-1">
+											<div class="jbs-kioyer-groups justify-content-start">
+												<span class="fa-solid fa-star active"></span>
+												<span class="fa-solid fa-star active"></span>
+												<span class="fa-solid fa-star active"></span>
+												<span class="fa-solid fa-star active"></span>
+												<span class="fa-solid fa-star"></span>
+												<span class="aal-reveis">4.8</span>
+											</div>
+										</div>
+									</div>
+									<div class="short-description">
+										<p>Creative and detail-oriented Web Designer with a strong foundation in responsive design, HTML, CSS, and modern UI/UX principles. Experienced in designing visually appealing, user-friendly websites.</p>
+									</div>
+								</div>
+								<div class="jbs-grid-job-edrs-group mt-1">
+									<span>Software Develipment</span>
+									<span>App Development</span>
+									<span>SEO / SMO</span>
+									<span>Digital Marketing</span>
+								</div>
+							</div>
+							<div class="dash-prf-caption-end">
+								<div class="row gx-lg-5 g-4">
+									
+									<!-- Components/For-Employer/employer-dashboard/profiles.html -->
+           	 						{% include 'Components/For-Employer/employer-dashboard/profiles.html' %}
+								
+								</div>
+							</div>
+						</div>
+						
+						<!-- Completion Profile -->
+						<div class="col-xl-4 col-lg-4">
+							<div class="card rpunded-3 p-4" style="background:#fff5ee;">
+							
+								<div class="completion-group d-flex flex-column gap-3 mb-3">
+								
+									<!-- Components/For-Employer/employer-dashboard/completion2.html -->
+           	 						{% include 'Components/For-Employer/employer-dashboard/completion2.html' %}
+								
+								</div>
+								
+								<div class="completion-button">
+									<a href="#" class="btn btn-md btn-main rounded-pill w-100">Complete Your Profile</a>
+								</div>
+							</div>
+						</div>
+					
+					</div>
+				</div>
+			
+			</div>
+			
+			<!-- Card Row -->
+			<div class="card">
+				<div class="card-header">
+					<h4>Basic Detail</h4>
+				</div>
+				<div class="card-body">
+					<form>
+						<div class="row">
+						
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Employer Name</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Email ID</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Phone No.</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Website</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Founded Year</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Company Category</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">Web & Application</option>
+											<option value="2">Banking Services</option>
+											<option value="3">UI/UX Design</option>
+											<option value="4">IOS/App Application</option>
+											<option value="5">Education</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Company Size</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Video</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-12 col-lg-12 col-md-12">
+								<div class="form-group">
+									<label>About Company</label>
+									<textarea class="form-control ht-80"></textarea>
+								</div>
+							</div>
+							
+						</div> 
+					</form>
+				</div>
+			</div>
+			<!-- Card Row End -->
+			
+			<!-- Row Start -->
+			<div class="card">
+				<div class="card-header">
+					<h4>Award</h4>
+				</div>
+				<div class="card-body">
+					<!-- Single Award Wrap -->
+					<div class="single-edc-wrap">
+						<div class="single-edc-box">
+							<div class="single-edc-remove-box"><div class="cd-resume-cancel"><a href="JavaScript:Void(0);" class="cancel-link"><i class="fa-solid fa-xmark"></i></a></div></div>
+							<div class="single-edc-title-box">
+								<a class="btn btn-collapse" data-bs-toggle="collapse" href="#BCPIL" role="button" aria-expanded="false" aria-controls="BCPIL">BCPIL Award</a>
+							</div>
+						</div>
+						<div class="single-edc-caption">
+							<div class="collapse" id="BCPIL">
+								<div class="card card-body">
+									<form>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Award Title</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="BCPIL Award">
+											</div>
+										</div> 
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Award Year</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="01-12-2012">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Description</label>
+											<div class="col-md-10">
+												<textarea class="form-control ht-80">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</textarea>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Single Award Wrap -->
+					<div class="single-edc-wrap">
+						<div class="single-edc-box">
+							<div class="single-edc-remove-box"><div class="cd-resume-cancel"><a href="JavaScript:Void(0);" class="cancel-link"><i class="fa-solid fa-xmark"></i></a></div></div>
+							<div class="single-edc-title-box">
+								<a class="btn btn-collapse" data-bs-toggle="collapse" href="#RIZZA" role="button" aria-expanded="false" aria-controls="RIZZA">RIZZA Award</a>
+							</div>
+						</div>
+						<div class="single-edc-caption">
+							<div class="collapse" id="RIZZA">
+								<div class="card card-body">
+									<form>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Award Title</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="RIZZA Award">
+											</div>
+										</div> 
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Award Year</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="01-12-2016">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Description</label>
+											<div class="col-md-10">
+												<textarea class="form-control ht-80">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</textarea>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Single Award Wrap -->
+					<div class="single-edc-wrap">
+						<div class="single-edc-box">
+							<div class="single-edc-remove-box"><div class="cd-resume-cancel"><a href="JavaScript:Void(0);" class="cancel-link"><i class="fa-solid fa-xmark"></i></a></div></div>
+							<div class="single-edc-title-box">
+								<a class="btn btn-collapse" data-bs-toggle="collapse" href="#FIFFA" role="button" aria-expanded="false" aria-controls="FIFFA">FIFFA Award</a>
+							</div>
+						</div>
+						<div class="single-edc-caption">
+							<div class="collapse" id="FIFFA">
+								<div class="card card-body">
+									<form>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Award Title</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="FIFFA ICL">
+											</div>
+										</div> 
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Award Year</label>
+											<div class="col-md-10">
+												<input type="text" class="form-control" value="01-12-2022">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-md-2 col-form-label">Description</label>
+											<div class="col-md-10">
+												<textarea class="form-control ht-80">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</textarea>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="single-edc-wrap">
+						<a href="JavaScript:Void(0);" data-bs-toggle="modal" data-bs-target="#award" class="add-light-btn">Add More Award</a>
+					</div>
+				</div>
+			</div>	
+			<!-- End Row -->
+			
+			<!-- Card Row -->
+			<div class="card">
+				<div class="card-header">
+					<h4>Contact Detail</h4>
+				</div>
+				<div class="card-body">
+					<form>
+						<div class="row">
+						
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Your Email</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Phone no.</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Temporary Address</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Address</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Address 2</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Country</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">India</option>
+											<option value="2">United State</option>
+											<option value="3">United kingdom</option>
+											<option value="4">Austrailia</option>
+											<option value="5">Russia</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>State/City</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">California</option>
+											<option value="2">Denver</option>
+											<option value="3">New York</option>
+											<option value="4">Canada</option>
+											<option value="5">Poland</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Zip Code</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Latitude</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>longitude</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+						</div> 
+					</form>
+				</div>
+			</div>
+			<!-- Card Row End -->
+			
+			<!-- Card Row -->
+			<div class="card">
+				<div class="card-header">
+					<h4>Social Login</h4>
+				</div>
+				<div class="card-body">
+					<form>
+						<div class="row">
+						
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Facebook</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Twitter</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Instagram</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Linked In</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Twitter</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Google Plus</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+						</div> 
+					</form>
+				</div>
+			</div>
+			<!-- Card Row End -->
+			
+			<!-- Submit Busston -->
+			<div class="row">
+				<div class="col-lg-12 col-md-12">
+					<button type="submit" class="btn ft--medium btn-main px-5">Save Profile</button>
+				</div>	
+			</div>
+
+		</div>
+		
+		<!-- footer -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="py-3 text-center">© <script>document.write(new Date().getFullYear())</script> JobStock. Develop with <i class="mdi mdi-heart text-danger"></i> by <a href="https://shreethemes.in" target="_blank" class="text-reset">Shreethemes</a>.</div>
+			</div>
+		</div>
+
+	</div>				
+	
+</div>
+<!-- dashboard Detail End -->
+
+<!-- Components/For-Employer/employer-dashboard/profile-model.html -->
+{% include 'Components/For-Employer/employer-dashboard/profile-model.html' %}
+
+{% endblock %}

@@ -1,0 +1,79 @@
+<!-- Single blog Grid -->
+<div class="col-lg-6 col-md-12">
+    <div class="blog-list-block">
+        
+        <div class="blog-list-thumber">
+            <a href="{% url 'App:blog_list_or_default' %}"><img src="{% static 'app/img/blog-1.jpg' %}" class="img-fluid rounded" alt=""></a>
+        </div>
+        <div class="blog-list-caption">
+            <div class="blog-info">
+                <span class="label text-success bg-success bg-opacity-05">Education</span>
+                <h4 class="bl-title"><a href="{% url 'App:blog_list_or_default' %}">14 Newsletters You’ll Want in Your Inbox in 2026</a></h4>
+            </div>
+            
+            <div class="blog-body">
+                <p>These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled</p>
+            </div>
+            
+            <div class="blg-authr d-flex align-items-center">
+                <div class="blg-authr-thumb"><img src="{% static 'app/img/team-1.jpg' %}" class="img-fluid circle" width="45" alt=""></div>
+                <div class="blg-authr-caption ps-2">
+                    <h6 class="mb-0">Tamilore Oladipo</h6>
+                    <span class="text-mid">3 Days Ago</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- Single blog Grid -->
+<div class="col-lg-6 col-md-12">
+    <div class="blog-list-block">
+        
+        <div class="blog-list-thumber">
+            <a href="{% url 'App:blog_list_or_default' %}"><img src="{% static 'app/img/blog-2.jpg' %}" class="img-fluid rounded" alt=""></a>
+        </div>
+        <div class="blog-list-caption">
+            <div class="blog-info">
+                <span class="label text-warning bg-warning bg-opacity-05">Resources</span>
+                <h4 class="bl-title"><a href="{% url 'App:blog_list_or_default' %}">How a Change in My Role Inspired Six Impactful Habits</a></h4>
+            </div>
+            
+            <div class="blog-body">
+                <p>These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled</p>
+            </div>
+            
+            <div class="blg-authr d-flex align-items-center">
+                <div class="blg-authr-thumb"><img src="{% static 'app/img/team-2.jpg' %}" class="img-fluid circle" width="45" alt=""></div>
+                <div class="blg-authr-caption ps-2">
+                    <h6 class="mb-0">Angel J. Erickson</h6>
+                    <span class="text-mid">4 Days Ago</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+{% for item in blogs|slice:"2:8" %}
+    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+        <div class="jobstock-grid-blog">
+            <div class="jobstock-grid-blog-thumb">
+                <img src="{{ item.img }}" class="img-fluid" alt="">
+            </div>
+            <div class="jobstock-grid-blog-body">
+                <div class="jobstock-grid-body-header">
+                    <div class="jobstock-grid-posted bg-main"><span>{{ item.date }}</span></div>
+                    <div class="jobstock-grid-title"><h4><a href="{% url 'App:blog_detail' title=item.title|slugify %}">{{ item.title }}</a></h4></div>
+                </div>
+                <div class="jobstock-grid-body-middle">
+                    <p>{{ item.desc }}</p>
+                </div>
+                <div class="jobstock-grid-body-footer">
+                    <a href="{% url 'App:blog_detail' title=item.title|slugify %}" class="btn btn-blog-link">Continue Reading</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

@@ -1,0 +1,30 @@
+<!-- Message Modal -->
+<div class="modal fade" id="usermessage" tabindex="-1" role="dialog" aria-labelledby="usermessagemodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered login-pop-form" role="document">
+        <div class="modal-content" id="usermessagemodal">
+            <span class="mod-close" data-bs-dismiss="modal" aria-hidden="true"><i class="fas fa-close"></i></span>
+            <div class="modal-body py-5">
+                
+                <div class="modal-header">
+                    <div class="mdl-thumb"><img src="{% static 'app/img/avatar.jpg' %}" class="img-fluid circle" width="80" alt=""></div>
+                    <div class="mdl-title"><h4 class="fs-4">Send Private Message to<br><span class="text-main">Karun M. David</span></h4></div>
+                </div>
+                
+                <div class="message-box">
+                    <form>
+                    
+                        <div class="form-group mb-4">
+                            <label>Your Message</label>
+                            <textarea class="form-control"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-main full-width fw-medium rounded-pill">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->

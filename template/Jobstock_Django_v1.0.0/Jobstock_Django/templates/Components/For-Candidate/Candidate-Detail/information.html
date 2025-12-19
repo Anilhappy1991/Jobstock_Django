@@ -1,0 +1,11 @@
+{% for item in informations %}
+    <div class="col-xl-6 col-lg-6 col-md-6">
+        <div class="cdtx-infr-box">
+            <div class="cdtx-infr-icon"><i class="{{ item.icon }}"></i></div>
+            <div class="cdtx-infr-captions">
+                <h5>{{ item.title }}</h5>
+                <p>{{ item.name }}</p>
+            </div>
+        </div>
+    </div>
+{% endfor %}

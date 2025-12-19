@@ -1,0 +1,5 @@
+{% for item in links %}
+    <div class="alert alert-{{ item.title }}" role="alert">
+        A simple {{ item.title }} alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
+    </div>
+{% endfor %}

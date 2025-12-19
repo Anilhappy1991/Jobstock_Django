@@ -1,0 +1,50 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar2.html' %}
+
+<!-- Page Title Start -->
+<section class="bg-cover bg-second" style="background:url({% static 'app/img/bg2.png' %})no-repeat;">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12">
+				
+				<h2 class="ipt-title text-light">Our Latest Updates</h2>
+				<span class="ipn-subtitle text-light opacity-75">Get all latest news and updates</span>
+				
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Page Title End -->
+
+<!-- Blog List Start -->
+<section class="gray-simple">
+	<div class="container">
+	
+		<!-- row Start -->
+		<div class="row gx-4 gy-4">
+		
+			<!-- Components/Pages/blog2.html -->
+            {% include 'Components/Pages/blog2.html' %}
+			
+		</div>
+		<!-- /row -->
+
+		<!-- Components/For-Candidate/Browse-Jobs/grid-style-1/pagination.html -->
+        {% include 'Components/For-Candidate/Browse-Jobs/grid-style-1/pagination.html' %}			
+		
+	</div>	
+</section>
+<!-- Blog List End -->
+			
+<!-- Components/Home/home-4/find2.html -->
+{% include 'Components/Home/home-4/find2.html' %}
+			
+<!-- Components/Home/index/log.html -->
+{% include 'Components/Home/index/log.html' %}
+
+{% include 'Base/footer2.html' %} 
+
+{% endblock %}

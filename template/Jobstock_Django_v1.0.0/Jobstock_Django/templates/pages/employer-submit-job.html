@@ -1,0 +1,372 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar8.html' %}
+
+<!-- dashboard Detail -->
+<div class="dashboard-wrap bg-light">
+	<a class="mobNavigation" data-bs-toggle="collapse" href="#MobNav" role="button" aria-expanded="false" aria-controls="MobNav">
+		<i class="fas fa-bars mr-2"></i>Dashboard Navigation
+	</a>
+		<div class="collapse" id="MobNav">
+		<div class="dashboard-nav">
+			<div class="dash-user-blocks pt-5">
+				<div class="jbs-grid-usrs-thumb">
+					<div class="jbs-grid-yuo">
+						<a href="{% url 'App:candidate_list_or_default' %}"><figure><img src="{% static 'app/img/l-12.png' %}" class="img-fluid circle" alt=""></figure></a>
+					</div>
+				</div>
+				<div class="jbs-grid-usrs-caption mb-3">
+					<div class="jbs-kioyer">
+						<span class="label text-light bg-main">05 Openings</span>
+					</div>
+					<div class="jbs-tiosk">
+						<h4 class="jbs-tiosk-title"><a href="{% url 'App:candidate_list_or_default' %}">Instagram App</a></h4>
+						<div class="jbs-tiosk-subtitle"><span><i class="fa-solid fa-location-dot me-2"></i>Canada</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="dashboard-inner">
+				<ul data-submenu-title="Main Navigation">
+					<li><a href="{% url 'App:employer_dashboard' %}"><i class="fa-solid fa-gauge-high me-2"></i>User Dashboard</a></li>
+					<li><a href="{% url 'App:employer_profile' %}"><i class="fa-regular fa-user me-2"></i>User Profile </a></li>
+					<li><a href="{% url 'App:employer_jobs' %}"><i class="fa-solid fa-business-time me-2"></i>My Jobs</a></li>
+					<li class="active"><a href="{% url 'App:employer_submit_job' %}"><i class="fa-solid fa-pen-ruler me-2"></i>Submit Jobs</a></li>
+					<li><a href="{% url 'App:employer_applicants_jobs' %}"><i class="fa-solid fa-user-group me-2"></i>Applicants Jobs</a></li>
+					<li><a href="{% url 'App:employer_shortlist_candidates' %}"><i class="fa-solid fa-user-clock me-2"></i>Shortlisted Candidates</a></li>
+					<li><a href="{% url 'App:employer_package' %}"><i class="fa-solid fa-wallet me-2"></i>Package</a></li>
+					<li><a href="{% url 'App:employer_messages' %}"><i class="fa-solid fa-comments me-2"></i>Messages</a></li>
+					<li><a href="{% url 'App:employer_change_password' %}"><i class="fa-solid fa-unlock-keyhole me-2"></i>Change Password</a></li>
+					<li><a href="{% url 'App:employer_delete_account' %}"><i class="fa-solid fa-trash-can me-2"></i>Delete Account</a></li>
+					<li><a href="{% url 'App:index' %}"><i class="fa-solid fa-power-off me-2"></i>Log Out</a></li>
+				</ul>
+			</div>					
+		</div>
+	</div>
+	
+	<div class="dashboard-content">
+		<div class="dashboard-tlbar d-block mb-4">
+			<div class="row">
+				<div class="colxl-12 col-lg-12 col-md-12">
+					<h1 class="mb-1 fs-3 fw-medium">Post Jobs</h1>
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item text-muted"><a href="#">Employer</a></li>
+							<li class="breadcrumb-item text-muted"><a href="#">Dashboard</a></li>
+							<li class="breadcrumb-item"><a href="#" class="text-main">Post Jobs</a></li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+		
+		<div class="dashboard-widg-bar d-block">
+			
+			<!-- Card Row -->
+			<div class="card">
+				<div class="card-header">
+					<h4>Basic Detail</h4>
+				</div>
+				<div class="card-body">
+					<form>
+						<div class="row">
+						
+							<div class="col-xl-12 col-lg-12 col-md-12">
+								<div class="dash-prf-start justify-content-start align-items-start mb-2">
+									<div class="dash-prf-start-upper mb-2">
+										<div class="dash-prf-start-thumb">
+											<figure class="mb-0 square--100"><img src="{% static 'app/img/l-5.png' %}" class="img-fluid rounded" alt=""></figure>
+										</div>
+									</div>
+									<div class="dash-prf-start-bottom">
+										<div class="upload-btn-wrapper small">
+											<button class="btn">Company Logo</button>
+											<input type="file" name="myfile">
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-12 col-lg-12 col-md-12">
+								<div class="form-group">
+									<label>Job Title</label>
+									<input type="text" class="form-control" placeholder="ex. Senior UI/UX Designer">
+								</div>
+							</div>
+							
+							<div class="col-xl-12 col-lg-12 col-md-12">
+								<div class="form-group">
+									<label>Job summary</label>
+									<div class="froala-editor"> </div>
+								</div>
+							</div>
+							
+							<div class="col-xl-12 col-lg-12 col-md-12">
+								<div class="form-group">
+									<label>Responsibilities</label>
+									<div class="froala-editor"> </div>
+								</div>
+							</div>
+							
+							<div class="col-xl-12 col-lg-12 col-md-12">
+								<div class="form-group">
+									<label>Qualifications</label>
+									<div class="froala-editor"> </div>
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Job Category</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">Web & Application</option>
+											<option value="2">Banking Services</option>
+											<option value="3">UI/UX Design</option>
+											<option value="4">IOS/App Application</option>
+											<option value="5">Education</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Job Type</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">Full Time</option>
+											<option value="2">Part Time</option>
+											<option value="3">Freelance</option>
+											<option value="4">Internship</option>
+											<option value="5">Contract</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Job Lavel</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">Team Leader</option>
+											<option value="2">Manager</option>
+											<option value="3">Junior</option>
+											<option value="4">Senior</option>
+											<option value="5">Other</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Experience</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">Fresher</option>
+											<option value="2">1+ Years</option>
+											<option value="3">2+ Years</option>
+											<option value="4">3+ Years</option>
+											<option value="5">4+ Years</option>
+											<option value="6">5+ Years</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Qualification</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">10th Class</option>
+											<option value="2">12th Class</option>
+											<option value="3">Bachelore Degree</option>
+											<option value="4">Master Degree</option>
+											<option value="5">Post Graduate</option>
+											<option value="6">Any Other</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Gender</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">Male</option>
+											<option value="2">Female</option>
+											<option value="3">Other</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Min. Sallary</label>
+									<input type="text" class="form-control" placeholder="ex. $5000">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Max. Sallary</label>
+									<input type="text" class="form-control" placeholder="ex. $10000">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Start Date</label>
+									<input type="text" class="form-control selectdate" placeholder="Choose Date">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Deadline</label>
+									<input type="text" class="form-control selectdate" placeholder="Choose Date">
+								</div>
+							</div> 
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Total Openings</label>
+									<div class="opening">
+										<select>
+											<option value="1">01</option>
+											<option value="2">02</option>
+											<option value="3">03</option>
+											<option value="4">04</option>
+											<option value="5">05</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Job Fee Type</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">Free</option>
+											<option value="2">Premium</option>
+											<option value="3">Urgent</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-12 col-lg-12 col-md-12">
+								<div class="form-group">
+									<label>Skills, Use Commas for saperate</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-12 col-lg-12 col-md-12">
+								<div class="form-group">
+									<label>Permanent Address</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-12 col-lg-12 col-md-12">
+								<div class="form-group">
+									<label>Temporary Address</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Country</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">India</option>
+											<option value="2">United State</option>
+											<option value="3">United kingdom</option>
+											<option value="4">Austrailia</option>
+											<option value="5">Russia</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>State/City</label>
+									<div class="select-ops">
+										<select>
+											<option value="1">California</option>
+											<option value="2">Denver</option>
+											<option value="3">New York</option>
+											<option value="4">Canada</option>
+											<option value="5">Poland</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Zip Code</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Video URL</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Latitude</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-6 col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>longitude</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							
+							<div class="col-xl-12 col-lg-12">
+								<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3560.383810516784!2d80.8789037751729!3d26.827742176697985!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399bfe8bc34b51bb%3A0xa3ca86eec63f6f8!2sINFOSYS%20DIGITAL%20COMPUTER%20(Prabhat%20Computer%20Classes)!5e0!3m2!1sen!2sin!4v1681402268551!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+							</div>
+							
+						</div> 
+					</form>
+				</div>
+			</div>
+			<!-- Card Row End -->
+			
+			<!-- Submit Busston -->
+			<div class="row">
+				<div class="col-lg-12 col-md-12">
+					<button type="submit" class="btn ft--medium btn-main px-5">Save & Preview</button>
+				</div>	
+			</div>
+
+		</div>
+		
+		<!-- footer -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="py-3 text-center">© <script>document.write(new Date().getFullYear())</script> JobStock. Develop with <i class="mdi mdi-heart text-danger"></i> by <a href="https://shreethemes.in" target="_blank" class="text-reset">Shreethemes</a>.</div>
+			</div>
+		</div>
+
+	</div>				
+	
+</div>
+<!-- dashboard Detail End -->
+
+{% endblock %}

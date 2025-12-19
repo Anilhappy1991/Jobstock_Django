@@ -1,0 +1,13 @@
+{% for item in awards %}
+    <div class="col-xl-3 col-lg-3 col-md-3">
+        <div class="escort-award-wrap">
+            <div class="escort-award-thumb">
+                <figure><img src="{{ item.img }}" class="img-fluid" alt=""></figure>
+            </div>
+            <div class="escort-award-caption">
+                <h6>{{ item.title }}</h6>
+                <label>{{ item.year }}</label>
+            </div>
+        </div>
+    </div>
+{% endfor %}

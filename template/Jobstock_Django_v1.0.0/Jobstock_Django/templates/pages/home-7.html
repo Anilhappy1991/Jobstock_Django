@@ -1,0 +1,277 @@
+{% extends "Base/base.html" %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar3.html' %}
+			
+<!-- Hero Banner Start -->
+<div class="image-cover hero-header pb-0" style="background:#ecf3f1">
+	<div class="bnnr-slack-elior-thumb d-none d-xl-block z-1"><img src="{% static 'app/img/author-1.png' %}" width="550" class="img-fluid" alt=""></div>
+	<div class="position-absolute top-0 end-0 z-0">
+		<img src="{% static 'app/img/shape-3-soft-light-gray.svg' %}" alt="SVG" width="450">
+	</div>
+	<div class="position-absolute top-0 start-0 me-10 z-0">
+		<img src="{% static 'app/img/shape-1-soft-light-gray.svg' %}" alt="SVG" width="350">
+	</div>
+	<div class="container position-relative z-2">
+		<div class="row">
+			<div class="col-xl-7 col-lg-8 col-md-12">
+				<div class="simple-search-wrap mb-5">
+					<div class="hero-search-2">
+						<h2 class="text-xl text-main">Find</h2>
+						<h1 class="mb-4">Great Job Opportunity<br>You Deserve</h1>
+						<div class="full-search-2 mt-5">
+							<div class="hero-search-content">
+								
+								<div class="row classic-search-box m-0 gx-2">
+										
+									<div class="col-xl-5 col-lg-5 col-md-12 col-sm-12">
+										<div class="form-group briod">
+											<div class="input-with-icon">
+												<input type="text" class="form-control" placeholder="Skills, Designations, Keyword">
+												<i class="fa-solid fa-magnifying-glass text-main"></i>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+										<div class="form-group">
+											<div class="input-with-icon">
+												<select class="form-control">
+												<option value="1">Job Category</option>
+												<option value="2">Accounting & Finance</option>
+												<option value="3">Automotive Jobs</option>
+												<option value="4">Business Services</option>
+												<option value="5">Education Training</option>
+												<option value="6">Software Application</option>
+												<option value="7">Restaurant & Food</option>
+												<option value="8">Healthcare</option>
+												<option value="9">Transportation</option>
+												<option value="10">Telecommunications</option>
+											</select>
+											<i class="fa-solid fa-briefcase text-main"></i>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12">
+										<div class="fliox-search-wiop">
+											<div class="form-group">
+												<button type="submit" class="btn btn-main full-width">Find Job</button>
+											</div>
+										</div>
+									</div>
+											
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="estrio-plocks-wraps overflow-hidden">
+					<div class="estrio-plocks-single">
+						<div class="estrio-single-icon">
+							<img src="{% static 'app/img/trustpilot.png' %}" class="img-fluid" alt="">	
+						</div>
+						<div class="estrio-single-caption">
+							<div class="estrio-caption-title"><p>Trustpilot<span>4.9</span></p></div>
+							<div class="estrio-caption-stars">
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+							</div>
+						</div>
+					</div>
+					<div class="estrio-plocks-single">
+						<div class="estrio-single-icon">
+							<img src="{% static 'app/img/google-plus.png' %}" class="img-fluid" alt="">	
+						</div>
+						<div class="estrio-single-caption">
+							<div class="estrio-caption-title"><p>Google Plus<span>4.8</span></p></div>
+							<div class="estrio-caption-stars">
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="col-xl-5 col-lg-4 col-md-12">
+				<div class="bnnr-slack-thumb d-block d-xl-none mt-sm-5">
+					<img src="{% static 'app/img/author-11.png' %}" class="img-fluid" alt="">
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<!-- Hero Banner End -->
+
+<!-- Our Partners Start -->
+<section class="bg-second min">
+	<div class="container">
+		
+		<div class="row justify-content-center mb-2">
+			<div class="col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center mb-4">
+					<h5 class="text-light opacity-75 fw-normal">The fastedt-growing companies use JobStock</h5>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row align-items-center justify-content-center row-cols-xl-5 row-cols-lg-5 row-cols-md-3 row-cols-3 gx-3 gy-3">
+				
+			<!-- Components/Home/home-2/companies2.html -->
+            {% include 'Components/Home/home-2/companies2.html' %}
+
+		</div>
+		
+	</div>
+</section>
+<div class="clearfix"></div>
+<!-- Our Partners End -->
+
+<!-- Hire Experts Start -->
+<section>
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Hire Talents & Experts</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row justify-content-center gx-4 gy-4">
+		
+			<!-- Components/Home/home-5/candidate2.html -->
+            {% include 'Components/Home/home-5/candidate2.html' %}
+			
+		</div>
+		
+	</div>		
+</section>
+<!-- Hire Experts End -->
+
+<!-- Select Your City -->
+<section class="gray-simple">
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Explore Job in NewYork</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row g-xl-3 g-lg-3 g-4">
+		
+			<!-- Components/Home/home-2/explore.html -->
+            {% include 'Components/Home/home-2/explore.html' %}
+			
+		</div>
+		
+	</div>		
+</section>
+<!-- Select Your City -->
+
+<!-- Featured Jobs Start -->
+<section>
+	<div class="container">
+		
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Featured Jobs</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center gx-xl-3 gx-3 gy-4">
+		
+			<!-- Components/Home/home-2/jobs2.html -->
+            {% include 'Components/Home/home-2/jobs2.html' %}						
+		
+		</div>
+		
+	</div>
+</section>
+<!-- Featured Jobs End -->
+
+<!-- Hire Box End -->
+<section class="p-0">
+	<div class="container-fluid px-0">
+		<div class="row gx-0">
+		
+			<div class="col-xl-6 col-lg-6 col-md-12 bg-dark">
+				<div class="hired-box-slack">
+					<div class="hired-box-caption">
+						<h2 class="text-light">Hire talents & experts for your web development</h2>
+						<p class="text-light fw-light fs-5 opacity-75">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo</p>
+					</div>
+					<div class="hired-box-btns">
+						<a href="#" class="btn btn-lg btn-main font--bold px-5">Hire Talents</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xl-6 col-lg-6 col-md-12 bg-main">
+				<div class="hired-box-slack">
+					<div class="hired-box-caption">
+						<h2 class="text-light">We Are Expert In Web design and development</h2>
+						<p class="text-light fw-light fs-5 opacity-75">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo</p>
+					</div>
+					<div class="hired-box-btns">
+						<a href="#" class="btn btn-lg btn-dark font--bold px-5">Join Our Team</a>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</section>
+<!-- Hire Box End -->
+
+<!-- Blog Grid -->
+<section>
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-7 col-md-10 text-center">
+				<div class="sec-heading center">
+					<h2>Trending News By JobStock</h2>
+					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row g-xl-3 g-lg-3 g-md-3 g-3">
+
+			<!-- Components/Home/home-7/blog.html -->
+            {% include 'Components/Home/home-7/blog.html' %}
+			
+		</div>
+		
+	</div>		
+</section>
+<!-- Blog Grid End -->
+				
+<!-- Components/Home/home-5/find3.html -->
+{% include 'Components/Home/home-5/find3.html' %}
+					
+<!-- Components/Home/index/log.html -->
+{% include 'Components/Home/index/log.html' %}
+
+{% include 'Base/footer2.html' %} 
+
+{% endblock %}

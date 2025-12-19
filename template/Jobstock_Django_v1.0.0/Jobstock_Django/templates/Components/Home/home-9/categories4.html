@@ -1,0 +1,14 @@
+{% for item in categories2 %}
+    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+        <div class="card border py-4 px-4 rounded-4 mb-0">
+            <div class="ctrd-icons mb-3">
+                <i class="{{ item.icon }} text-main fs-1"></i>
+            </div>
+            <div class="ctrd-caps">
+                <h4 class="fs-5"><a href="">{{ item.title }}</a></h4>
+                <p class="mb-3">{{ item.desc }}</p>
+                <p class="text-main fw-medium mb-0">{{ item.jobs }}</p>
+            </div>
+        </div>
+    </div>
+{% endfor %}
