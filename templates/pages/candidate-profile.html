@@ -711,6 +711,7 @@
 										<th>Date</th>
 										<th>Status</th>
 										<th>Skills</th>
+										<th>Actions</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -720,6 +721,16 @@
 										<td>{{ record.created_at|date:"M d, Y" }}</td>
 										<td><span class="badge {{ record.get_status_badge_class }}">{{ record.status|title }}</span></td>
 										<td>{{ record.resume_json.skills.total_skills|default:"-" }}</td>
+										<td class="text-nowrap">
+											<button type="button" class="btn btn-sm btn-info" onclick="showResumeDetails('{{ record.id }}')" title="View Details">
+												<i class="fas fa-eye"></i>
+											</button>
+											{% if record.resume_file %}
+											<a href="{{ record.resume_file.url }}" class="btn btn-sm btn-success" download title="Download Resume">
+												<i class="fas fa-download"></i>
+											</a>
+											{% endif %}
+										</td>
 									</tr>
 									{% endfor %}
 								</tbody>
@@ -746,6 +757,35 @@
 </div>
 <!-- dashboard Detail End -->
  
+<!-- Resume Details Modal -->
+<div class="modal fade" id="resumeDetailsModal" tabindex="-1" aria-labelledby="resumeDetailsModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-scrollable">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="resumeDetailsModalLabel">
+					<i class="fas fa-file-alt"></i> Resume Processing Details
+				</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="resumeDetailsContent">
+				<div class="text-center py-5">
+					<div class="spinner-border text-primary" role="status">
+						<span class="visually-hidden">Loading...</span>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+					<i class="fas fa-times"></i> Close
+				</button>
+				<a href="#" id="downloadResumeBtn" class="btn btn-success" download style="display:none;">
+					<i class="fas fa-download"></i> Download Resume
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
 <!-- Components/For-Candidate/candidate-dashboard/verify.html -->
 {% include 'Components/For-Candidate/candidate-dashboard/verify.html' %}
 		
@@ -754,6 +794,277 @@
 
 <!-- Resume Upload JavaScript -->
 <script>
+// Store resume processing records data
+const resumeRecordsData = {
+	{% for record in resume_processing_records %}
+	"{{ record.id }}": {
+		id: "{{ record.id }}",
+		filename: "{{ record.original_filename|escapejs }}",
+		created_at: "{{ record.created_at|date:'M d, Y H:i' }}",
+		status: "{{ record.status }}",
+		status_badge: "{{ record.get_status_badge_class }}",
+		word_count: {{ record.word_count|default:"0" }},
+		years_experience: "{{ record.years_of_experience|default:'-' }}",
+		extracted_email: "{{ record.extracted_email|default:'' }}",
+		extracted_phone: "{{ record.extracted_phone|default:'' }}",
+		extracted_skills: "{{ record.extracted_skills|default:'' }}",
+		error_message: "{{ record.error_message|default:''|escapejs }}",
+		resume_url: "{% if record.resume_file %}{{ record.resume_file.url }}{% endif %}",
+		resume_json: {% if record.resume_json %}JSON.parse('{{ record.resume_json|escapejs }}'){% else %}null{% endif %}
+	}{% if not forloop.last %},{% endif %}
+	{% endfor %}
+};
+
+console.log('Resume records loaded:', resumeRecordsData);
+
+// Function to escape HTML to prevent XSS
+function escapeHtml(text) {
+	const map = {
+		'&': '&amp;',
+		'<': '&lt;',
+		'>': '&gt;',
+		'"': '&quot;',
+		"'": '&#039;'
+	};
+	return text ? String(text).replace(/[&<>"']/g, m => map[m]) : '';
+}
+
+// Function to show resume details in modal
+function showResumeDetails(recordId) {
+	console.log('Opening resume details for ID:', recordId);
+	console.log('Available records:', Object.keys(resumeRecordsData));
+	
+	const record = resumeRecordsData[recordId];
+	if (!record) {
+		console.error('Record not found:', recordId);
+		alert('Record not found. Please refresh the page and try again.');
+		return;
+	}
+	
+	console.log('Record data:', record);
+	
+	let contentHTML = `
+		<div class="resume-details-container">
+			<!-- Header Section -->
+			<div class="alert alert-${record.status_badge.includes('success') ? 'success' : record.status_badge.includes('danger') ? 'danger' : record.status_badge.includes('warning') ? 'warning' : 'info'} mb-3">
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<h6 class="mb-1"><i class="fas fa-file"></i> ${escapeHtml(record.filename)}</h6>
+						<small><i class="far fa-clock"></i> Uploaded: ${escapeHtml(record.created_at)}</small>
+					</div>
+					<span class="badge ${record.status_badge} fs-6">${escapeHtml(record.status.toUpperCase())}</span>
+				</div>
+			</div>
+	`;
+	
+	// If completed, show detailed information
+	if (record.status === 'completed' && record.resume_json) {
+		const json = record.resume_json;
+		console.log('Resume JSON:', json);
+		
+		// Statistics Cards
+		const totalSkills = (json.skills && json.skills.total_skills) ? json.skills.total_skills : 0;
+		const sentimentLabel = (json.sentiment && json.sentiment.sentiment_label) ? json.sentiment.sentiment_label : '-';
+		
+		contentHTML += `
+			<div class="row mb-4">
+				<div class="col-md-3 col-6 mb-2">
+					<div class="card text-center h-100">
+						<div class="card-body">
+							<i class="fas fa-tools text-primary fs-3"></i>
+							<h5 class="mt-2 mb-0">${totalSkills}</h5>
+							<small class="text-muted">Total Skills</small>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-6 mb-2">
+					<div class="card text-center h-100">
+						<div class="card-body">
+							<i class="fas fa-file-word text-info fs-3"></i>
+							<h5 class="mt-2 mb-0">${record.word_count}</h5>
+							<small class="text-muted">Word Count</small>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-6 mb-2">
+					<div class="card text-center h-100">
+						<div class="card-body">
+							<i class="fas fa-briefcase text-success fs-3"></i>
+							<h5 class="mt-2 mb-0">${escapeHtml(record.years_experience)}</h5>
+							<small class="text-muted">Years Experience</small>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-6 mb-2">
+					<div class="card text-center h-100">
+						<div class="card-body">
+							<i class="fas fa-smile text-warning fs-3"></i>
+							<h5 class="mt-2 mb-0">${escapeHtml(sentimentLabel)}</h5>
+							<small class="text-muted">Sentiment</small>
+						</div>
+					</div>
+				</div>
+			</div>
+		`;
+		
+		// Personal Information
+		if (json.personal_info) {
+			contentHTML += `
+				<div class="card mb-3">
+					<div class="card-header bg-primary text-white">
+						<h6 class="mb-0"><i class="fas fa-user"></i> Personal Information</h6>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							${json.personal_info.name ? `<div class="col-md-6 mb-2"><strong>Name:</strong> ${escapeHtml(json.personal_info.name)}</div>` : ''}
+							${record.extracted_email ? `<div class="col-md-6 mb-2"><strong>Email:</strong> ${escapeHtml(record.extracted_email)}</div>` : ''}
+							${record.extracted_phone ? `<div class="col-md-6 mb-2"><strong>Phone:</strong> ${escapeHtml(record.extracted_phone)}</div>` : ''}
+							${json.personal_info.location ? `<div class="col-md-6 mb-2"><strong>Location:</strong> ${escapeHtml(json.personal_info.location)}</div>` : ''}
+						</div>
+					</div>
+				</div>
+			`;
+		}
+		
+		// Skills
+		if (record.extracted_skills) {
+			const skillsArray = record.extracted_skills.split(',').map(s => s.trim()).filter(s => s);
+			if (skillsArray.length > 0) {
+				contentHTML += `
+					<div class="card mb-3">
+						<div class="card-header bg-success text-white">
+							<h6 class="mb-0"><i class="fas fa-tools"></i> Skills (${skillsArray.length})</h6>
+						</div>
+						<div class="card-body">
+							<div class="d-flex flex-wrap gap-2">
+								${skillsArray.map(skill => `<span class="badge bg-primary">${escapeHtml(skill)}</span>`).join('')}
+							</div>
+						</div>
+					</div>
+				`;
+			}
+		}
+		
+		// Education
+		if (json.education && Array.isArray(json.education) && json.education.length > 0) {
+			contentHTML += `
+				<div class="card mb-3">
+					<div class="card-header bg-info text-white">
+						<h6 class="mb-0"><i class="fas fa-graduation-cap"></i> Education</h6>
+					</div>
+					<div class="card-body">
+						${json.education.map(edu => `
+							<div class="mb-2 pb-2 border-bottom">
+								${edu.degree ? `<strong>${escapeHtml(edu.degree)}</strong><br>` : ''}
+								${edu.institution ? `<span class="text-muted">${escapeHtml(edu.institution)}</span><br>` : ''}
+								${edu.year ? `<small>${escapeHtml(edu.year)}</small>` : ''}
+							</div>
+						`).join('')}
+					</div>
+				</div>
+			`;
+		}
+		
+		// Experience
+		if (json.experience && Array.isArray(json.experience) && json.experience.length > 0) {
+			contentHTML += `
+				<div class="card mb-3">
+					<div class="card-header bg-warning text-dark">
+						<h6 class="mb-0"><i class="fas fa-briefcase"></i> Work Experience</h6>
+					</div>
+					<div class="card-body">
+						${json.experience.map(exp => `
+							<div class="mb-3 pb-2 border-bottom">
+								${exp.title ? `<strong>${escapeHtml(exp.title)}</strong><br>` : ''}
+								${exp.company ? `<span class="text-muted">${escapeHtml(exp.company)}</span><br>` : ''}
+								${exp.duration ? `<small><i class="far fa-clock"></i> ${escapeHtml(exp.duration)}</small><br>` : ''}
+								${exp.description ? `<p class="mb-0 mt-1">${escapeHtml(exp.description)}</p>` : ''}
+							</div>
+						`).join('')}
+					</div>
+				</div>
+			`;
+		}
+		
+		// Sentiment Analysis
+		if (json.sentiment) {
+			const confidence = json.sentiment.confidence ? (json.sentiment.confidence * 100).toFixed(1) : null;
+			const polarity = json.sentiment.polarity ? json.sentiment.polarity.toFixed(2) : null;
+			
+			contentHTML += `
+				<div class="card mb-3">
+					<div class="card-header bg-secondary text-white">
+						<h6 class="mb-0"><i class="fas fa-chart-line"></i> Sentiment Analysis</h6>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							${json.sentiment.sentiment_label ? `<div class="col-md-4 mb-2"><strong>Overall:</strong> ${escapeHtml(json.sentiment.sentiment_label)}</div>` : ''}
+							${confidence ? `<div class="col-md-4 mb-2"><strong>Confidence:</strong> ${confidence}%</div>` : ''}
+							${polarity ? `<div class="col-md-4 mb-2"><strong>Polarity:</strong> ${polarity}</div>` : ''}
+						</div>
+					</div>
+				</div>
+			`;
+		}
+		
+	} else if (record.status === 'failed') {
+		contentHTML += `
+			<div class="alert alert-danger">
+				<h6><i class="fas fa-exclamation-triangle"></i> Processing Failed</h6>
+				<p class="mb-0">${escapeHtml(record.error_message || 'An unknown error occurred during processing.')}</p>
+			</div>
+		`;
+	} else if (record.status === 'pending' || record.status === 'processing') {
+		contentHTML += `
+			<div class="alert alert-info">
+				<i class="fas fa-info-circle"></i>
+				This resume is currently being processed. Please check back in a few moments.
+			</div>
+		`;
+	}
+	
+	contentHTML += '</div>';
+	
+	// Update modal content
+	const modalContent = document.getElementById('resumeDetailsContent');
+	if (modalContent) {
+		modalContent.innerHTML = contentHTML;
+		console.log('Modal content updated');
+	} else {
+		console.error('Modal content element not found');
+	}
+	
+	// Update download button
+	const downloadBtn = document.getElementById('downloadResumeBtn');
+	if (downloadBtn) {
+		if (record.resume_url && record.resume_url.trim() !== '') {
+			downloadBtn.href = record.resume_url;
+			downloadBtn.style.display = 'inline-block';
+			console.log('Download button enabled:', record.resume_url);
+		} else {
+			downloadBtn.style.display = 'none';
+			console.log('Download button hidden - no resume URL');
+		}
+	} else {
+		console.error('Download button not found');
+	}
+	
+	// Show modal using Bootstrap 5
+	const modalElement = document.getElementById('resumeDetailsModal');
+	if (modalElement) {
+		try {
+			const modal = new bootstrap.Modal(modalElement);
+			modal.show();
+			console.log('Modal shown');
+		} catch (error) {
+			console.error('Error showing modal:', error);
+			alert('Error opening modal. Please check the browser console for details.');
+		}
+	} else {
+		console.error('Modal element not found');
+	}
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const resumeInput = document.getElementById('resume-upload');
     const fileUploadContainer = resumeInput ? resumeInput.closest('.custom-file-upload') : null;

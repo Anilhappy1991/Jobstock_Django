@@ -16,6 +16,23 @@
 		<!-- Colors CSS -->
         <link href="{% static 'app/css/colors.css' %}" rel="stylesheet">
 		<link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+		
+		<!-- Global Header Fix -->
+		<style>
+			/* Fix header spacing across all pages */
+			.header {
+				margin-bottom: 0 !important;
+			}
+			/* Remove extra top spacing on dashboard pages */
+			.dashboard-wrap {
+				margin-top: 0 !important;
+			}
+			/* Adjust main wrapper padding */
+			#main-wrapper > main {
+				padding-top: 0 !important;
+			}
+		</style>
+		
 		{% block css %}{% endblock %}
 		
     </head>

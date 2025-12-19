@@ -75,21 +75,6 @@ class Employer(models.Model):
         return self.title
 
 
-class Job(models.Model):
-    id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=255)
-    price = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True)  # Add a slug field
-    
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)  # Automatically generate the slug from the title
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.title
-
-
 WORK_STATUS_CHOICES = (
     ('findjob', "I'm looking for a job"),
     ('findtalent', "I'm looking for talent"),
@@ -137,6 +122,139 @@ class DropdownMaster(models.Model):
         verbose_name = 'Dropdown Master'
         verbose_name_plural = 'Dropdown Masters'
         ordering = ['group', 'sort_order', 'text']
+
+
+class Job(models.Model):
+    id = models.AutoField(primary_key=True)
+    
+    # Basic Information
+    title = models.CharField(max_length=255, verbose_name='Job Title')
+    company_logo = models.ImageField(upload_to='company_logos/', blank=True, null=True)
+    job_summary = models.TextField(blank=True, null=True)
+    responsibilities = models.TextField(blank=True, null=True)
+    qualifications = models.TextField(blank=True, null=True)
+    
+    # Job Details
+    job_category = models.ForeignKey(
+        DropdownMaster, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='category_jobs',
+        limit_choices_to={'group__value': 'job_category'}
+    )
+    job_type = models.ForeignKey(
+        DropdownMaster, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='type_jobs',
+        limit_choices_to={'group__value': 'job_type'}
+    )
+    job_level = models.ForeignKey(
+        DropdownMaster, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='level_jobs',
+        limit_choices_to={'group__value': 'job_level'}
+    )
+    experience_required = models.ForeignKey(
+        DropdownMaster, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='experience_jobs',
+        limit_choices_to={'group__value': 'experience'}
+    )
+    qualification_required = models.ForeignKey(
+        DropdownMaster, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='qualification_jobs',
+        limit_choices_to={'group__value': 'qualification'}
+    )
+    gender_preference = models.ForeignKey(
+        DropdownMaster, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='gender_jobs',
+        limit_choices_to={'group__value': 'gender'}
+    )
+    
+    # Salary Information
+    min_salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    max_salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    
+    # Dates
+    start_date = models.DateField(blank=True, null=True)
+    deadline = models.DateField(blank=True, null=True)
+    
+    # Additional Details
+    total_openings = models.ForeignKey(
+        DropdownMaster, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='openings_jobs',
+        limit_choices_to={'group__value': 'total_openings'}
+    )
+    job_fee_type = models.ForeignKey(
+        DropdownMaster, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='feetype_jobs',
+        limit_choices_to={'group__value': 'job_fee_type'}
+    )
+    skills = models.CharField(max_length=500, blank=True, null=True, help_text="Comma-separated skills")
+    
+    # Location Information
+    permanent_address = models.CharField(max_length=500, blank=True, null=True)
+    temporary_address = models.CharField(max_length=500, blank=True, null=True)
+    country = models.ForeignKey(
+        DropdownMaster, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='country_jobs',
+        limit_choices_to={'group__value': 'country'}
+    )
+    state_city = models.ForeignKey(
+        DropdownMaster, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='city_jobs',
+        limit_choices_to={'group__value': 'state_city'}
+    )
+    zip_code = models.CharField(max_length=20, blank=True, null=True)
+    video_url = models.URLField(max_length=500, blank=True, null=True)
+    latitude = models.DecimalField(max_digits=10, decimal_places=7, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=10, decimal_places=7, blank=True, null=True)
+    
+    # Metadata
+    price = models.CharField(max_length=255, blank=True, null=True)  # Kept for backward compatibility
+    slug = models.SlugField(unique=True, blank=True)
+    posted_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='posted_jobs')
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)  # Automatically generate the slug from the title
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Job'
+        verbose_name_plural = 'Jobs'
 
 
 class Profile(models.Model):

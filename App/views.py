@@ -450,8 +450,146 @@ def employer_profile(request):
 def employer_jobs(request):
     return render(request, 'pages/employer-jobs.html')
 
+@login_required
 def employer_submit_job(request):
-    return render(request, 'pages/employer-submit-job.html')
+    import logging
+    logger = logging.getLogger(__name__)
+    
+    # ===== DEBUG BREAKPOINT START =====
+    logger.info("="*80)
+    logger.info("EMPLOYER SUBMIT JOB VIEW CALLED")
+    logger.info(f"Method: {request.method}")
+    logger.info(f"User: {request.user.username}")
+    logger.info(f"Authenticated: {request.user.is_authenticated}")
+    # ===== DEBUG BREAKPOINT END =====
+    
+    # Fetch all dropdown groups with their items
+    dropdown_groups = DropdownGroup.objects.filter(is_active=True).prefetch_related('items')
+    
+    # Create a dictionary of dropdowns for easy access in template
+    dropdowns = {}
+    for group in dropdown_groups:
+        dropdowns[group.value] = group.items.filter(is_active=True).order_by('sort_order', 'text')
+    
+    if request.method == 'POST':
+        # ===== DEBUG BREAKPOINT START =====
+        logger.info("-"*80)
+        logger.info("POST REQUEST RECEIVED - FORM SUBMITTED")
+        logger.info("POST Data:")
+        for key, value in request.POST.items():
+            if key != 'csrfmiddlewaretoken':
+                logger.info(f"  {key}: {value[:100] if len(str(value)) > 100 else value}")
+        
+        if request.FILES:
+            logger.info("FILES Uploaded:")
+            for key, file in request.FILES.items():
+                logger.info(f"  {key}: {file.name} ({file.size} bytes)")
+        # ===== DEBUG BREAKPOINT END =====
+        
+        try:
+            # Get dropdown master objects
+            def get_dropdown_item(field_name):
+                value = request.POST.get(field_name)
+                if value:
+                    try:
+                        return DropdownMaster.objects.get(value=value)
+                    except DropdownMaster.DoesNotExist:
+                        logger.warning(f"DropdownMaster not found for {field_name}: {value}")
+                        return None
+                return None
+            
+            # ===== DEBUG BREAKPOINT START =====
+            logger.info("-"*80)
+            logger.info("CREATING JOB OBJECT")
+            # ===== DEBUG BREAKPOINT END =====
+            
+            # Create the job
+            job = Job()
+            job.title = request.POST.get('job_title', '')
+            job.job_summary = request.POST.get('job_summary', '')
+            job.responsibilities = request.POST.get('responsibilities', '')
+            job.qualifications = request.POST.get('qualifications', '')
+            
+            logger.info(f"Job Title: {job.title}")
+            
+            # Handle file upload
+            if 'company_logo' in request.FILES:
+                job.company_logo = request.FILES['company_logo']
+                logger.info(f"Company Logo: {job.company_logo.name}")
+            
+            # Dropdown fields
+            job.job_category = get_dropdown_item('job_category')
+            job.job_type = get_dropdown_item('job_type')
+            job.job_level = get_dropdown_item('job_level')
+            job.experience_required = get_dropdown_item('experience')
+            job.qualification_required = get_dropdown_item('qualification')
+            job.gender_preference = get_dropdown_item('gender')
+            job.total_openings = get_dropdown_item('total_openings')
+            job.job_fee_type = get_dropdown_item('job_fee_type')
+            job.country = get_dropdown_item('country')
+            job.state_city = get_dropdown_item('state_city')
+            
+            # Salary
+            min_sal = request.POST.get('min_salary', '').replace('$', '').replace(',', '').strip()
+            max_sal = request.POST.get('max_salary', '').replace('$', '').replace(',', '').strip()
+            job.min_salary = min_sal if min_sal else None
+            job.max_salary = max_sal if max_sal else None
+            
+            logger.info(f"Salary Range: ${job.min_salary} - ${job.max_salary}")
+            
+            # Dates
+            start_date = request.POST.get('start_date', '').strip()
+            deadline = request.POST.get('deadline', '').strip()
+            job.start_date = start_date if start_date else None
+            job.deadline = deadline if deadline else None
+            
+            # Other fields
+            job.skills = request.POST.get('skills', '')
+            job.permanent_address = request.POST.get('permanent_address', '')
+            job.temporary_address = request.POST.get('temporary_address', '')
+            job.zip_code = request.POST.get('zip_code', '')
+            job.video_url = request.POST.get('video_url', '')
+            
+            # Location coordinates
+            lat = request.POST.get('latitude', '').strip()
+            lon = request.POST.get('longitude', '').strip()
+            job.latitude = lat if lat else None
+            job.longitude = lon if lon else None
+            
+            # Set posted by
+            job.posted_by = request.user
+            job.is_active = True
+            
+            # ===== DEBUG BREAKPOINT START =====
+            logger.info("-"*80)
+            logger.info("SAVING JOB TO DATABASE")
+            # ===== DEBUG BREAKPOINT END =====
+            
+            job.save()
+            
+            # ===== DEBUG BREAKPOINT START =====
+            logger.info(f"✓ JOB SAVED SUCCESSFULLY - ID: {job.id}")
+            logger.info("="*80)
+            # ===== DEBUG BREAKPOINT END =====
+            
+            messages.success(request, f'Job "{job.title}" has been posted successfully!')
+            return redirect('App:employer_jobs')
+            
+        except Exception as e:
+            # ===== DEBUG BREAKPOINT START =====
+            logger.error("-"*80)
+            logger.error(f"✗ ERROR OCCURRED: {str(e)}")
+            logger.error(f"Exception Type: {type(e).__name__}")
+            import traceback
+            logger.error(f"Traceback:\n{traceback.format_exc()}")
+            logger.error("="*80)
+            # ===== DEBUG BREAKPOINT END =====
+            messages.error(request, f'Error posting job: {str(e)}')
+    
+    context = {
+        'dropdowns': dropdowns,
+    }
+    return render(request, 'pages/employer-submit-job.html', context)
 
 def employer_applicants_jobs(request):
     return render(request, 'pages/employer-applicants-jobs.html')
