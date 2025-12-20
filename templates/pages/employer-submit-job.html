@@ -133,34 +133,37 @@
 							<div class="form-group">
 								<label>Qualifications</label>
 								<textarea name="qualifications" id="qualifications" class="form-control froala-editor" rows="4" placeholder="Required qualifications and skills"></textarea>
-							<div class="col-xl-6 col-lg-6 col-md-12">
-								<div class="form-group">
-									<label>Job Category</label>
-									<div class="select-ops">
+							</div>
+						</div>
+						
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group">
+								<label>Job Category</label>
+								<div class="select-ops">
 									<select name="job_category">
 										<option value="">Select Category</option>
 										{% for item in dropdowns.job_category %}
 										<option value="{{ item.value }}">{{ item.text }}</option>
 										{% endfor %}
-										</select>
-									</div>
+									</select>
 								</div>
 							</div>
-							<div class="col-xl-6 col-lg-6 col-md-12">
-								<div class="form-group">
-									<label>Job Type</label>
-									<div class="select-ops">
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group">
+								<label>Job Type</label>
+								<div class="select-ops">
 									<select name="job_type">
 										<option value="">Select Type</option>
 										{% for item in dropdowns.job_type %}
 										<option value="{{ item.value }}">{{ item.text }}</option>
 										{% endfor %}
-										</select>
-									</div>
+									</select>
 								</div>
 							</div>
-							<div class="col-xl-6 col-lg-6 col-md-12">
-								<div class="form-group">
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group">
 								<label>Job Level</label>
 								<div class="select-ops">
 									<select name="job_level">
@@ -168,14 +171,14 @@
 										{% for item in dropdowns.job_level %}
 										<option value="{{ item.value }}">{{ item.text }}</option>
 										{% endfor %}
-										</select>
-									</div>
+									</select>
 								</div>
 							</div>
-							<div class="col-xl-6 col-lg-6 col-md-12">
-								<div class="form-group">
-									<label>Experience</label>
-									<div class="select-ops">
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group">
+								<label>Experience</label>
+								<div class="select-ops">
 									<select name="experience">
 										<option value="">Select Experience</option>
 										{% for item in dropdowns.experience %}
@@ -186,10 +189,10 @@
 							</div>
 						</div>
 							
-							<div class="col-xl-6 col-lg-6 col-md-12">
-								<div class="form-group">
-									<label>Qualification</label>
-									<div class="select-ops">
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group">
+								<label>Qualification</label>
+								<div class="select-ops">
 									<select name="qualification">
 										<option value="">Select Qualification</option>
 										{% for item in dropdowns.qualification %}
@@ -200,10 +203,10 @@
 							</div>
 						</div>
 							
-							<div class="col-xl-6 col-lg-6 col-md-12">
-								<div class="form-group">
-									<label>Gender</label>
-									<div class="select-ops">
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group">
+								<label>Gender</label>
+								<div class="select-ops">
 									<select name="gender">
 										<option value="">Select Gender</option>
 										{% for item in dropdowns.gender %}
@@ -242,9 +245,9 @@
 								</div>
 							</div> 
 							
-							<div class="col-xl-6 col-lg-6 col-md-12">
-								<div class="form-group">
-									<label>Total Openings</label>
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group">
+								<label>Total Openings</label>
 								<div class="select-ops">
 									<select name="total_openings">
 										<option value="">Select Openings</option>
@@ -256,10 +259,10 @@
 							</div>
 						</div>
 							
-							<div class="col-xl-6 col-lg-6 col-md-12">
-								<div class="form-group">
-									<label>Job Fee Type</label>
-									<div class="select-ops">
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group">
+								<label>Job Fee Type</label>
+								<div class="select-ops">
 									<select name="job_fee_type">
 										<option value="">Select Fee Type</option>
 										{% for item in dropdowns.job_fee_type %}
@@ -291,10 +294,10 @@
 								</div>
 							</div>
 							
-							<div class="col-xl-6 col-lg-6 col-md-12">
-								<div class="form-group">
-									<label>Country</label>
-									<div class="select-ops">
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group">
+								<label>Country</label>
+								<div class="select-ops">
 									<select name="country">
 										<option value="">Select Country</option>
 										{% for item in dropdowns.country %}
@@ -305,10 +308,10 @@
 							</div>
 						</div>
 							
-							<div class="col-xl-6 col-lg-6 col-md-12">
-								<div class="form-group">
-									<label>State/City</label>
-									<div class="select-ops">
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group">
+								<label>State/City</label>
+								<div class="select-ops">
 									<select name="state_city">
 										<option value="">Select State/City</option>
 										{% for item in dropdowns.state_city %}
@@ -319,35 +322,35 @@
 							</div>
 						</div>
 							
-							<div class="col-xl-6 col-lg-6 col-md-12">
-								<div class="form-group">
-									<label>Zip Code</label>
-									<input type="text" name="zip_code" class="form-control" placeholder="Enter zip code">
-								</div>
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group">
+								<label>Zip Code</label>
+								<input type="text" name="zip_code" class="form-control" placeholder="Enter zip code">
 							</div>
-							
-							<div class="col-xl-6 col-lg-6 col-md-12">
-								<div class="form-group">
-									<label>Video URL</label>
-									<input type="url" name="video_url" class="form-control" placeholder="https://youtube.com/watch?v=...">
-								</div>
+						</div>
+						
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group">
+								<label>Video URL</label>
+								<input type="url" name="video_url" class="form-control" placeholder="https://youtube.com/watch?v=...">
 							</div>
-							
-							<div class="col-xl-6 col-lg-6 col-md-12">
-								<div class="form-group">
-									<label>Latitude</label>
-									<input type="text" name="latitude" class="form-control" placeholder="e.g., 26.827742">
-								</div>
+						</div>
+						
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group">
+								<label>Latitude</label>
+								<input type="text" name="latitude" class="form-control" placeholder="e.g., 26.827742">
 							</div>
-							
-							<div class="col-xl-6 col-lg-6 col-md-12">
-								<div class="form-group">
-									<label>Longitude</label>
-									<input type="text" name="longitude" class="form-control" placeholder="e.g., 80.878903">
-								</div>
+						</div>
+						
+						<div class="col-xl-6 col-lg-6 col-md-12">
+							<div class="form-group">
+								<label>Longitude</label>
+								<input type="text" name="longitude" class="form-control" placeholder="e.g., 80.878903">
 							</div>
-							
-<div class="col-xl-12 col-lg-12 col-md-12 mb-4">
+						</div>
+						
+						<div class="col-xl-12 col-lg-12 col-md-12 mb-4">
 							<div class="form-group">
 								<label>Location Map</label>
 								<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3560.383810516784!2d80.8789037751729!3d26.827742176697985!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399bfe8bc34b51bb%3A0xa3ca86eec63f6f8!2sINFOSYS%20DIGITAL%20COMPUTER%20(Prabhat%20Computer%20Classes)!5e0!3m2!1sen!2sin!4v1681402268551!5m2!1sen!2sin" width="100%" height="400" style="border:0; border-radius: 8px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
