@@ -4,8 +4,11 @@ Employer-related views - Profile, jobs, applications, etc.
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
 
 from App.models import Employer, Job, DropdownGroup, DropdownMaster
+from App.services import JobService
 
 
 def employer_grid_1(request):
@@ -60,96 +63,90 @@ def employer_profile(request):
     return render(request, 'pages/employer-profile.html')
 
 
+@login_required
 def employer_jobs(request):
     """Employer jobs listing"""
-    return render(request, 'pages/employer-jobs.html')
+    # Get all jobs posted by the current user
+    jobs = JobService.get_all_jobs(user=request.user)
+    
+    # Get statistics
+    stats = JobService.get_job_statistics(user=request.user)
+    
+    context = {
+        'jobs': jobs,
+        'stats': stats,
+    }
+    return render(request, 'pages/employer-jobs.html', context)
 
 
 @login_required
-def employer_submit_job(request):
-    """Submit a new job posting"""
-    # Fetch all dropdown groups with their items
-    dropdown_groups = DropdownGroup.objects.filter(is_active=True).prefetch_related('items')
+def employer_submit_job(request, job_id=None):
+    """Submit a new job posting or edit existing one"""
+    # Get dropdown data
+    dropdowns = JobService.get_dropdown_data()
     
-    # Create a dictionary of dropdowns for easy access in template
-    dropdowns = {}
-    for group in dropdown_groups:
-        dropdowns[group.value] = group.items.filter(is_active=True).order_by('sort_order', 'text')
+    # Check if editing existing job
+    job = None
+    if job_id:
+        try:
+            job = JobService.get_job_by_id(job_id, user=request.user)
+        except:
+            messages.error(request, 'Job not found or you do not have permission to edit it.')
+            return redirect('App:employer_jobs')
     
     if request.method == 'POST':
         try:
-            def get_dropdown_item(field_name):
-                """Helper function to get dropdown item"""
-                value = request.POST.get(field_name)
-                if value:
-                    try:
-                        return DropdownMaster.objects.get(value=value)
-                    except DropdownMaster.DoesNotExist:
-                        return None
-                return None
-            
-            # Create the job
-            job = Job()
-            job.title = request.POST.get('job_title', '')
-            job.job_summary = request.POST.get('job_summary', '')
-            job.responsibilities = request.POST.get('responsibilities', '')
-            job.qualifications = request.POST.get('qualifications', '')
+            # Prepare data dictionary
+            data = {
+                'job_title': request.POST.get('job_title', ''),
+                'job_summary': request.POST.get('job_summary', ''),
+                'responsibilities': request.POST.get('responsibilities', ''),
+                'qualifications': request.POST.get('qualifications', ''),
+                'job_category': request.POST.get('job_category'),
+                'job_type': request.POST.get('job_type'),
+                'job_level': request.POST.get('job_level'),
+                'experience': request.POST.get('experience'),
+                'qualification': request.POST.get('qualification'),
+                'gender': request.POST.get('gender'),
+                'total_openings': request.POST.get('total_openings'),
+                'job_fee_type': request.POST.get('job_fee_type'),
+                'country': request.POST.get('country'),
+                'state_city': request.POST.get('state_city'),
+                'min_salary': request.POST.get('min_salary', ''),
+                'max_salary': request.POST.get('max_salary', ''),
+                'start_date': request.POST.get('start_date', ''),
+                'deadline': request.POST.get('deadline', ''),
+                'skills': request.POST.get('skills', ''),
+                'permanent_address': request.POST.get('permanent_address', ''),
+                'temporary_address': request.POST.get('temporary_address', ''),
+                'zip_code': request.POST.get('zip_code', ''),
+                'video_url': request.POST.get('video_url', ''),
+                'latitude': request.POST.get('latitude', ''),
+                'longitude': request.POST.get('longitude', ''),
+                'is_active': True,
+            }
             
             # Handle file upload
             if 'company_logo' in request.FILES:
-                job.company_logo = request.FILES['company_logo']
+                data['company_logo'] = request.FILES['company_logo']
             
-            # Dropdown fields
-            job.job_category = get_dropdown_item('job_category')
-            job.job_type = get_dropdown_item('job_type')
-            job.job_level = get_dropdown_item('job_level')
-            job.experience_required = get_dropdown_item('experience')
-            job.qualification_required = get_dropdown_item('qualification')
-            job.gender_preference = get_dropdown_item('gender')
-            job.total_openings = get_dropdown_item('total_openings')
-            job.job_fee_type = get_dropdown_item('job_fee_type')
-            job.country = get_dropdown_item('country')
-            job.state_city = get_dropdown_item('state_city')
+            # Create or update job using service layer
+            if job_id:
+                job = JobService.update_job(job_id, data, request.user)
+                messages.success(request, f'Job "{job.title}" has been updated successfully!')
+            else:
+                job = JobService.create_job(data, request.user)
+                messages.success(request, f'Job "{job.title}" has been posted successfully!')
             
-            # Salary
-            min_sal = request.POST.get('min_salary', '').replace('$', '').replace(',', '').strip()
-            max_sal = request.POST.get('max_salary', '').replace('$', '').replace(',', '').strip()
-            job.min_salary = min_sal if min_sal else None
-            job.max_salary = max_sal if max_sal else None
-            
-            # Dates
-            start_date = request.POST.get('start_date', '').strip()
-            deadline = request.POST.get('deadline', '').strip()
-            job.start_date = start_date if start_date else None
-            job.deadline = deadline if deadline else None
-            
-            # Other fields
-            job.skills = request.POST.get('skills', '')
-            job.permanent_address = request.POST.get('permanent_address', '')
-            job.temporary_address = request.POST.get('temporary_address', '')
-            job.zip_code = request.POST.get('zip_code', '')
-            job.video_url = request.POST.get('video_url', '')
-            
-            # Location coordinates
-            lat = request.POST.get('latitude', '').strip()
-            lon = request.POST.get('longitude', '').strip()
-            job.latitude = lat if lat else None
-            job.longitude = lon if lon else None
-            
-            # Set posted by
-            job.posted_by = request.user
-            job.is_active = True
-            
-            job.save()
-            
-            messages.success(request, f'Job "{job.title}" has been posted successfully!')
             return redirect('App:employer_jobs')
             
         except Exception as e:
-            messages.error(request, f'Error posting job: {str(e)}')
+            messages.error(request, f'Error saving job: {str(e)}')
     
     context = {
         'dropdowns': dropdowns,
+        'job': job,
+        'is_edit': job is not None,
     }
     return render(request, 'pages/employer-submit-job.html', context)
 
@@ -182,3 +179,16 @@ def employer_change_password(request):
 def employer_delete_account(request):
     """Employer delete account"""
     return render(request, 'pages/employer-delete-account.html')
+
+
+@login_required
+@require_http_methods(["POST", "DELETE"])
+def employer_delete_job(request, job_id):
+    """Delete a job posting"""
+    try:
+        JobService.delete_job(job_id, request.user)
+        messages.success(request, 'Job has been deleted successfully!')
+        return JsonResponse({'success': True, 'message': 'Job deleted successfully'})
+    except Exception as e:
+        messages.error(request, f'Error deleting job: {str(e)}')
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)

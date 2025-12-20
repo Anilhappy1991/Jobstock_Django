@@ -1,26 +1,163 @@
-{% for item in posteds %}
+{% load static %}
+
+{% if jobs %}
+    {% for job in jobs %}
     <div class="col-xl-12 col-lg-12 col-md-12">
         <div class="jbs-list-box border">
             <div class="jbs-list-head">
                 <div class="jbs-list-head-thunner">
-                    <div class="jbs-list-emp-thumb jbs-verified"><a href="{% url 'App:job_detail' title=item.title|slugify %}"><figure><img src="{{ item.img }}" class="img-fluid" alt=""></figure></a></div>
+                    <div class="jbs-list-emp-thumb jbs-verified">
+                        <a href="javascript:void(0);">
+                            <figure>
+                                {% if job.company_logo %}
+                                    <img src="{{ job.company_logo.url }}" class="img-fluid" alt="{{ job.title }}">
+                                {% else %}
+                                    <img src="{% static 'app/img/l-5.png' %}" class="img-fluid" alt="{{ job.title }}">
+                                {% endif %}
+                            </figure>
+                        </a>
+                    </div>
                     <div class="jbs-list-job-caption">
-                        <div class="jbs-job-employer-wrap"><span>{{ item.name }}</span></div>
-                        <div class="jbs-job-title-wrap"><h4><a href="{% url 'App:job_detail' title=item.title|slugify %}" class="jbs-job-title">{{ item.title }}</a></h4></div>
+                        <div class="jbs-job-employer-wrap">
+                            <span>
+                                {% if job.job_category %}{{ job.job_category.text }}{% else %}General{% endif %}
+                                {% if job.job_type %} • {{ job.job_type.text }}{% endif %}
+                            </span>
+                        </div>
+                        <div class="jbs-job-title-wrap">
+                            <h4><a href="javascript:void(0);" class="jbs-job-title">{{ job.title }}</a></h4>
+                        </div>
+                        <div class="jbs-job-mrch-lists">
+                            <div class="single-mrch-lists">
+                                <span>
+                                    {% if job.job_level %}{{ job.job_level.text }}{% endif %}
+                                    {% if job.experience_required %} • {{ job.experience_required.text }} Experience{% endif %}
+                                </span>
+                            </div>
+                            {% if job.min_salary or job.max_salary %}
+                            <div class="single-mrch-lists">
+                                <span>
+                                    <i class="fa-solid fa-money-bill me-1"></i>
+                                    {% if job.min_salary %}${{ job.min_salary }}{% endif %}
+                                    {% if job.max_salary %} - ${{ job.max_salary }}{% endif %}
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
                 <div class="jbs-list-applied-users">
-                    <span class="text-sm-muted text-light bg-{{ item.class }} label">{{ item.applicants }}</span>
+                    <span class="text-sm-muted text-light {% if job.is_active %}bg-success{% else %}bg-secondary{% endif %} label">
+                        {% if job.is_active %}Active{% else %}Inactive{% endif %}
+                    </span>
                 </div>
                 <div class="jbs-list-postedinfo">
-                    <p class="m-0 text-sm-muted"><strong>Posted:</strong><span class="text-success">{{ item.posted }}</span></p>
-                    <p class="m-0 text-sm-muted"><strong>Expired:</strong><span class="text-danger">{{ item.expired }}</span></p>
+                    <p class="m-0 text-sm-muted">
+                        <strong>Posted:</strong>
+                        <span class="text-success">{{ job.created_at|date:"M d, Y" }}</span>
+                    </p>
+                    {% if job.deadline %}
+                    <p class="m-0 text-sm-muted">
+                        <strong>Deadline:</strong>
+                        <span class="text-danger">{{ job.deadline|date:"M d, Y" }}</span>
+                    </p>
+                    {% endif %}
                 </div>
                 <div class="jbs-list-head-last">
-                    <a href="JavaScript:Void(0);" class="rounded btn-md text-success bg-light-green px-3"><i class="fa-solid fa-pencil"></i></a>
-                    <a href="JavaScript:Void(0);" class="rounded btn-md text-danger bg-light-red px-3"><i class="fa-solid fa-trash-can"></i></a>
+                    <a href="{% url 'App:employer_edit_job' job.id %}" 
+                       class="rounded btn-md text-success bg-light-green px-3" 
+                       title="Edit Job">
+                        <i class="fa-solid fa-pencil"></i>
+                    </a>
+                    <a href="javascript:void(0);" 
+                       class="rounded btn-md text-danger bg-light-red px-3 delete-job-btn" 
+                       data-job-id="{{ job.id }}"
+                       data-job-title="{{ job.title }}"
+                       title="Delete Job">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-{% endfor %}
+    {% endfor %}
+{% else %}
+    <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="alert alert-info text-center">
+            <i class="fa-solid fa-info-circle me-2"></i>
+            No jobs posted yet. <a href="{% url 'App:employer_submit_job' %}" class="alert-link">Post your first job</a>
+        </div>
+    </div>
+{% endif %}
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteJobModal" tabindex="-1" aria-labelledby="deleteJobModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteJobModalLabel">
+                    <i class="fa-solid fa-exclamation-triangle me-2"></i>Confirm Delete
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Are you sure you want to delete the job:</p>
+                <p class="fw-bold text-danger" id="deleteJobTitle"></p>
+                <p class="text-muted small mb-0">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                    <i class="fa-solid fa-trash-can me-2"></i>Delete Job
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let deleteJobId = null;
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteJobModal'));
+    
+    // Handle delete button click
+    document.querySelectorAll('.delete-job-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            deleteJobId = this.dataset.jobId;
+            document.getElementById('deleteJobTitle').textContent = this.dataset.jobTitle;
+            deleteModal.show();
+        });
+    });
+    
+    // Handle confirm delete
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        if (deleteJobId) {
+            // Get CSRF token
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            // Send delete request
+            fetch(`/employer-delete-job/${deleteJobId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    deleteModal.hide();
+                    // Reload page to show updated list
+                    window.location.reload();
+                } else {
+                    alert('Error deleting job: ' + (data.error || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error deleting job. Please try again.');
+            });
+        }
+    });
+});
+</script>

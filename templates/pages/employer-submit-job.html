@@ -60,15 +60,12 @@
 		<div class="dashboard-tlbar d-block mb-4">
 			<div class="row">
 				<div class="colxl-12 col-lg-12 col-md-12">
-					<h1 class="mb-1 fs-3 fw-medium">Post Jobs</h1>
+					<h1 class="mb-1 fs-3 fw-medium">{% if is_edit %}Edit Job{% else %}Post Jobs{% endif %}</h1>
 					<nav aria-label="breadcrumb">
 						<ol class="breadcrumb">
-							<li class="breadcrumb-item text-muted"><a href="#">Employer</a></li>
-							<li class="breadcrumb-item text-muted"><a href="#">Dashboard</a></li>
-							<li class="breadcrumb-item"><a href="#" class="text-main">Post Jobs</a></li>
-						</ol>
-					</nav>
-				</div>
+							<li class="breadcrumb-item text-muted"><a href="{% url 'App:employer_dashboard' %}">Employer</a></li>
+							<li class="breadcrumb-item text-muted"><a href="{% url 'App:employer_jobs' %}">Jobs</a></li>
+							<li class="breadcrumb-item"><a href="#" class="text-main">{% if is_edit %}Edit{% else %}Post{% endif %} Job</a></li>
 			</div>
 		</div>
 		
@@ -88,7 +85,7 @@
 						</div>
 						{% endfor %}
 					{% endif %}
-					<form method="POST" enctype="multipart/form-data" action="{% url 'App:employer_submit_job' %}">
+					<form method="POST" enctype="multipart/form-data" action="{% if is_edit %}{% url 'App:employer_edit_job' job.id %}{% else %}{% url 'App:employer_submit_job' %}{% endif %}">
 						{% csrf_token %}
 						<div class="row">
 						
@@ -111,31 +108,25 @@
 							<div class="col-xl-12 col-lg-12 col-md-12">
 								<div class="form-group">
 									<label>Job Title<span class="text-danger">*</span></label>
-									<input type="text" name="job_title" class="form-control" placeholder="ex. Senior UI/UX Designer" required>
+									<input type="text" name="job_title" class="form-control" placeholder="ex. Senior UI/UX Designer" value="{{ job.title|default:'' }}" required>
 								</div>
 							</div>
 							
 							<div class="col-xl-12 col-lg-12 col-md-12">
 								<div class="form-group">
 									<label>Job summary</label>
-								<textarea name="job_summary" id="job_summary" class="form-control froala-editor" rows="4" placeholder="Provide a brief summary of the job role"></textarea>
-							</div>
-						</div>
-						
+							<textarea name="job_summary" id="job_summary" class="form-control froala-editor" rows="4" placeholder="Provide a brief summary of the job role">{{ job.job_summary|default:'' }}</textarea>
 						<div class="col-xl-12 col-lg-12 col-md-12">
 							<div class="form-group">
 								<label>Responsibilities</label>
 								<textarea name="responsibilities" id="responsibilities" class="form-control froala-editor" rows="4" placeholder="List key responsibilities for this position"></textarea>
 							</div>
 						</div>
-						
-						<div class="col-xl-12 col-lg-12 col-md-12">
-							<div class="form-group">
-								<label>Qualifications</label>
+							<textarea name="responsibilities" id="responsibilities" class="form-control froala-editor" rows="4" placeholder="List key responsibilities for this position">{{ job.responsibilities|default:'' }}</textarea>		<label>Qualifications</label>
 								<textarea name="qualifications" id="qualifications" class="form-control froala-editor" rows="4" placeholder="Required qualifications and skills"></textarea>
 							</div>
 						</div>
-						
+						{{ job.qualifications|default:'' }}
 						<div class="col-xl-6 col-lg-6 col-md-12">
 							<div class="form-group">
 								<label>Job Category</label>
@@ -143,7 +134,7 @@
 									<select name="job_category">
 										<option value="">Select Category</option>
 										{% for item in dropdowns.job_category %}
-										<option value="{{ item.value }}">{{ item.text }}</option>
+										<option value="{{ item.value }}" {% if job and job.job_category and job.job_category.value == item.value %}selected{% endif %}>{{ item.text }}</option>
 										{% endfor %}
 									</select>
 								</div>
@@ -156,7 +147,7 @@
 									<select name="job_type">
 										<option value="">Select Type</option>
 										{% for item in dropdowns.job_type %}
-										<option value="{{ item.value }}">{{ item.text }}</option>
+										<option value="{{ item.value }}" {% if job and job.job_type and job.job_type.value == item.value %}selected{% endif %}>{{ item.text }}</option>
 										{% endfor %}
 									</select>
 								</div>
@@ -169,7 +160,7 @@
 									<select name="job_level">
 										<option value="">Select Level</option>
 										{% for item in dropdowns.job_level %}
-										<option value="{{ item.value }}">{{ item.text }}</option>
+										<option value="{{ item.value }}" {% if job and job.job_level and job.job_level.value == item.value %}selected{% endif %}>{{ item.text }}</option>
 										{% endfor %}
 									</select>
 								</div>
@@ -182,7 +173,7 @@
 									<select name="experience">
 										<option value="">Select Experience</option>
 										{% for item in dropdowns.experience %}
-										<option value="{{ item.value }}">{{ item.text }}</option>
+										<option value="{{ item.value }}" {% if job and job.experience and job.experience.value == item.value %}selected{% endif %}>{{ item.text }}</option>
 										{% endfor %}
 									</select>
 								</div>
@@ -196,7 +187,7 @@
 									<select name="qualification">
 										<option value="">Select Qualification</option>
 										{% for item in dropdowns.qualification %}
-										<option value="{{ item.value }}">{{ item.text }}</option>
+										<option value="{{ item.value }}" {% if job and job.qualification and job.qualification.value == item.value %}selected{% endif %}>{{ item.text }}</option>
 										{% endfor %}
 									</select>
 								</div>
@@ -210,7 +201,7 @@
 									<select name="gender">
 										<option value="">Select Gender</option>
 										{% for item in dropdowns.gender %}
-										<option value="{{ item.value }}">{{ item.text }}</option>
+										<option value="{{ item.value }}" {% if job and job.gender and job.gender.value == item.value %}selected{% endif %}>{{ item.text }}</option>
 										{% endfor %}
 									</select>
 								</div>
@@ -220,28 +211,28 @@
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label>Min. Salary</label>
-									<input type="number" name="min_salary" class="form-control" placeholder="ex. 5000" step="0.01">
+									<input type="number" name="min_salary" class="form-control" placeholder="ex. 5000" step="0.01" value="{{ job.min_salary|default:'' }}">
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label>Max. Salary</label>
-									<input type="number" name="max_salary" class="form-control" placeholder="ex. 10000" step="0.01">
+									<input type="number" name="max_salary" class="form-control" placeholder="ex. 10000" step="0.01" value="{{ job.max_salary|default:'' }}">
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label>Start Date</label>
-									<input type="date" name="start_date" class="form-control" placeholder="Choose Date">
+									<input type="date" name="start_date" class="form-control" placeholder="Choose Date" value="{{ job.start_date|date:'Y-m-d'|default:'' }}">
 								</div>
 							</div>
 							
 							<div class="col-xl-6 col-lg-6 col-md-12">
 								<div class="form-group">
 									<label>Deadline</label>
-									<input type="date" name="deadline" class="form-control" placeholder="Choose Date">
+									<input type="date" name="deadline" class="form-control" placeholder="Choose Date" value="{{ job.deadline|date:'Y-m-d'|default:'' }}">
 								</div>
 							</div> 
 							
@@ -252,7 +243,7 @@
 									<select name="total_openings">
 										<option value="">Select Openings</option>
 										{% for item in dropdowns.total_openings %}
-										<option value="{{ item.value }}">{{ item.text }}</option>
+										<option value="{{ item.value }}" {% if job and job.total_openings and job.total_openings.value == item.value %}selected{% endif %}>{{ item.text }}</option>
 										{% endfor %}
 									</select>
 								</div>
@@ -266,7 +257,7 @@
 									<select name="job_fee_type">
 										<option value="">Select Fee Type</option>
 										{% for item in dropdowns.job_fee_type %}
-										<option value="{{ item.value }}">{{ item.text }}</option>
+										<option value="{{ item.value }}" {% if job and job.job_fee_type and job.job_fee_type.value == item.value %}selected{% endif %}>{{ item.text }}</option>
 										{% endfor %}
 									</select>
 								</div>
@@ -276,21 +267,21 @@
 							<div class="col-xl-12 col-lg-12 col-md-12">
 								<div class="form-group">
 									<label>Skills, Use Commas for separate</label>
-									<input type="text" name="skills" class="form-control" placeholder="e.g., HTML, CSS, JavaScript, React">
+									<input type="text" name="skills" class="form-control" placeholder="e.g., HTML, CSS, JavaScript, React" value="{{ job.skills|default:'' }}">
 								</div>
 							</div>
 							
 							<div class="col-xl-12 col-lg-12 col-md-12">
 								<div class="form-group">
 									<label>Permanent Address</label>
-									<input type="text" name="permanent_address" class="form-control" placeholder="Enter permanent address">
+									<input type="text" name="permanent_address" class="form-control" placeholder="Enter permanent address" value="{{ job.permanent_address|default:'' }}">
 								</div>
 							</div>
 							
 							<div class="col-xl-12 col-lg-12 col-md-12">
 								<div class="form-group">
 									<label>Temporary Address</label>
-									<input type="text" name="temporary_address" class="form-control" placeholder="Enter temporary address">
+									<input type="text" name="temporary_address" class="form-control" placeholder="Enter temporary address" value="{{ job.temporary_address|default:'' }}">
 								</div>
 							</div>
 							
@@ -301,7 +292,7 @@
 									<select name="country">
 										<option value="">Select Country</option>
 										{% for item in dropdowns.country %}
-										<option value="{{ item.value }}">{{ item.text }}</option>
+										<option value="{{ item.value }}" {% if job and job.country and job.country.value == item.value %}selected{% endif %}>{{ item.text }}</option>
 										{% endfor %}
 									</select>
 								</div>
@@ -315,7 +306,7 @@
 									<select name="state_city">
 										<option value="">Select State/City</option>
 										{% for item in dropdowns.state_city %}
-										<option value="{{ item.value }}">{{ item.text }}</option>
+										<option value="{{ item.value }}" {% if job and job.state_city and job.state_city.value == item.value %}selected{% endif %}>{{ item.text }}</option>
 										{% endfor %}
 									</select>
 								</div>
@@ -325,28 +316,28 @@
 						<div class="col-xl-6 col-lg-6 col-md-12">
 							<div class="form-group">
 								<label>Zip Code</label>
-								<input type="text" name="zip_code" class="form-control" placeholder="Enter zip code">
+							<input type="text" name="zip_code" class="form-control" placeholder="Enter zip code" value="{{ job.zip_code|default:'' }}">
 							</div>
 						</div>
 						
 						<div class="col-xl-6 col-lg-6 col-md-12">
 							<div class="form-group">
 								<label>Video URL</label>
-								<input type="url" name="video_url" class="form-control" placeholder="https://youtube.com/watch?v=...">
+							<input type="url" name="video_url" class="form-control" placeholder="https://youtube.com/watch?v=..." value="{{ job.video_url|default:'' }}">
 							</div>
 						</div>
 						
 						<div class="col-xl-6 col-lg-6 col-md-12">
 							<div class="form-group">
 								<label>Latitude</label>
-								<input type="text" name="latitude" class="form-control" placeholder="e.g., 26.827742">
+							<input type="text" name="latitude" class="form-control" placeholder="e.g., 26.827742" value="{{ job.latitude|default:'' }}">
 							</div>
 						</div>
 						
 						<div class="col-xl-6 col-lg-6 col-md-12">
 							<div class="form-group">
 								<label>Longitude</label>
-								<input type="text" name="longitude" class="form-control" placeholder="e.g., 80.878903">
+							<input type="text" name="longitude" class="form-control" placeholder="e.g., 80.878903" value="{{ job.longitude|default:'' }}">
 							</div>
 						</div>
 						
@@ -361,11 +352,17 @@
 						<div class="col-xl-12 col-lg-12 col-md-12">
 							<div class="d-flex justify-content-center align-items-center gap-3 mt-3">
 								<button type="submit" class="btn ft--medium btn-main px-5 py-3">
-									<i class="fas fa-save me-2"></i>Save & Post Job
+									<i class="fas fa-save me-2"></i>{% if is_edit %}Update Job{% else %}Save & Post Job{% endif %}
 								</button>
+								{% if is_edit %}
+								<a href="{% url 'App:employer_jobs' %}" class="btn ft--medium btn-secondary px-4 py-3">
+									<i class="fas fa-times me-2"></i>Cancel
+								</a>
+								{% else %}
 								<button type="button" id="debugBtn" class="btn ft--medium btn-warning px-4 py-3">
 									<i class="fas fa-bug me-2"></i>Debug Save
 								</button>
+								{% endif %}
 							</div>
 						</div>
 						
