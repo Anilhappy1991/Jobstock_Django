@@ -217,11 +217,13 @@ debug.log
 error.log
 *.log.*
 
-# Test scripts (optional - remove if you want to commit tests)
-test_*.py
-diagnose_*.py
-check_*.py
-verify_*.py
+# ============================================================================
+# ORGANIZED FOLDERS
+# ============================================================================
+# Temporary files folder
+temp/
+temp/*
+!temp/README.md
 
 # ============================================================================
 # PROJECT SPECIFIC
