@@ -20,10 +20,10 @@ build/
 *.log
 *.pot
 
-# Database
-db.sqlite3
-db.sqlite3-journal
-*.db
+# # Database
+# db.sqlite3
+# db.sqlite3-journal
+# *.db
 
 # Local settings
 local_settings.py

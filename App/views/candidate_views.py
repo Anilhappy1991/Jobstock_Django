@@ -85,8 +85,14 @@ def candidate_profile(request):
 
 @login_required
 def candidate_profile_detail(request, username):
-    """Show and update the profile for the given username"""
-    user = get_object_or_404(User, username=username)
+    """Show and update the profile for the given username or email"""
+    # Try to find user by username first, then by email
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        # If not found by username, try email
+        user = get_object_or_404(User, email=username)
+    
     profile, created = Profile.objects.get_or_create(user=user)
     
     # Prevent users from editing other users' profiles
