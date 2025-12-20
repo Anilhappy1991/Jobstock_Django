@@ -1,0 +1,62 @@
+# Multi-stage build for Django Application with Frontend Development
+# Stage 1: Base Python image
+FROM python:3.12-slim as base
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# Create app directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    postgresql-client \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Stage 2: Dependencies
+FROM base as dependencies
+
+# Copy requirements file
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+# Stage 3: Final application
+FROM dependencies as final
+
+# Create non-root user for security
+RUN useradd -m -u 1000 appuser && \
+    mkdir -p /app/data /app/staticfiles /app/temp_processing && \
+    chown -R appuser:appuser /app
+
+# Copy backend code (Python files only - frontend will be mounted)
+COPY --chown=appuser:appuser manage.py /app/
+COPY --chown=appuser:appuser Jobstock/ /app/Jobstock/
+COPY --chown=appuser:appuser App/ /app/App/
+COPY --chown=appuser:appuser core/ /app/core/
+COPY --chown=appuser:appuser scripts/ /app/scripts/
+
+# Create directories for volume mounts (frontend files and database)
+RUN mkdir -p /app/templates /app/static /app/data
+
+# Switch to non-root user
+USER appuser
+
+# Expose port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000').read()" || exit 1
+
+# Collect static files and run migrations on startup
+CMD python manage.py collectstatic --noinput && \
+    python manage.py migrate --noinput && \
+    python manage.py runserver 0.0.0.0:8000

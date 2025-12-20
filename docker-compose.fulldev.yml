@@ -1,0 +1,41 @@
+services:
+  # Full Django Application with Frontend Development
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.fulldev
+    container_name: jobstock_fulldev
+    ports:
+      - "8000:8000"
+    volumes:
+      # Frontend files - EDITABLE by frontend developer
+      - ./templates:/app/templates
+      - ./static:/app/static
+      
+      # Database - EDITABLE and shared with host
+      - ./db.sqlite3:/app/db.sqlite3
+      
+      # Python requirements - EDITABLE for managing dependencies
+      - ./requirements.txt:/app/requirements.txt
+      
+      # Data directories for uploads, resumes, etc.
+      - ./data:/app/data
+      - ./staticfiles:/app/staticfiles
+      - ./temp_processing:/app/temp_processing
+    environment:
+      - DEBUG=True
+      - DJANGO_SETTINGS_MODULE=Jobstock.settings
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    networks:
+      - jobstock_network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000').read()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  jobstock_network:
+    driver: bridge

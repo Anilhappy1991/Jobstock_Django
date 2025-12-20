@@ -1,0 +1,118 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║   JOBSTOCK DJANGO - FULL DEVELOPMENT ENVIRONMENT             ║
+║   Quick Start Guide for Frontend Developers                 ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+📋 REQUIREMENTS:
+   ✅ Docker Desktop (https://www.docker.com/products/docker-desktop)
+   ✅ Windows 10/11
+
+🚀 QUICK START (3 STEPS):
+
+   1. Make sure Docker Desktop is running
+      └─ Look for Docker icon in system tray
+
+   2. Double-click: start_fulldev.bat
+      └─ First time takes 2-3 minutes
+      └─ Browser opens automatically
+
+   3. Start editing!
+      └─ Edit files in templates/ or static/
+      └─ Save and refresh browser (Ctrl+F5)
+
+📁 WHAT YOU CAN EDIT:
+
+   ✅ templates/     - All HTML files
+   ✅ static/css/    - All CSS files  
+   ✅ static/js/     - All JavaScript files
+   ✅ static/img/    - All images
+   ✅ db.sqlite3     - Database file
+
+💻 DAILY WORKFLOW:
+
+   Morning:   start_fulldev.bat
+   Work:      Edit files → Save → Refresh browser
+   Evening:   stop_fulldev.bat
+
+🔧 USEFUL COMMANDS:
+
+   ┌─────────────────────────┬──────────────────────────┐
+   │ start_fulldev.bat       │ Start server             │
+   │ stop_fulldev.bat        │ Stop server              │
+   │ restart_fulldev.bat     │ Restart server           │
+   │ logs_fulldev.bat        │ View logs                │
+   │ rebuild_fulldev.bat     │ Rebuild Docker image     │
+   └─────────────────────────┴──────────────────────────┘
+
+🌐 ACCESS:
+
+   Application:  http://localhost:8000
+   Admin Panel:  http://localhost:8000/admin
+
+📖 FULL DOCUMENTATION:
+
+   See: README_FULLDEV.md
+
+🆘 TROUBLESHOOTING:
+
+   Changes not showing?
+   └─ Hard refresh: Ctrl+F5
+
+   Port 8000 in use?
+   └─ Run: stop_fulldev.bat
+   └─ Then: start_fulldev.bat
+
+   Need help?
+   └─ Run: logs_fulldev.bat
+   └─ Contact backend developer
+
+💡 HOW IT WORKS:
+
+   Your Files          ←→  Docker Container
+   ───────────         ═══ ────────────────
+   templates/          ←→  /app/templates/
+   static/             ←→  /app/static/
+   db.sqlite3          ←→  /app/db.sqlite3
+
+   Changes sync automatically - no rebuild needed!
+
+✨ FEATURES:
+
+   ✅ Live editing - see changes instantly
+   ✅ Full Django backend running in Docker
+   ✅ Database accessible for testing
+   ✅ Python code hidden (secure)
+   ✅ Fast startup (5 seconds after first build)
+   ✅ Easy to use batch files
+
+🎯 EXAMPLE WORKFLOW:
+
+   1. Open: templates/pages/home.html in VS Code
+   2. Edit: Change some text
+   3. Save: Ctrl+S
+   4. Browser: Ctrl+F5 (hard refresh)
+   5. Result: See your changes!
+
+📊 TOOLS YOU MIGHT NEED:
+
+   🔹 DB Browser for SQLite (to edit database)
+      https://sqlitebrowser.org/
+
+   🔹 VS Code (best code editor)
+      https://code.visualstudio.com/
+
+🔐 SECURITY:
+
+   ✅ Edit templates, static files, database
+   ❌ Don't edit App/ or Jobstock/ folders
+   ❌ Don't commit db.sqlite3 to Git
+
+═══════════════════════════════════════════════════════════════
+
+                    READY TO START!
+
+         Double-click: start_fulldev.bat
+
+═══════════════════════════════════════════════════════════════
