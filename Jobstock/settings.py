@@ -73,6 +73,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                # Navigation context processor (NEW - Reusable for all user groups)
+                "App.context_processors_navigation.navigation_context",
                 # Add your custom context processors here
                 "App.context_processors.global_ctrs",
                 "App.context_processors.global_companies",

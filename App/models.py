@@ -740,3 +740,274 @@ class ErrorLog(models.Model):
         """Increment occurrence count for duplicate errors"""
         self.occurrence_count += 1
         self.save(update_fields=['occurrence_count', 'last_occurred', 'updated_at'])
+
+
+# ============================================================================
+# Navigation and Dashboard Models (Reusable Navigation System)
+# ============================================================================
+
+class NavigationGroup(models.Model):
+    """
+    Navigation groups (e.g., Dashboard, Jobs, Applications, Profile)
+    """
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    icon = models.CharField(max_length=50, blank=True, null=True, help_text="Font Awesome icon class")
+    order = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    
+    # Role-based visibility
+    ROLE_CHOICES = (
+        ('all', 'All Users'),
+        ('candidate', 'Candidate'),
+        ('hiring_manager', 'Hiring Manager'),
+        ('rpo_admin', 'RPO Admin'),
+    )
+    visible_to_roles = models.JSONField(
+        default=list,
+        help_text="List of roles that can see this navigation group"
+    )
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        db_table = 'navigation_groups'
+        verbose_name = 'Navigation Group'
+        verbose_name_plural = 'Navigation Groups'
+        ordering = ['order', 'name']
+
+
+class NavigationItem(models.Model):
+    """
+    Individual navigation menu items
+    """
+    group = models.ForeignKey(
+        NavigationGroup, 
+        on_delete=models.CASCADE, 
+        related_name='items',
+        null=True,
+        blank=True
+    )
+    title = models.CharField(max_length=100)
+    url_name = models.CharField(max_length=100, help_text="Django URL name")
+    icon = models.CharField(max_length=50, blank=True, null=True, help_text="Font Awesome icon class")
+    badge_text = models.CharField(max_length=20, blank=True, null=True, help_text="Badge text (e.g., 'New', '5')")
+    badge_class = models.CharField(
+        max_length=50, 
+        blank=True, 
+        null=True,
+        default='badge-primary',
+        help_text="Bootstrap badge class"
+    )
+    
+    # Hierarchy
+    parent = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='children'
+    )
+    order = models.IntegerField(default=0)
+    
+    # Visibility
+    is_active = models.BooleanField(default=True)
+    visible_to_roles = models.JSONField(
+        default=list,
+        help_text="List of roles that can see this item"
+    )
+    
+    # Permissions
+    requires_permission = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text="Required permission to view this item"
+    )
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.title
+    
+    def has_children(self):
+        return self.children.filter(is_active=True).exists()
+    
+    class Meta:
+        db_table = 'navigation_items'
+        verbose_name = 'Navigation Item'
+        verbose_name_plural = 'Navigation Items'
+        ordering = ['order', 'title']
+
+
+class DashboardWidget(models.Model):
+    """
+    Dashboard widgets/cards for different user roles
+    """
+    title = models.CharField(max_length=100)
+    widget_type = models.CharField(
+        max_length=50,
+        choices=[
+            ('stat_card', 'Statistics Card'),
+            ('chart', 'Chart/Graph'),
+            ('table', 'Table'),
+            ('list', 'List'),
+            ('activity', 'Activity Timeline'),
+            ('custom', 'Custom Widget'),
+        ],
+        default='stat_card'
+    )
+    
+    # Content
+    icon = models.CharField(max_length=50, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    data_source = models.CharField(
+        max_length=255,
+        help_text="API endpoint or service method to fetch data"
+    )
+    
+    # Layout
+    grid_column = models.CharField(max_length=50, default='1', help_text="CSS grid column span")
+    order = models.IntegerField(default=0)
+    
+    # Visibility
+    visible_to_roles = models.JSONField(default=list)
+    is_active = models.BooleanField(default=True)
+    
+    # Styling
+    css_class = models.CharField(max_length=100, blank=True, null=True)
+    color_class = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        help_text="Color class (bg-primary, bg-success, etc.)"
+    )
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        db_table = 'dashboard_widgets'
+        verbose_name = 'Dashboard Widget'
+        verbose_name_plural = 'Dashboard Widgets'
+        ordering = ['order', 'title']
+
+
+class UserDashboardPreference(models.Model):
+    """
+    User-specific dashboard preferences
+    """
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='dashboard_preferences')
+    
+    # Widget visibility (user can hide/show widgets)
+    hidden_widgets = models.JSONField(default=list, help_text="IDs of hidden widgets")
+    
+    # Widget order customization
+    widget_order = models.JSONField(
+        default=dict,
+        help_text="Custom widget order {widget_id: order}"
+    )
+    
+    # Theme preferences
+    theme = models.CharField(
+        max_length=20,
+        choices=[
+            ('light', 'Light'),
+            ('dark', 'Dark'),
+            ('auto', 'Auto'),
+        ],
+        default='light'
+    )
+    
+    # Layout preferences
+    sidebar_collapsed = models.BooleanField(default=False)
+    
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Preferences for {self.user.username}"
+    
+    class Meta:
+        db_table = 'user_dashboard_preferences'
+        verbose_name = 'User Dashboard Preference'
+        verbose_name_plural = 'User Dashboard Preferences'
+
+
+class QuickAction(models.Model):
+    """
+    Quick action buttons for dashboard
+    """
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=255, blank=True, null=True)
+    icon = models.CharField(max_length=50)
+    url_name = models.CharField(max_length=100)
+    
+    # Visibility
+    visible_to_roles = models.JSONField(default=list)
+    is_active = models.BooleanField(default=True)
+    
+    # Styling
+    button_class = models.CharField(
+        max_length=100,
+        default='btn-primary',
+        help_text="Bootstrap button class"
+    )
+    
+    order = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        db_table = 'quick_actions'
+        verbose_name = 'Quick Action'
+        verbose_name_plural = 'Quick Actions'
+        ordering = ['order', 'title']
+
+
+class GroupProfile(models.Model):
+    """
+    Extension to Django's auth_group table
+    Links Django Groups to our custom role system
+    """
+    from django.contrib.auth.models import Group
+    
+    group = models.OneToOneField(
+        Group,
+        on_delete=models.CASCADE,
+        related_name='profile',
+        primary_key=True
+    )
+    
+    # Link to our role system
+    role_identifier = models.CharField(
+        max_length=50,
+        unique=True,
+        choices=[
+            ('candidate', 'Candidate'),
+            ('hiring_manager', 'Hiring Manager'),
+            ('rpo_admin', 'RPO Admin'),
+        ],
+        help_text="Role identifier that matches Profile.role field"
+    )
+    
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"{self.group.name} ({self.role_identifier})"
+    
+    class Meta:
+        db_table = 'auth_group_profiles'
+        verbose_name = 'Group Profile'
+        verbose_name_plural = 'Group Profiles'

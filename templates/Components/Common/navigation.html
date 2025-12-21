@@ -1,0 +1,257 @@
+{% load static %}
+
+<!-- Reusable Navigation Component -->
+<!-- Usage: {% include 'Components/Common/navigation.html' with navigation=dashboard_data.navigation %} -->
+
+<nav class="sidebar">
+    <div class="sidebar-header">
+        <a href="{% url 'employer_dashboard' %}" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="Jobstock" class="logo-img">
+            <span class="logo-text">Jobstock</span>
+        </a>
+    </div>
+
+    <div class="sidebar-menu">
+        {% for group in navigation %}
+        <div class="nav-group">
+            <h6 class="nav-group-title">
+                {% if group.icon %}
+                <i class="{{ group.icon }}"></i>
+                {% endif %}
+                {{ group.name }}
+            </h6>
+            
+            <ul class="nav-items">
+                {% for item in group.items %}
+                <li class="nav-item {% if item.has_children %}has-submenu{% endif %} {% if request.resolver_match.url_name == item.url_name %}active{% endif %}">
+                    <a href="{{ item.url }}" class="nav-link">
+                        {% if item.icon %}
+                        <i class="{{ item.icon }}"></i>
+                        {% endif %}
+                        <span>{{ item.title }}</span>
+                        
+                        {% if item.badge_text %}
+                        <span class="badge {{ item.badge_class }}">{{ item.badge_text }}</span>
+                        {% endif %}
+                        
+                        {% if item.has_children %}
+                        <i class="fas fa-chevron-down submenu-icon"></i>
+                        {% endif %}
+                    </a>
+                    
+                    {% if item.children %}
+                    <ul class="submenu">
+                        {% for child in item.children %}
+                        <li class="submenu-item {% if request.resolver_match.url_name == child.url_name %}active{% endif %}">
+                            <a href="{{ child.url }}" class="submenu-link">
+                                {% if child.icon %}
+                                <i class="{{ child.icon }}"></i>
+                                {% endif %}
+                                <span>{{ child.title }}</span>
+                                
+                                {% if child.badge_text %}
+                                <span class="badge {{ child.badge_class }}">{{ child.badge_text }}</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% empty %}
+        <div class="nav-group">
+            <p class="text-muted text-center">No navigation items available</p>
+        </div>
+        {% endfor %}
+    </div>
+</nav>
+
+<style>
+/* Reusable Navigation Styles */
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background: #fff;
+    border-right: 1px solid #e9ecef;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+}
+
+.logo-img {
+    height: 35px;
+    margin-right: 10px;
+}
+
+.logo-text {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.sidebar-menu {
+    padding: 20px 0;
+}
+
+.nav-group {
+    margin-bottom: 30px;
+}
+
+.nav-group-title {
+    padding: 0 20px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #6c757d;
+    letter-spacing: 0.5px;
+}
+
+.nav-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #495057;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.nav-link:hover {
+    background: #f8f9fa;
+    color: #007bff;
+}
+
+.nav-item.active > .nav-link {
+    background: #e7f3ff;
+    color: #007bff;
+    border-left: 3px solid #007bff;
+}
+
+.nav-link i {
+    width: 20px;
+    margin-right: 12px;
+    font-size: 16px;
+}
+
+.nav-link .badge {
+    margin-left: auto;
+    font-size: 10px;
+    padding: 2px 6px;
+}
+
+.submenu-icon {
+    margin-left: auto !important;
+    font-size: 12px !important;
+    transition: transform 0.3s ease;
+}
+
+.nav-item.has-submenu.active .submenu-icon {
+    transform: rotate(180deg);
+}
+
+.submenu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+    background: #f8f9fa;
+}
+
+.nav-item.active .submenu {
+    display: block;
+}
+
+.submenu-item {
+    padding-left: 20px;
+}
+
+.submenu-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    color: #6c757d;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.submenu-link:hover {
+    color: #007bff;
+    background: #fff;
+}
+
+.submenu-item.active .submenu-link {
+    color: #007bff;
+    font-weight: 500;
+}
+
+.submenu-link i {
+    width: 16px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.show {
+        transform: translateX(0);
+    }
+}
+</style>
+
+<script>
+// Navigation interactions
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle submenu toggles
+    const hasSubmenuItems = document.querySelectorAll('.nav-item.has-submenu > .nav-link');
+    
+    hasSubmenuItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const parent = this.parentElement;
+            parent.classList.toggle('active');
+        });
+    });
+    
+    // Mobile sidebar toggle
+    const sidebarToggle = document.querySelector('[data-sidebar-toggle]');
+    const sidebar = document.querySelector('.sidebar');
+    
+    if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+        });
+    }
+});
+</script>

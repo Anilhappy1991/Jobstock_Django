@@ -16,6 +16,15 @@ from .response import (
     validation_response
 )
 
+# Import from group_utils module
+from .group_utils import (
+    sync_user_to_group,
+    get_role_from_group,
+    get_group_from_role,
+    sync_all_users,
+    get_users_by_role
+)
+
 __all__ = [
     # Mixins
     'MessageMixin',
@@ -27,6 +36,12 @@ __all__ = [
     'success_response',
     'error_response',
     'validation_response',
+    # Group utilities
+    'sync_user_to_group',
+    'get_role_from_group',
+    'get_group_from_role',
+    'sync_all_users',
+    'get_users_by_role',
 ]
 
 

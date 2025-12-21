@@ -1,0 +1,405 @@
+{% load static %}
+
+<!-- Reusable Dashboard Widgets Component -->
+<!-- Usage: {% include 'Components/Common/dashboard_widgets.html' with widgets=dashboard_data.widgets %} -->
+
+<div class="dashboard-widgets-container">
+    <div class="widgets-grid">
+        {% for widget in widgets %}
+        <div class="widget-card {{ widget.css_class }} {{ widget.color_class }}" 
+             data-widget-id="{{ widget.id }}"
+             data-widget-type="{{ widget.type }}"
+             style="grid-column: {{ widget.grid_column }};">
+            
+            <div class="widget-header">
+                <div class="widget-title">
+                    {% if widget.icon %}
+                    <i class="{{ widget.icon }}"></i>
+                    {% endif %}
+                    <h5>{{ widget.title }}</h5>
+                </div>
+                <div class="widget-actions">
+                    <button class="btn-widget-refresh" data-widget-id="{{ widget.id }}" title="Refresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="btn-widget-hide" data-widget-id="{{ widget.id }}" title="Hide">
+                        <i class="fas fa-eye-slash"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="widget-body">
+                {% if widget.description %}
+                <p class="widget-description">{{ widget.description }}</p>
+                {% endif %}
+                
+                <!-- Widget content based on type -->
+                {% if widget.type == 'stat_card' %}
+                <div class="stat-widget" data-source="{{ widget.data_source }}">
+                    <div class="stat-value">
+                        <span class="value" data-stat-value>Loading...</span>
+                    </div>
+                    <div class="stat-label" data-stat-label></div>
+                </div>
+                
+                {% elif widget.type == 'chart' %}
+                <div class="chart-widget">
+                    <canvas id="chart-{{ widget.id }}" data-source="{{ widget.data_source }}"></canvas>
+                </div>
+                
+                {% elif widget.type == 'table' %}
+                <div class="table-widget" data-source="{{ widget.data_source }}">
+                    <div class="table-responsive">
+                        <table class="table table-sm" id="table-{{ widget.id }}">
+                            <thead></thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center text-muted">
+                                        <i class="fas fa-spinner fa-spin"></i> Loading...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                {% elif widget.type == 'list' %}
+                <div class="list-widget" data-source="{{ widget.data_source }}">
+                    <ul class="widget-list" id="list-{{ widget.id }}">
+                        <li class="text-center text-muted">
+                            <i class="fas fa-spinner fa-spin"></i> Loading...
+                        </li>
+                    </ul>
+                </div>
+                
+                {% elif widget.type == 'activity' %}
+                <div class="activity-widget" data-source="{{ widget.data_source }}">
+                    <div class="activity-timeline" id="activity-{{ widget.id }}">
+                        <div class="text-center text-muted">
+                            <i class="fas fa-spinner fa-spin"></i> Loading...
+                        </div>
+                    </div>
+                </div>
+                
+                {% elif widget.type == 'custom' %}
+                <div class="custom-widget" data-source="{{ widget.data_source }}" id="custom-{{ widget.id }}">
+                    <div class="text-center text-muted">
+                        <i class="fas fa-spinner fa-spin"></i> Loading...
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> No widgets configured for your role.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+/* Dashboard Widgets Styles */
+.dashboard-widgets-container {
+    padding: 20px 0;
+}
+
+.widgets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.widget-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.widget-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.widget-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.widget-title h5 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.widget-title i {
+    font-size: 18px;
+    color: #6c757d;
+}
+
+.widget-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-widget-refresh,
+.btn-widget-hide {
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 5px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.btn-widget-refresh:hover,
+.btn-widget-hide:hover {
+    background: #f8f9fa;
+    color: #007bff;
+}
+
+.widget-body {
+    padding: 20px;
+}
+
+.widget-description {
+    color: #6c757d;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+/* Stat Widget */
+.stat-widget {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* Chart Widget */
+.chart-widget canvas {
+    max-height: 300px;
+}
+
+/* Table Widget */
+.table-widget {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* List Widget */
+.widget-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.widget-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.widget-list li:last-child {
+    border-bottom: none;
+}
+
+/* Activity Widget */
+.activity-timeline {
+    position: relative;
+}
+
+.activity-item {
+    padding-left: 30px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.activity-item:before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    background: #007bff;
+    border-radius: 50%;
+}
+
+.activity-item:after {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 15px;
+    width: 2px;
+    height: calc(100% - 10px);
+    background: #e9ecef;
+}
+
+.activity-item:last-child:after {
+    display: none;
+}
+
+/* Color variations */
+.widget-card.bg-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+}
+
+.widget-card.bg-success {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: #fff;
+}
+
+.widget-card.bg-warning {
+    background: linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%);
+}
+
+.widget-card.bg-info {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+    .widgets-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1200px) {
+    .widgets-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+</style>
+
+<script>
+// Widget data loading and interactions
+document.addEventListener('DOMContentLoaded', function() {
+    // Load widget data
+    loadAllWidgets();
+    
+    // Refresh buttons
+    document.querySelectorAll('.btn-widget-refresh').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const widgetId = this.dataset.widgetId;
+            refreshWidget(widgetId);
+        });
+    });
+    
+    // Hide buttons
+    document.querySelectorAll('.btn-widget-hide').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const widgetId = this.dataset.widgetId;
+            hideWidget(widgetId);
+        });
+    });
+});
+
+function loadAllWidgets() {
+    document.querySelectorAll('.widget-card').forEach(card => {
+        const widgetId = card.dataset.widgetId;
+        const widgetType = card.dataset.widgetType;
+        const dataSource = card.querySelector('[data-source]')?.dataset.source;
+        
+        if (dataSource) {
+            loadWidgetData(widgetId, widgetType, dataSource, card);
+        }
+    });
+}
+
+function loadWidgetData(widgetId, widgetType, dataSource, card) {
+    // This would be replaced with actual API call
+    // For now, showing example structure
+    console.log(`Loading widget ${widgetId} from ${dataSource}`);
+    
+    // Example: Load stat widget
+    if (widgetType === 'stat_card') {
+        // Simulated data load - replace with actual fetch
+        setTimeout(() => {
+            const valueEl = card.querySelector('[data-stat-value]');
+            const labelEl = card.querySelector('[data-stat-label]');
+            
+            if (valueEl && labelEl) {
+                valueEl.textContent = '42'; // Replace with actual data
+                labelEl.textContent = 'Total Items'; // Replace with actual label
+            }
+        }, 500);
+    }
+}
+
+function refreshWidget(widgetId) {
+    const card = document.querySelector(`[data-widget-id="${widgetId}"]`);
+    if (card) {
+        const widgetType = card.dataset.widgetType;
+        const dataSource = card.querySelector('[data-source]')?.dataset.source;
+        
+        // Show loading state
+        const btn = card.querySelector('.btn-widget-refresh i');
+        btn.classList.add('fa-spin');
+        
+        // Reload data
+        loadWidgetData(widgetId, widgetType, dataSource, card);
+        
+        // Remove loading state
+        setTimeout(() => {
+            btn.classList.remove('fa-spin');
+        }, 1000);
+    }
+}
+
+function hideWidget(widgetId) {
+    const card = document.querySelector(`[data-widget-id="${widgetId}"]`);
+    if (card && confirm('Hide this widget?')) {
+        card.style.display = 'none';
+        
+        // Save preference to backend
+        fetch('/api/dashboard/preferences/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                hidden_widgets: [widgetId]
+            })
+        });
+    }
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>

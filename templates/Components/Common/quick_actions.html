@@ -1,0 +1,187 @@
+{% load static %}
+
+<!-- Reusable Quick Actions Component -->
+<!-- Usage: {% include 'Components/Common/quick_actions.html' with quick_actions=dashboard_data.quick_actions %} -->
+
+<div class="quick-actions-container">
+    <div class="quick-actions-header">
+        <h5>
+            <i class="fas fa-bolt"></i>
+            Quick Actions
+        </h5>
+        <p class="text-muted">Common tasks and shortcuts</p>
+    </div>
+    
+    <div class="quick-actions-grid">
+        {% for action in quick_actions %}
+        <a href="{{ action.url }}" class="quick-action-card {{ action.button_class }}">
+            <div class="action-icon">
+                <i class="{{ action.icon }}"></i>
+            </div>
+            <div class="action-content">
+                <h6 class="action-title">{{ action.title }}</h6>
+                <p class="action-description">{{ action.description }}</p>
+            </div>
+        </a>
+        {% empty %}
+        <div class="no-actions">
+            <i class="fas fa-info-circle"></i>
+            <p>No quick actions available</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+/* Quick Actions Styles */
+.quick-actions-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.quick-actions-header {
+    margin-bottom: 20px;
+}
+
+.quick-actions-header h5 {
+    margin: 0 0 5px;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quick-actions-header p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.quick-action-card {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.quick-action-card:hover {
+    background: #fff;
+    border-color: #007bff;
+    box-shadow: 0 4px 12px rgba(0,123,255,0.1);
+    transform: translateY(-2px);
+}
+
+.action-icon {
+    width: 48px;
+    height: 48px;
+    background: #007bff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.action-icon i {
+    font-size: 24px;
+    color: #fff;
+}
+
+.action-content {
+    flex: 1;
+}
+
+.action-title {
+    margin: 0 0 5px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+}
+
+.action-description {
+    margin: 0;
+    font-size: 13px;
+    color: #6c757d;
+    line-height: 1.4;
+}
+
+/* Button class variations */
+.quick-action-card.btn-primary .action-icon {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.quick-action-card.btn-success .action-icon {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.quick-action-card.btn-warning .action-icon {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.quick-action-card.btn-info .action-icon {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.quick-action-card.btn-danger .action-icon {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.quick-action-card.btn-dark .action-icon {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+}
+
+/* No actions state */
+.no-actions {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    color: #6c757d;
+}
+
+.no-actions i {
+    font-size: 48px;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.no-actions p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-action-card {
+        padding: 12px;
+    }
+    
+    .action-icon {
+        width: 40px;
+        height: 40px;
+        margin-right: 12px;
+    }
+    
+    .action-icon i {
+        font-size: 20px;
+    }
+}
+</style>
