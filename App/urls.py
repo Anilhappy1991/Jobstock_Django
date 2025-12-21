@@ -99,6 +99,8 @@ urlpatterns = [
     path("rpo-resume-list/", views.rpo_resume_list, name="rpo_resume_list"),
     path("rpo-resume-view/<int:resume_id>/", views.rpo_resume_view, name="rpo_resume_view"),
     path("rpo-resume-download/<int:resume_id>/", views.rpo_resume_download, name="rpo_resume_download"),
+    path("rpo-process-resumes/", views.rpo_process_resumes, name="rpo_process_resumes"),
+    path("rpo-process-resume/<int:resume_id>/", views.rpo_process_single_resume, name="rpo_process_single_resume"),
     
     # Menu Demo
     path("menu-demo/", views.menu_demo, name="menu_demo"),

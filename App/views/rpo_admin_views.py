@@ -211,3 +211,75 @@ def rpo_resume_download(request, resume_id):
         
     except ResumeProcessing.DoesNotExist:
         raise Http404("Resume not found")
+
+
+@login_required
+@require_http_methods(["POST"])
+def rpo_process_resumes(request):
+    """
+    Process pending resumes (extract data, analyze, store in database)
+    POST: Trigger processing for pending resumes
+    """
+    # Check if user is RPO Admin
+    user_role = request.user.profile.role if hasattr(request.user, 'profile') else 'unknown'
+    is_rpo_admin = user_role == 'rpo_admin' or request.user.groups.filter(name='rpo_admin').exists()
+    
+    if not is_rpo_admin and not request.user.is_superuser:
+        messages.error(request, 'Access denied. RPO Admin role required.')
+        return redirect('App:index')
+    
+    # Get specific resume IDs from request or process all pending
+    resume_ids_str = request.POST.get('resume_ids', '')
+    resume_ids = None
+    
+    if resume_ids_str:
+        try:
+            resume_ids = [int(id.strip()) for id in resume_ids_str.split(',') if id.strip()]
+        except ValueError:
+            messages.error(request, 'Invalid resume IDs format')
+            return redirect(request.META.get('HTTP_REFERER', 'App:rpo_dashboard'))
+    
+    # Use service to process resumes
+    result = ResumeUploadService.process_pending_resumes(request.user, resume_ids)
+    
+    if result.success:
+        messages.success(request, result.message)
+        
+        # Show details of processing
+        if result.data['failed'] > 0:
+            messages.warning(
+                request, 
+                f"{result.data['failed']} resume(s) failed to process. Check resume list for details."
+            )
+    else:
+        messages.error(request, result.message)
+    
+    # Redirect back to referring page or dashboard
+    return redirect(request.META.get('HTTP_REFERER', 'App:rpo_dashboard'))
+
+
+@login_required
+@require_http_methods(["POST"])
+def rpo_process_single_resume(request, resume_id):
+    """
+    Process a single resume
+    POST: Trigger processing for one specific resume
+    """
+    # Check if user is RPO Admin
+    user_role = request.user.profile.role if hasattr(request.user, 'profile') else 'unknown'
+    is_rpo_admin = user_role == 'rpo_admin' or request.user.groups.filter(name='rpo_admin').exists()
+    
+    if not is_rpo_admin and not request.user.is_superuser:
+        messages.error(request, 'Access denied. RPO Admin role required.')
+        return redirect('App:index')
+    
+    # Use service to process single resume
+    result = ResumeUploadService.process_single_resume(resume_id, request.user)
+    
+    if result.success:
+        messages.success(request, result.message)
+    else:
+        messages.error(request, result.message)
+    
+    # Redirect back to referring page or resume view
+    return redirect(request.META.get('HTTP_REFERER', 'App:rpo_resume_view', kwargs={'resume_id': resume_id}))

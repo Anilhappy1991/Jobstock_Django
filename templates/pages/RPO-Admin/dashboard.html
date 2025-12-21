@@ -141,9 +141,17 @@
 							<a href="{% url 'App:rpo_resume_upload' %}" class="btn btn-primary btn-block mb-3 w-100">
 								<i class="fa-solid fa-upload me-2"></i>Upload Resumes
 							</a>
-							<a href="{% url 'App:rpo_resume_list' %}" class="btn btn-light btn-block w-100">
+							<a href="{% url 'App:rpo_resume_list' %}" class="btn btn-light btn-block mb-3 w-100">
 								<i class="fa-solid fa-list me-2"></i>View All Resumes
 							</a>
+							{% if stats.pending > 0 %}
+							<form method="POST" action="{% url 'App:rpo_process_resumes' %}" class="d-inline w-100">
+								{% csrf_token %}
+								<button type="submit" class="btn btn-success btn-block w-100" onclick="return confirm('Process {{ stats.pending }} pending resume(s)?')">
+									<i class="fa-solid fa-cog me-2"></i>Process All Pending ({{ stats.pending }})
+								</button>
+							</form>
+							{% endif %}
 						</div>
 					</div>
 				</div>

@@ -59,6 +59,14 @@
 							<div class="d-flex align-items-center justify-content-between">
 								<h4 class="mb-0">Resume Information</h4>
 								<div>
+									{% if resume.status == 'pending' or resume.status == 'failed' %}
+									<form method="POST" action="{% url 'App:rpo_process_single_resume' resume.id %}" class="d-inline">
+										{% csrf_token %}
+										<button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Process this resume now?')">
+											<i class="fa-solid fa-cog me-2"></i>Process Now
+										</button>
+									</form>
+									{% endif %}
 									<a href="{% url 'App:rpo_resume_download' resume.id %}" class="btn btn-sm btn-success">
 										<i class="fa-solid fa-download me-2"></i>Download
 									</a>

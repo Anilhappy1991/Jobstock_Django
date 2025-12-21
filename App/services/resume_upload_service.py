@@ -10,6 +10,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from App.utils.response import ApiResponse
 from App.models import ResumeProcessing
+from App.services.resume_processing_service import ResumeProcessingService
 
 
 class ResumeUploadService:
@@ -358,6 +359,110 @@ class ResumeUploadService:
         except Exception as e:
             return ApiResponse.error(
                 message="Failed to retrieve statistics",
+                error=str(e),
+                status_code=500
+            )
+    
+    @classmethod
+    def process_pending_resumes(cls, user: User, resume_ids: List[int] = None) -> ApiResponse:
+        """
+        Process pending resumes for a user using ResumeProcessingService
+        
+        Args:
+            user: User whose resumes to process
+            resume_ids: Optional list of specific resume IDs to process
+            
+        Returns:
+            ApiResponse with processing results
+        """
+        try:
+            # Build query
+            query = {'user': user, 'status': 'pending'}
+            
+            if resume_ids:
+                query['id__in'] = resume_ids
+            
+            # Get resumes to process
+            resumes = ResumeProcessing.objects.filter(**query)
+            
+            if not resumes.exists():
+                return ApiResponse.success(
+                    data={'total': 0, 'successful': 0, 'failed': 0},
+                    message="No pending resumes to process"
+                )
+            
+            # Use generic processing service
+            processing_service = ResumeProcessingService()
+            results = processing_service.process_multiple_resumes(
+                resume_records=list(resumes),
+                verbose=False
+            )
+            
+            return ApiResponse.success(
+                data=results,
+                message=f"Processed {results['successful']} of {results['total']} resumes successfully"
+            )
+            
+        except Exception as e:
+            return ApiResponse.error(
+                message="Failed to process resumes",
+                error=str(e),
+                status_code=500
+            )
+    
+    @classmethod
+    def process_single_resume(cls, resume_id: int, user: User) -> ApiResponse:
+        """
+        Process a single resume using ResumeProcessingService
+        
+        Args:
+            resume_id: ID of the resume to process
+            user: User who owns the resume
+            
+        Returns:
+            ApiResponse with processing result
+        """
+        try:
+            # Get resume record
+            resume_record = ResumeProcessing.objects.get(id=resume_id, user=user)
+            
+            # Build absolute path from relative path
+            absolute_path = os.path.join(settings.BASE_DIR, resume_record.resume_path)
+            
+            # Use generic processing service
+            processing_service = ResumeProcessingService()
+            result = processing_service.process_resume(
+                file_path=absolute_path,
+                user=user,
+                resume_record_id=resume_id,
+                profile=resume_record.profile
+            )
+            
+            if result['success']:
+                return ApiResponse.success(
+                    data={
+                        'resume_id': resume_id,
+                        'filename': resume_record.original_filename,
+                        'status': 'completed',
+                        'extracted_data': result['extracted_data']['metadata']
+                    },
+                    message="Resume processed successfully"
+                )
+            else:
+                return ApiResponse.error(
+                    message="Resume processing failed",
+                    error=result['error'],
+                    status_code=400
+                )
+                
+        except ResumeProcessing.DoesNotExist:
+            return ApiResponse.error(
+                message="Resume not found",
+                status_code=404
+            )
+        except Exception as e:
+            return ApiResponse.error(
+                message="Failed to process resume",
                 error=str(e),
                 status_code=500
             )
