@@ -71,7 +71,7 @@ def login_view(request):
                 elif user_role == 'candidate':
                     next_url = reverse('App:candidate_dashboard')
                 elif user_role == 'rpo_admin':
-                    next_url = reverse('App:employer_dashboard')  # RPO uses employer dashboard
+                    next_url = reverse('App:rpo_dashboard')  # RPO has dedicated dashboard
                 else:
                     # Default to index if role is unknown
                     next_url = reverse('App:index')

@@ -1,0 +1,225 @@
+{% extends "Base/base.html" %}
+{% load static %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar.html' %}
+	
+<!-- RPO Admin Dashboard -->
+<div class="dashboard-wrap bg-light">
+	<a class="mobNavigation" data-bs-toggle="collapse" href="#MobNav" role="button" aria-expanded="false" aria-controls="MobNav">
+		<i class="fas fa-bars mr-2"></i>Dashboard Navigation
+	</a>
+	<div class="collapse" id="MobNav">
+		<div class="dashboard-nav">
+			<div class="dash-user-blocks pt-5">
+				<div class="jbs-grid-usrs-thumb">
+					<div class="jbs-grid-yuo">
+						<figure><img src="{% static 'app/img/l-12.png' %}" class="img-fluid circle" alt=""></figure>
+					</div>
+				</div>
+				<div class="jbs-grid-usrs-caption mb-3">
+					<div class="jbs-kioyer">
+						<span class="label text-light bg-main">RPO Admin</span>
+					</div>
+					<div class="jbs-tiosk">
+						<h4 class="jbs-tiosk-title">{{ request.user.get_full_name|default:request.user.username }}</h4>
+						<div class="jbs-tiosk-subtitle"><span><i class="fa-solid fa-user-tie me-2"></i>RPO Administrator</span></div>
+					</div>
+				</div>
+			</div>
+			{% include 'Components/For-Employer/dashboard_nav.html' with dashboard_active='rpo_dashboard' %}
+		</div>					
+	</div>
+	
+	<div class="dashboard-content">
+		<div class="dashboard-tlbar d-block mb-4">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<h1 class="mb-1 fs-3 fw-medium">RPO Admin Dashboard</h1>
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item text-muted"><a href="{% url 'App:index' %}">Home</a></li>
+							<li class="breadcrumb-item"><a href="#" class="text-main">RPO Dashboard</a></li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+		
+		<div class="dashboard-widg-bar d-block">
+			
+			<!-- Statistics Row -->
+			<div class="row align-items-center gx-4 gy-4 mb-4">
+				
+				<!-- Total Uploads -->
+				<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+					<div class="card">
+						<div class="card-body">
+							<div class="dashboard-flexwrap">
+								<div class="dashboard-flexwrap-first">
+									<span class="svg-icon text-primary svg-icon-2hx">
+										<i class="fa-solid fa-file-pdf fa-2x text-primary"></i>
+									</span>
+								</div>
+								<div class="dashboard-flexwrap-last">
+									<h4 class="mb-0 ft-bold fs-xl">{{ stats.total_uploads|default:0 }}</h4>
+									<span class="text-muted-2 ft-medium">Total Uploads</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- Pending Processing -->
+				<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+					<div class="card">
+						<div class="card-body">
+							<div class="dashboard-flexwrap">
+								<div class="dashboard-flexwrap-first">
+									<span class="svg-icon text-warning svg-icon-2hx">
+										<i class="fa-solid fa-clock fa-2x text-warning"></i>
+									</span>
+								</div>
+								<div class="dashboard-flexwrap-last">
+									<h4 class="mb-0 ft-bold fs-xl text-warning">{{ stats.pending|default:0 }}</h4>
+									<span class="text-muted-2 ft-medium">Pending</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- Completed -->
+				<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+					<div class="card">
+						<div class="card-body">
+							<div class="dashboard-flexwrap">
+								<div class="dashboard-flexwrap-first">
+									<span class="svg-icon text-success svg-icon-2hx">
+										<i class="fa-solid fa-check-circle fa-2x text-success"></i>
+									</span>
+								</div>
+								<div class="dashboard-flexwrap-last">
+									<h4 class="mb-0 ft-bold fs-xl text-success">{{ stats.completed|default:0 }}</h4>
+									<span class="text-muted-2 ft-medium">Completed</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- Failed -->
+				<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+					<div class="card">
+						<div class="card-body">
+							<div class="dashboard-flexwrap">
+								<div class="dashboard-flexwrap-first">
+									<span class="svg-icon text-danger svg-icon-2hx">
+										<i class="fa-solid fa-exclamation-circle fa-2x text-danger"></i>
+									</span>
+								</div>
+								<div class="dashboard-flexwrap-last">
+									<h4 class="mb-0 ft-bold fs-xl text-danger">{{ stats.failed|default:0 }}</h4>
+									<span class="text-muted-2 ft-medium">Failed</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
+			<!-- Recent Uploads -->
+			<div class="row gx-4 gy-4 mb-4">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<div class="d-flex align-items-center justify-content-between">
+								<h4 class="mb-0">Recent Uploads</h4>
+								<a href="{% url 'App:rpo_resume_list' %}" class="btn btn-sm btn-primary">View All</a>
+							</div>
+						</div>
+						<div class="card-body">
+							{% if recent_resumes %}
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Filename</th>
+											<th>Status</th>
+											<th>Uploaded</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for resume in recent_resumes %}
+										<tr>
+											<td>
+												<i class="fa-solid fa-file-pdf text-danger me-2"></i>
+												{{ resume.filename }}
+											</td>
+											<td>
+												{% if resume.status == 'pending' %}
+												<span class="badge bg-warning">Pending</span>
+												{% elif resume.status == 'processing' %}
+												<span class="badge bg-info">Processing</span>
+												{% elif resume.status == 'completed' %}
+												<span class="badge bg-success">Completed</span>
+												{% elif resume.status == 'failed' %}
+												<span class="badge bg-danger">Failed</span>
+												{% endif %}
+											</td>
+											<td>{{ resume.created_at|date:"M d, Y H:i" }}</td>
+											<td>
+												<a href="#" class="btn btn-sm btn-light"><i class="fa-solid fa-eye"></i></a>
+											</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+							{% else %}
+							<p class="text-muted text-center py-4">No resumes uploaded yet.</p>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Quick Actions -->
+			<div class="row gx-4 gy-4 mb-4">
+				<div class="col-xl-6 col-lg-6 col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="mb-0">Quick Actions</h4>
+						</div>
+						<div class="card-body">
+							<a href="{% url 'App:rpo_resume_upload' %}" class="btn btn-primary btn-block mb-3 w-100">
+								<i class="fa-solid fa-upload me-2"></i>Upload Resumes
+							</a>
+							<a href="{% url 'App:rpo_resume_list' %}" class="btn btn-light btn-block w-100">
+								<i class="fa-solid fa-list me-2"></i>View All Resumes
+							</a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-xl-6 col-lg-6 col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="mb-0">Storage Information</h4>
+						</div>
+						<div class="card-body">
+							<p class="mb-2"><strong>Total Storage Used:</strong> {{ stats.total_size_mb|floatformat:2|default:"0.00" }} MB</p>
+							<p class="mb-0"><strong>Total Files:</strong> {{ stats.total_uploads|default:0 }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+{% endblock %}

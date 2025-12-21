@@ -10,3 +10,4 @@ from .employer_views import *
 from .page_views import *
 from .auth_views import *
 from .admin_views import *
+from .rpo_admin_views import *

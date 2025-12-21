@@ -6,6 +6,7 @@ app_name = 'App'
 urlpatterns = [
     # API Routes
     path("api/", include('App.urls_api_navigation')),
+    path("api/resumes/", include('App.urls_api_resume')),
     
     # Home and main pages
     path("", views.home_4, name="index"),
@@ -90,6 +91,12 @@ urlpatterns = [
     path("employer-detail-2/", views.employer_detail_2, name="employer_detail_2"),
     
     path("employer-dashboard/", views.employer_dashboard, name="employer_dashboard"),
+    
+    # RPO Admin Routes
+    path("rpo-dashboard/", views.rpo_dashboard, name="rpo_dashboard"),
+    path("rpo-resume-upload/", views.rpo_resume_upload, name="rpo_resume_upload"),
+    path("rpo-resume-list/", views.rpo_resume_list, name="rpo_resume_list"),
+    
     path("employer-profile/", views.employer_profile, name="employer_profile"),
     path("employer-jobs/", views.employer_jobs, name="employer_jobs"),
     path("employer-submit-job/", views.employer_submit_job, name="employer_submit_job"),

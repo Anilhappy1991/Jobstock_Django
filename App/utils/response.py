@@ -23,30 +23,33 @@ class ApiResponse:
         return ApiResponse.custom(status_code=201, message="Created", data=data)
     """
     
-    @staticmethod
-    def _build_response(
-        status_code: int,
-        message: str,
-        data: Optional[Any] = None,
-        error: Optional[str] = None,
-        error_details: Optional[Union[Dict, List, str]] = None,
-        success: bool = True
-    ) -> Dict[str, Any]:
-        """Build standardized response dictionary"""
+    def __init__(self, success: bool, message: str, data: Optional[Any] = None, 
+                 error: Optional[str] = None, error_details: Optional[Union[Dict, List, str]] = None,
+                 status_code: int = 200):
+        """Initialize ApiResponse object"""
+        self.success = success
+        self.message = message
+        self.data = data
+        self.error = error
+        self.error_details = error_details
+        self.status_code = status_code
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary"""
         response = {
-            'success': success,
-            'status_code': status_code,
-            'message': message,
+            'success': self.success,
+            'status_code': self.status_code,
+            'message': self.message,
         }
         
-        if data is not None:
-            response['data'] = data
+        if self.data is not None:
+            response['data'] = self.data
         
-        if error:
-            response['error'] = error
+        if self.error:
+            response['error'] = self.error
             
-        if error_details:
-            response['error_details'] = error_details
+        if self.error_details:
+            response['error_details'] = self.error_details
             
         return response
     
@@ -55,26 +58,26 @@ class ApiResponse:
         data: Optional[Any] = None,
         message: str = "Success",
         status_code: int = status.HTTP_200_OK
-    ) -> Dict[str, Any]:
+    ) -> 'ApiResponse':
         """Success response"""
-        return ApiResponse._build_response(
-            status_code=status_code,
+        return ApiResponse(
+            success=True,
             message=message,
             data=data,
-            success=True
+            status_code=status_code
         )
     
     @staticmethod
     def created(
         data: Optional[Any] = None,
         message: str = "Created successfully"
-    ) -> Dict[str, Any]:
+    ) -> 'ApiResponse':
         """Created (201) response"""
-        return ApiResponse._build_response(
-            status_code=status.HTTP_201_CREATED,
+        return ApiResponse(
+            success=True,
             message=message,
             data=data,
-            success=True
+            status_code=status.HTTP_201_CREATED
         )
     
     @staticmethod
@@ -83,84 +86,84 @@ class ApiResponse:
         error: Optional[str] = None,
         error_details: Optional[Union[Dict, List, str]] = None,
         status_code: int = status.HTTP_400_BAD_REQUEST
-    ) -> Dict[str, Any]:
+    ) -> 'ApiResponse':
         """Error response"""
-        return ApiResponse._build_response(
-            status_code=status_code,
+        return ApiResponse(
+            success=False,
             message=message,
             error=error or message,
             error_details=error_details,
-            success=False
+            status_code=status_code
         )
     
     @staticmethod
     def not_found(
         message: str = "Resource not found",
         error_details: Optional[Union[Dict, List, str]] = None
-    ) -> Dict[str, Any]:
+    ) -> 'ApiResponse':
         """Not found (404) response"""
-        return ApiResponse._build_response(
-            status_code=status.HTTP_404_NOT_FOUND,
+        return ApiResponse(
+            success=False,
             message=message,
             error=message,
             error_details=error_details,
-            success=False
+            status_code=status.HTTP_404_NOT_FOUND
         )
     
     @staticmethod
     def unauthorized(
         message: str = "Unauthorized access",
         error_details: Optional[Union[Dict, List, str]] = None
-    ) -> Dict[str, Any]:
+    ) -> 'ApiResponse':
         """Unauthorized (401) response"""
-        return ApiResponse._build_response(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+        return ApiResponse(
+            success=False,
             message=message,
             error=message,
             error_details=error_details,
-            success=False
+            status_code=status.HTTP_401_UNAUTHORIZED
         )
     
     @staticmethod
     def forbidden(
         message: str = "Access forbidden",
         error_details: Optional[Union[Dict, List, str]] = None
-    ) -> Dict[str, Any]:
+    ) -> 'ApiResponse':
         """Forbidden (403) response"""
-        return ApiResponse._build_response(
-            status_code=status.HTTP_403_FORBIDDEN,
+        return ApiResponse(
+            success=False,
             message=message,
             error=message,
             error_details=error_details,
-            success=False
+            status_code=status.HTTP_403_FORBIDDEN
         )
     
     @staticmethod
     def validation_error(
         errors: Union[Dict, List, str],
         message: str = "Validation failed"
-    ) -> Dict[str, Any]:
+    ) -> 'ApiResponse':
         """Validation error (422) response"""
-        return ApiResponse._build_response(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        return ApiResponse(
+            success=False,
             message=message,
             error=message,
             error_details=errors,
-            success=False
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY
         )
     
     @staticmethod
     def server_error(
         message: str = "Internal server error",
         error_details: Optional[Union[Dict, List, str]] = None
-    ) -> Dict[str, Any]:
+    ) -> 'ApiResponse':
         """Server error (500) response"""
-        return ApiResponse._build_response(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        return ApiResponse(
+            success=False,
             message=message,
             error=message,
             error_details=error_details,
-            success=False
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
     
     @staticmethod
@@ -170,16 +173,16 @@ class ApiResponse:
         data: Optional[Any] = None,
         error: Optional[str] = None,
         error_details: Optional[Union[Dict, List, str]] = None
-    ) -> Dict[str, Any]:
+    ) -> 'ApiResponse':
         """Custom response"""
         success = 200 <= status_code < 300
-        return ApiResponse._build_response(
-            status_code=status_code,
+        return ApiResponse(
+            success=success,
             message=message,
             data=data,
             error=error,
             error_details=error_details,
-            success=success
+            status_code=status_code
         )
 
 
@@ -190,10 +193,9 @@ class DRFResponse:
     """
     
     @staticmethod
-    def send(response_data: Dict[str, Any]) -> Response:
-        """Convert ApiResponse dict to DRF Response"""
-        status_code = response_data.pop('status_code', status.HTTP_200_OK)
-        return Response(response_data, status=status_code)
+    def send(api_response: ApiResponse) -> Response:
+        """Convert ApiResponse to DRF Response"""
+        return Response(api_response.to_dict(), status=api_response.status_code)
     
     @staticmethod
     def success(data: Optional[Any] = None, message: str = "Success") -> Response:
@@ -233,24 +235,23 @@ class DjangoResponse:
     """
     
     @staticmethod
-    def json(response_data: Dict[str, Any]) -> JsonResponse:
-        """Convert ApiResponse dict to Django JsonResponse"""
-        status_code = response_data.get('status_code', 200)
-        return JsonResponse(response_data, status=status_code)
+    def json(api_response: ApiResponse) -> JsonResponse:
+        """Convert ApiResponse to Django JsonResponse"""
+        return JsonResponse(api_response.to_dict(), status=api_response.status_code)
     
     @staticmethod
-    def context(response_data: Dict[str, Any]) -> Dict[str, Any]:
+    def context(api_response: ApiResponse) -> Dict[str, Any]:
         """
         Convert ApiResponse to template context
         Useful for rendering in Django templates
         """
         return {
-            'response': response_data,
-            'success': response_data.get('success', False),
-            'message': response_data.get('message', ''),
-            'data': response_data.get('data'),
-            'error': response_data.get('error'),
-            'error_details': response_data.get('error_details'),
+            'response': api_response.to_dict(),
+            'success': api_response.success,
+            'message': api_response.message,
+            'data': api_response.data,
+            'error': api_response.error,
+            'error_details': api_response.error_details,
         }
 
 

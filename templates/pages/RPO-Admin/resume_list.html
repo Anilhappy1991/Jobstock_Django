@@ -1,0 +1,242 @@
+{% extends "Base/base.html" %}
+{% load static %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar.html' %}
+	
+<!-- Resume List Page -->
+<div class="dashboard-wrap bg-light">
+	<a class="mobNavigation" data-bs-toggle="collapse" href="#MobNav" role="button" aria-expanded="false" aria-controls="MobNav">
+		<i class="fas fa-bars mr-2"></i>Dashboard Navigation
+	</a>
+	<div class="collapse" id="MobNav">
+		<div class="dashboard-nav">
+			<div class="dash-user-blocks pt-5">
+				<div class="jbs-grid-usrs-thumb">
+					<div class="jbs-grid-yuo">
+						<figure><img src="{% static 'app/img/l-12.png' %}" class="img-fluid circle" alt=""></figure>
+					</div>
+				</div>
+				<div class="jbs-grid-usrs-caption mb-3">
+					<div class="jbs-kioyer">
+						<span class="label text-light bg-main">RPO Admin</span>
+					</div>
+					<div class="jbs-tiosk">
+						<h4 class="jbs-tiosk-title">{{ request.user.get_full_name|default:request.user.username }}</h4>
+						<div class="jbs-tiosk-subtitle"><span><i class="fa-solid fa-user-tie me-2"></i>RPO Administrator</span></div>
+					</div>
+				</div>
+			</div>
+			{% include 'Components/For-Employer/dashboard_nav.html' with dashboard_active='resume_list' %}
+		</div>					
+	</div>
+	
+	<div class="dashboard-content">
+		<div class="dashboard-tlbar d-block mb-4">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<h1 class="mb-1 fs-3 fw-medium">Uploaded Resumes</h1>
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item text-muted"><a href="{% url 'App:index' %}">Home</a></li>
+									<li class="breadcrumb-item text-muted"><a href="{% url 'App:rpo_dashboard' %}">RPO Dashboard</a></li>
+									<li class="breadcrumb-item"><a href="#" class="text-main">Resume List</a></li>
+								</ol>
+							</nav>
+						</div>
+						<div>
+							<a href="{% url 'App:rpo_resume_upload' %}" class="btn btn-main">
+								<i class="fa-solid fa-upload me-2"></i>Upload New
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="dashboard-widg-bar d-block">
+			
+			<!-- Resume List -->
+			<div class="row gx-4 gy-4 mb-4">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<div class="d-flex justify-content-between align-items-center">
+								<h4 class="mb-0">All Resumes ({{ total }})</h4>
+								<div class="d-flex gap-2">
+									<select class="form-select form-select-sm" style="width: auto;">
+										<option>All Status</option>
+										<option>Pending</option>
+										<option>Processing</option>
+										<option>Completed</option>
+										<option>Failed</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							{% if resumes %}
+							<div class="table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Filename</th>
+											<th>Size</th>
+											<th>Type</th>
+											<th>Status</th>
+											<th>Uploaded</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for resume in resumes %}
+										<tr>
+											<td>{{ forloop.counter|add:offset }}</td>
+											<td>
+												<div class="d-flex align-items-center">
+													{% if resume.file_extension == '.pdf' %}
+													<i class="fa-solid fa-file-pdf fa-lg text-danger me-2"></i>
+													{% elif resume.file_extension == '.doc' or resume.file_extension == '.docx' %}
+													<i class="fa-solid fa-file-word fa-lg text-primary me-2"></i>
+													{% elif resume.file_extension == '.txt' %}
+													<i class="fa-solid fa-file-alt fa-lg text-secondary me-2"></i>
+													{% else %}
+													<i class="fa-solid fa-file fa-lg text-muted me-2"></i>
+													{% endif %}
+													<span>{{ resume.filename }}</span>
+												</div>
+											</td>
+											<td>{{ resume.file_size|filesizeformat }}</td>
+											<td><span class="badge bg-light text-dark">{{ resume.file_extension|upper }}</span></td>
+											<td>
+												{% if resume.status == 'pending' %}
+												<span class="badge bg-warning text-dark">
+													<i class="fa-solid fa-clock me-1"></i>Pending
+												</span>
+												{% elif resume.status == 'processing' %}
+												<span class="badge bg-info">
+													<i class="fa-solid fa-spinner fa-spin me-1"></i>Processing
+												</span>
+												{% elif resume.status == 'completed' %}
+												<span class="badge bg-success">
+													<i class="fa-solid fa-check me-1"></i>Completed
+												</span>
+												{% elif resume.status == 'failed' %}
+												<span class="badge bg-danger">
+													<i class="fa-solid fa-times me-1"></i>Failed
+												</span>
+												{% endif %}
+											</td>
+											<td>{{ resume.created_at|date:"M d, Y H:i" }}</td>
+											<td>
+												<div class="btn-group btn-group-sm">
+													<button class="btn btn-light" title="View">
+														<i class="fa-solid fa-eye"></i>
+													</button>
+													<button class="btn btn-light" title="Download">
+														<i class="fa-solid fa-download"></i>
+													</button>
+													<button class="btn btn-light text-danger" 
+															onclick="deleteResume({{ resume.id }}, '{{ resume.filename }}')"
+															title="Delete">
+														<i class="fa-solid fa-trash"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+							
+							<!-- Pagination -->
+							<div class="d-flex justify-content-between align-items-center mt-4">
+								<div class="text-muted">
+									Showing {{ offset|add:1 }} to {{ offset|add:resumes|length }} of {{ total }} resumes
+								</div>
+								<nav>
+									<ul class="pagination mb-0">
+										{% if has_prev %}
+										<li class="page-item">
+											<a class="page-link" href="?offset={{ prev_offset }}&limit={{ limit }}">
+												<i class="fa-solid fa-chevron-left"></i>
+											</a>
+										</li>
+										{% else %}
+										<li class="page-item disabled">
+											<span class="page-link"><i class="fa-solid fa-chevron-left"></i></span>
+										</li>
+										{% endif %}
+										
+										<li class="page-item active">
+											<span class="page-link">{{ offset|floatformat:0|add:limit|floatformat:0|divisibleby:limit|add:1 }}</span>
+										</li>
+										
+										{% if has_next %}
+										<li class="page-item">
+											<a class="page-link" href="?offset={{ next_offset }}&limit={{ limit }}">
+												<i class="fa-solid fa-chevron-right"></i>
+											</a>
+										</li>
+										{% else %}
+										<li class="page-item disabled">
+											<span class="page-link"><i class="fa-solid fa-chevron-right"></i></span>
+										</li>
+										{% endif %}
+									</ul>
+								</nav>
+							</div>
+							
+							{% else %}
+							<div class="text-center py-5">
+								<i class="fa-solid fa-file-pdf fa-4x text-muted mb-3"></i>
+								<h5 class="text-muted">No resumes uploaded yet</h5>
+								<p class="text-muted">Upload your first resume to get started</p>
+								<a href="{% url 'App:rpo_resume_upload' %}" class="btn btn-main mt-2">
+									<i class="fa-solid fa-upload me-2"></i>Upload Resumes
+								</a>
+							</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script>
+function deleteResume(resumeId, filename) {
+	if (!confirm(`Are you sure you want to delete "${filename}"?`)) {
+		return;
+	}
+	
+	// Use API to delete
+	fetch(`/api/resumes/${resumeId}/delete/`, {
+		method: 'POST',
+		headers: {
+			'X-CSRFToken': '{{ csrf_token }}',
+			'Content-Type': 'application/json'
+		}
+	})
+	.then(response => response.json())
+	.then(data => {
+		if (data.success) {
+			alert(data.message);
+			window.location.reload();
+		} else {
+			alert('Error: ' + data.message);
+		}
+	})
+	.catch(error => {
+		alert('Error deleting resume: ' + error);
+	});
+}
+</script>
+
+{% endblock %}

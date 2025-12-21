@@ -1,0 +1,146 @@
+"""
+RPO Admin Dashboard Views
+Following MVT pattern with service layer integration
+"""
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
+from django.contrib import messages
+from App.services.resume_upload_service import ResumeUploadService
+from App.utils.response import ApiResponse
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def rpo_resume_upload(request):
+    """
+    RPO Admin Resume Upload Page
+    GET: Display upload form with statistics
+    POST: Handle multiple resume uploads
+    """
+    # Check if user is RPO Admin
+    user_role = request.user.profile.role if hasattr(request.user, 'profile') else 'unknown'
+    is_rpo_admin = user_role == 'rpo_admin' or request.user.groups.filter(name='rpo_admin').exists()
+    
+    if not is_rpo_admin and not request.user.is_superuser:
+        messages.error(request, 'Access denied. RPO Admin role required.')
+        return redirect('App:index')
+    
+    if request.method == 'POST':
+        # Handle file upload
+        files = request.FILES.getlist('resumes')
+        
+        if not files:
+            messages.error(request, 'Please select at least one resume file to upload')
+            return redirect('App:rpo_resume_upload')
+        
+        # Use service to upload resumes
+        result = ResumeUploadService.upload_resumes(files, request.user)
+        
+        if result.success:
+            messages.success(request, result.message)
+            if result.data['failed_count'] > 0:
+                for failed in result.data['failed']:
+                    messages.warning(request, f"{failed['filename']}: {failed['error']}")
+        else:
+            messages.error(request, result.message)
+            if hasattr(result, 'error_details') and result.error_details:
+                for failed in result.error_details.get('failed', []):
+                    messages.error(request, f"{failed['filename']}: {failed['error']}")
+        
+        return redirect('App:rpo_resume_upload')
+    
+    # GET request - show upload form
+    # Get user's resume statistics
+    stats_response = ResumeUploadService.get_upload_statistics(request.user)
+    stats = stats_response.data if stats_response.success else {}
+    
+    # Get recent uploads
+    resumes_response = ResumeUploadService.get_user_resumes(request.user, limit=10)
+    resumes = resumes_response.data.get('resumes', []) if resumes_response.success else []
+    
+    context = {
+        'page_title': 'Resume Upload',
+        'stats': stats,
+        'recent_uploads': resumes,
+        'allowed_extensions': ', '.join(ResumeUploadService.ALLOWED_EXTENSIONS),
+        'max_file_size_mb': ResumeUploadService.MAX_FILE_SIZE / (1024 * 1024)
+    }
+    
+    return render(request, 'Pages/RPO-Admin/resume_upload.html', context)
+
+
+@login_required
+def rpo_dashboard(request):
+    """
+    RPO Admin Dashboard
+    Main dashboard page for RPO administrators
+    """
+    # Check if user is RPO Admin
+    user_role = request.user.profile.role if hasattr(request.user, 'profile') else 'unknown'
+    is_rpo_admin = user_role == 'rpo_admin' or request.user.groups.filter(name='rpo_admin').exists()
+    
+    if not is_rpo_admin and not request.user.is_superuser:
+        messages.error(request, 'Access denied. RPO Admin role required.')
+        return redirect('App:index')
+    
+    # Get dashboard statistics
+    stats_response = ResumeUploadService.get_upload_statistics(request.user)
+    stats = stats_response.data if stats_response.success else {}
+    
+    # Get recent uploads
+    resumes_response = ResumeUploadService.get_user_resumes(request.user, limit=5)
+    recent_resumes = resumes_response.data.get('resumes', []) if resumes_response.success else []
+    
+    context = {
+        'page_title': 'RPO Admin Dashboard',
+        'stats': stats,
+        'recent_resumes': recent_resumes
+    }
+    
+    return render(request, 'Pages/RPO-Admin/dashboard.html', context)
+
+
+@login_required
+def rpo_resume_list(request):
+    """
+    RPO Admin Resume List
+    View all uploaded resumes with pagination
+    """
+    # Check if user is RPO Admin
+    user_role = request.user.profile.role if hasattr(request.user, 'profile') else 'unknown'
+    is_rpo_admin = user_role == 'rpo_admin' or request.user.groups.filter(name='rpo_admin').exists()
+    
+    if not is_rpo_admin and not request.user.is_superuser:
+        messages.error(request, 'Access denied. RPO Admin role required.')
+        return redirect('App:index')
+    
+    # Get pagination parameters
+    limit = int(request.GET.get('limit', 20))
+    offset = int(request.GET.get('offset', 0))
+    
+    # Get resumes from service
+    resumes_response = ResumeUploadService.get_user_resumes(request.user, limit=limit, offset=offset)
+    
+    if resumes_response.success:
+        resumes_data = resumes_response.data
+        context = {
+            'page_title': 'My Uploaded Resumes',
+            'resumes': resumes_data.get('resumes', []),
+            'total': resumes_data.get('total', 0),
+            'limit': limit,
+            'offset': offset,
+            'has_next': (offset + limit) < resumes_data.get('total', 0),
+            'has_prev': offset > 0,
+            'next_offset': offset + limit,
+            'prev_offset': max(0, offset - limit)
+        }
+    else:
+        messages.error(request, resumes_response.message)
+        context = {
+            'page_title': 'My Uploaded Resumes',
+            'resumes': [],
+            'total': 0
+        }
+    
+    return render(request, 'Pages/RPO-Admin/resume_list.html', context)

@@ -1,0 +1,390 @@
+{% extends "Base/base.html" %}
+{% load static %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar.html' %}
+	
+<!-- Resume Upload Page -->
+<div class="dashboard-wrap bg-light">
+	<a class="mobNavigation" data-bs-toggle="collapse" href="#MobNav" role="button" aria-expanded="false" aria-controls="MobNav">
+		<i class="fas fa-bars mr-2"></i>Dashboard Navigation
+	</a>
+	<div class="collapse" id="MobNav">
+		<div class="dashboard-nav">
+			<div class="dash-user-blocks pt-5">
+				<div class="jbs-grid-usrs-thumb">
+					<div class="jbs-grid-yuo">
+						<figure><img src="{% static 'app/img/l-12.png' %}" class="img-fluid circle" alt=""></figure>
+					</div>
+				</div>
+				<div class="jbs-grid-usrs-caption mb-3">
+					<div class="jbs-kioyer">
+						<span class="label text-light bg-main">RPO Admin</span>
+					</div>
+					<div class="jbs-tiosk">
+						<h4 class="jbs-tiosk-title">{{ request.user.get_full_name|default:request.user.username }}</h4>
+						<div class="jbs-tiosk-subtitle"><span><i class="fa-solid fa-user-tie me-2"></i>RPO Administrator</span></div>
+					</div>
+				</div>
+			</div>
+			{% include 'Components/For-Employer/dashboard_nav.html' with dashboard_active='resume_upload' %}
+		</div>					
+	</div>
+	
+	<div class="dashboard-content">
+		<div class="dashboard-tlbar d-block mb-4">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<h1 class="mb-1 fs-3 fw-medium">Upload Resumes</h1>
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item text-muted"><a href="{% url 'App:index' %}">Home</a></li>
+							<li class="breadcrumb-item text-muted"><a href="{% url 'App:rpo_dashboard' %}">RPO Dashboard</a></li>
+							<li class="breadcrumb-item"><a href="#" class="text-main">Upload Resumes</a></li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+		
+		<div class="dashboard-widg-bar d-block">
+			
+			<!-- Upload Form -->
+			<div class="row gx-4 gy-4 mb-4">
+				<div class="col-xl-8 col-lg-8 col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="mb-0">Upload Multiple Resumes</h4>
+						</div>
+						<div class="card-body">
+							
+							<!-- Upload Info -->
+							<div class="alert alert-info mb-4">
+								<h6 class="mb-2"><i class="fa-solid fa-info-circle me-2"></i>Upload Guidelines</h6>
+								<ul class="mb-0 ps-3">
+									<li>Accepted formats: {{ allowed_extensions }}</li>
+									<li>Maximum file size: {{ max_file_size_mb }} MB per file</li>
+									<li>You can upload multiple files at once</li>
+									<li>Files will be saved in: Data/resume/[date]/{{ request.user.username }}/</li>
+								</ul>
+							</div>
+							
+							<!-- Upload Form -->
+							<form method="post" enctype="multipart/form-data" id="resumeUploadForm">
+								{% csrf_token %}
+								
+								<div class="mb-4">
+									<label class="form-label fw-medium">Select Resume Files</label>
+									<div class="upload-drop-zone" id="dropZone">
+										<div class="upload-drop-zone-content">
+											<i class="fa-solid fa-cloud-upload fa-3x text-primary mb-3"></i>
+											<h5>Drag & Drop Files Here</h5>
+											<p class="text-muted">or click to browse</p>
+											<input 
+												type="file" 
+												name="resumes" 
+												id="resumeInput" 
+												multiple 
+												accept=".pdf,.doc,.docx,.txt"
+												class="d-none"
+											>
+											<button type="button" class="btn btn-primary mt-2" onclick="document.getElementById('resumeInput').click()">
+												<i class="fa-solid fa-folder-open me-2"></i>Browse Files
+											</button>
+										</div>
+									</div>
+								</div>
+								
+								<!-- Selected Files List -->
+								<div id="selectedFilesList" class="mb-4" style="display: none;">
+									<h6 class="fw-medium mb-3">Selected Files:</h6>
+									<div id="filesContainer"></div>
+								</div>
+								
+								<!-- Upload Button -->
+								<div class="d-flex gap-2">
+									<button type="submit" class="btn btn-main" id="uploadBtn" disabled>
+										<i class="fa-solid fa-upload me-2"></i>Upload Resumes
+									</button>
+									<button type="button" class="btn btn-light" id="clearBtn" onclick="clearFiles()">
+										<i class="fa-solid fa-times me-2"></i>Clear All
+									</button>
+								</div>
+							</form>
+							
+						</div>
+					</div>
+				</div>
+				
+				<!-- Statistics Sidebar -->
+				<div class="col-xl-4 col-lg-4 col-md-12">
+					<div class="card mb-4">
+						<div class="card-header">
+							<h4 class="mb-0">Upload Statistics</h4>
+						</div>
+						<div class="card-body">
+							<div class="mb-3">
+								<div class="d-flex justify-content-between mb-1">
+									<span class="text-muted">Total Uploads</span>
+									<span class="fw-bold">{{ stats.total_uploads|default:0 }}</span>
+								</div>
+								<div class="d-flex justify-content-between mb-1">
+									<span class="text-muted">Pending</span>
+									<span class="text-warning fw-bold">{{ stats.pending|default:0 }}</span>
+								</div>
+								<div class="d-flex justify-content-between mb-1">
+									<span class="text-muted">Processing</span>
+									<span class="text-info fw-bold">{{ stats.processing|default:0 }}</span>
+								</div>
+								<div class="d-flex justify-content-between mb-1">
+									<span class="text-muted">Completed</span>
+									<span class="text-success fw-bold">{{ stats.completed|default:0 }}</span>
+								</div>
+								<div class="d-flex justify-content-between">
+									<span class="text-muted">Failed</span>
+									<span class="text-danger fw-bold">{{ stats.failed|default:0 }}</span>
+								</div>
+							</div>
+							<hr>
+							<div>
+								<div class="d-flex justify-content-between">
+									<span class="text-muted">Total Size</span>
+									<span class="fw-bold">{{ stats.total_size_mb|floatformat:2|default:"0.00" }} MB</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Recent Uploads -->
+					<div class="card">
+						<div class="card-header">
+							<h4 class="mb-0">Recent Uploads</h4>
+						</div>
+						<div class="card-body">
+							{% if recent_uploads %}
+								{% for resume in recent_uploads %}
+								<div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+									<div class="flex-shrink-0">
+										<i class="fa-solid fa-file-pdf fa-2x text-danger"></i>
+									</div>
+									<div class="flex-grow-1 ms-3">
+										<h6 class="mb-1 text-truncate" style="max-width: 150px;" title="{{ resume.filename }}">{{ resume.filename }}</h6>
+										<small class="text-muted">{{ resume.created_at|date:"M d, H:i" }}</small>
+									</div>
+									<div class="flex-shrink-0">
+										{% if resume.status == 'pending' %}
+										<span class="badge bg-warning">Pending</span>
+										{% elif resume.status == 'completed' %}
+										<span class="badge bg-success">Done</span>
+										{% elif resume.status == 'failed' %}
+										<span class="badge bg-danger">Failed</span>
+										{% endif %}
+									</div>
+								</div>
+								{% endfor %}
+							{% else %}
+							<p class="text-muted text-center mb-0">No recent uploads</p>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<style>
+.upload-drop-zone {
+	border: 2px dashed #ccc;
+	border-radius: 8px;
+	padding: 40px;
+	text-align: center;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	background-color: #f8f9fa;
+}
+
+.upload-drop-zone:hover {
+	border-color: #007bff;
+	background-color: #e7f3ff;
+}
+
+.upload-drop-zone.drag-over {
+	border-color: #007bff;
+	background-color: #e7f3ff;
+	transform: scale(1.02);
+}
+
+.file-item {
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	border: 1px solid #e0e0e0;
+	border-radius: 5px;
+	margin-bottom: 8px;
+	background-color: #fff;
+}
+
+.file-item .file-icon {
+	font-size: 24px;
+	margin-right: 12px;
+}
+
+.file-item .file-info {
+	flex-grow: 1;
+}
+
+.file-item .file-name {
+	font-weight: 500;
+	margin-bottom: 2px;
+}
+
+.file-item .file-size {
+	font-size: 12px;
+	color: #6c757d;
+}
+
+.file-item .remove-file {
+	cursor: pointer;
+	color: #dc3545;
+}
+</style>
+
+<script>
+let selectedFiles = [];
+
+// Drag and drop functionality
+const dropZone = document.getElementById('dropZone');
+const resumeInput = document.getElementById('resumeInput');
+
+dropZone.addEventListener('click', (e) => {
+	if (e.target !== resumeInput && !e.target.closest('button')) {
+		resumeInput.click();
+	}
+});
+
+dropZone.addEventListener('dragover', (e) => {
+	e.preventDefault();
+	dropZone.classList.add('drag-over');
+});
+
+dropZone.addEventListener('dragleave', () => {
+	dropZone.classList.remove('drag-over');
+});
+
+dropZone.addEventListener('drop', (e) => {
+	e.preventDefault();
+	dropZone.classList.remove('drag-over');
+	
+	const files = Array.from(e.dataTransfer.files);
+	handleFiles(files);
+});
+
+resumeInput.addEventListener('change', (e) => {
+	const files = Array.from(e.target.files);
+	handleFiles(files);
+});
+
+function handleFiles(files) {
+	selectedFiles = [...selectedFiles, ...files];
+	displayFiles();
+	updateUploadButton();
+}
+
+function displayFiles() {
+	const container = document.getElementById('filesContainer');
+	const filesList = document.getElementById('selectedFilesList');
+	
+	if (selectedFiles.length === 0) {
+		filesList.style.display = 'none';
+		return;
+	}
+	
+	filesList.style.display = 'block';
+	container.innerHTML = '';
+	
+	selectedFiles.forEach((file, index) => {
+		const fileItem = document.createElement('div');
+		fileItem.className = 'file-item';
+		
+		const fileExt = file.name.split('.').pop().toLowerCase();
+		let iconClass = 'fa-file';
+		if (fileExt === 'pdf') iconClass = 'fa-file-pdf text-danger';
+		else if (fileExt === 'doc' || fileExt === 'docx') iconClass = 'fa-file-word text-primary';
+		else if (fileExt === 'txt') iconClass = 'fa-file-alt text-secondary';
+		
+		fileItem.innerHTML = `
+			<div class="file-icon">
+				<i class="fa-solid ${iconClass}"></i>
+			</div>
+			<div class="file-info">
+				<div class="file-name">${file.name}</div>
+				<div class="file-size">${formatFileSize(file.size)}</div>
+			</div>
+			<div class="remove-file" onclick="removeFile(${index})">
+				<i class="fa-solid fa-times"></i>
+			</div>
+		`;
+		
+		container.appendChild(fileItem);
+	});
+}
+
+function formatFileSize(bytes) {
+	if (bytes === 0) return '0 Bytes';
+	const k = 1024;
+	const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+	const i = Math.floor(Math.log(bytes) / Math.log(k));
+	return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+}
+
+function removeFile(index) {
+	selectedFiles.splice(index, 1);
+	displayFiles();
+	updateUploadButton();
+	
+	// Clear input value if all files removed
+	if (selectedFiles.length === 0) {
+		resumeInput.value = '';
+	}
+}
+
+function clearFiles() {
+	selectedFiles = [];
+	resumeInput.value = '';
+	displayFiles();
+	updateUploadButton();
+}
+
+function updateUploadButton() {
+	const uploadBtn = document.getElementById('uploadBtn');
+	uploadBtn.disabled = selectedFiles.length === 0;
+}
+
+// Form submission
+document.getElementById('resumeUploadForm').addEventListener('submit', (e) => {
+	if (selectedFiles.length === 0) {
+		e.preventDefault();
+		alert('Please select at least one file to upload');
+		return;
+	}
+	
+	// Create new DataTransfer object and add selected files
+	const dataTransfer = new DataTransfer();
+	selectedFiles.forEach(file => {
+		dataTransfer.items.add(file);
+	});
+	
+	// Update input with selected files
+	resumeInput.files = dataTransfer.files;
+	
+	// Show loading state
+	const uploadBtn = document.getElementById('uploadBtn');
+	uploadBtn.disabled = true;
+	uploadBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Uploading...';
+});
+</script>
+
+{% endblock %}
