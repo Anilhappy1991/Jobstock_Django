@@ -77,10 +77,10 @@ class NavigationService(BaseService):
     
     @classmethod
     def _get_items_for_role(cls, group, user_role: str, user: User) -> List[Dict]:
-        """Get navigation items for a specific role"""
+        """Get navigation items for a specific role - ONLY ACTIVE ITEMS"""
         items = []
         
-        # Get top-level items (no parent)
+        # Get top-level items (no parent) - ONLY ACTIVE
         top_items = group.items.filter(
             is_active=True,
             parent__isnull=True
