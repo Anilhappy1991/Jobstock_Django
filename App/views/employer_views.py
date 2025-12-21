@@ -56,8 +56,32 @@ def employer_detail_2(request):
 
 
 def employer_dashboard(request):
-    """Employer dashboard"""
-    return render(request, 'pages/employer-dashboard.html')
+    """Employer dashboard with role-based navigation from navigation_item table"""
+    from App.services.navigation_service import NavigationService
+    
+    # Get navigation items based on user role
+    context = {}
+    
+    if request.user.is_authenticated:
+        # Get navigation from service layer
+        nav_response = NavigationService.get_navigation_for_user(request.user)
+        
+        # Convert ApiResponse to dict if needed
+        if hasattr(nav_response, 'to_dict'):
+            nav_response = nav_response.to_dict()
+        
+        # Add navigation to context
+        if isinstance(nav_response, dict) and nav_response.get('success'):
+            context['navigation_groups'] = nav_response.get('data', {}).get('navigation', [])
+            context['user_role'] = request.user.profile.role if hasattr(request.user, 'profile') else 'unknown'
+        else:
+            context['navigation_groups'] = []
+            context['user_role'] = 'unknown'
+    else:
+        context['navigation_groups'] = []
+        context['user_role'] = 'guest'
+    
+    return render(request, 'pages/employer-dashboard.html', context)
 
 
 def employer_profile(request):

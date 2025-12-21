@@ -44,7 +44,7 @@
         {% endfor %}
     {% else %}
         <!-- Fallback: Static navigation if dynamic data not available -->
-        <ul data-submenu-title="Main Navigation">
+        <!-- <ul data-submenu-title="Main Navigation">
             <li class="{% if dashboard_active == 'dashboard' %}active{% endif %}">
                 <a href="{% url 'App:employer_dashboard' %}">
                     <i class="fa-solid fa-gauge-high me-2"></i>User Dashboard
@@ -100,7 +100,7 @@
                     <i class="fa-solid fa-power-off me-2"></i>Log Out
                 </a>
             </li>
-        </ul>
+        </ul> -->
     {% endif %}
 </div>
 

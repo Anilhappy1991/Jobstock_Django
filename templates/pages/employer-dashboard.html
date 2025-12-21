@@ -48,6 +48,63 @@
 			</div>
 		</div>
 		
+		<!-- Role-Based Navigation Items from Database -->
+		{% if user.is_authenticated and navigation_groups %}
+		<div class="row mb-4">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header bg-primary text-white">
+						<h5 class="mb-0">
+							<i class="fa-solid fa-bars me-2"></i>Quick Navigation 
+							<span class="badge bg-light text-primary ms-2">{{ user_role|title }}</span>
+						</h5>
+					</div>
+					<div class="card-body">
+						{% for group in navigation_groups %}
+							<div class="mb-3">
+								<h6 class="text-muted mb-2">
+									{% if group.icon %}
+										<i class="{{ group.icon }} me-2"></i>
+									{% endif %}
+									{{ group.name }}
+								</h6>
+								<div class="row g-2">
+									{% for item in group.items %}
+										<div class="col-md-4 col-sm-6">
+											<a href="{{ item.url }}" class="btn btn-outline-primary btn-sm w-100 text-start">
+												{% if item.icon %}
+													<i class="{{ item.icon }} me-2"></i>
+												{% endif %}
+												{{ item.title }}
+												{% if item.badge_text %}
+													<span class="badge {{ item.badge_class }} ms-2">{{ item.badge_text }}</span>
+												{% endif %}
+											</a>
+										</div>
+										
+										{% if item.children %}
+											{% for child in item.children %}
+												<div class="col-md-4 col-sm-6">
+													<a href="{{ child.url }}" class="btn btn-outline-secondary btn-sm w-100 text-start" style="padding-left: 2rem;">
+														{% if child.icon %}
+															<i class="{{ child.icon }} me-2"></i>
+														{% endif %}
+														{{ child.title }}
+													</a>
+												</div>
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+		<!-- End Role-Based Navigation -->
+		
 		<div class="dashboard-widg-bar d-block">
 			
 			<div class="dashboard-widg-bar d-block">
