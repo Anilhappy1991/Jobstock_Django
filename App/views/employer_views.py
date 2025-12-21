@@ -189,7 +189,7 @@ def employer_submit_job(request, job_id=None):
                 job = JobService.create_job(data, request.user)
                 messages.success(request, f'Job "{job.title}" has been posted successfully!')
             
-            return redirect('App:employer_jobs')
+           # return redirect('App:employer_jobs')
             
         except Exception as e:
             messages.error(request, f'Error saving job: {str(e)}')
