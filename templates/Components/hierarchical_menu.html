@@ -1,0 +1,183 @@
+{% comment %}
+Hierarchical Multilevel Menu Component
+Renders dynamic navigation menu with unlimited nesting levels
+Only shows when user is authenticated
+Usage: {% include 'Components/hierarchical_menu.html' with menu_items=navigation_groups %}
+{% endcomment %}
+
+{% if user.is_authenticated %}
+<div class="hierarchical-menu">
+    {% if navigation_groups %}
+        {% for group in navigation_groups %}
+            <div class="menu-group" data-group-id="{{ group.id }}" data-group-slug="{{ group.slug }}">
+                <div class="menu-group-header">
+                    {% if group.icon %}
+                        <i class="{{ group.icon }} me-2"></i>
+                    {% endif %}
+                    <span class="menu-group-title">{{ group.name }}</span>
+                </div>
+                
+                {% if group.items %}
+                    <ul class="menu-group-items">
+                        {% for item in group.items %}
+                            {% include 'Components/menu_item_recursive.html' with item=item level=0 %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="menu-empty">
+            <p class="text-muted">No navigation items available for your role.</p>
+        </div>
+    {% endif %}
+</div>
+{% endif %}
+
+<style>
+/* Hierarchical Menu Styles */
+.hierarchical-menu {
+    width: 100%;
+}
+
+.menu-group {
+    margin-bottom: 20px;
+}
+
+.menu-group-header {
+    font-weight: 600;
+    font-size: 14px;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.menu-group-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    position: relative;
+}
+
+.menu-item-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.menu-item-link:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+.menu-item-link.active {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.menu-item-icon {
+    width: 20px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.menu-item-badge {
+    margin-left: auto;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.menu-item-caret {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.menu-item.open > .menu-item-link .menu-item-caret {
+    transform: rotate(90deg);
+}
+
+/* Nested children */
+.menu-children {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.menu-item.open > .menu-children {
+    max-height: 1000px; /* Adjust as needed */
+}
+
+/* Level-based indentation */
+.menu-children .menu-item-link {
+    padding-left: 35px;
+}
+
+.menu-children .menu-children .menu-item-link {
+    padding-left: 55px;
+}
+
+.menu-children .menu-children .menu-children .menu-item-link {
+    padding-left: 75px;
+}
+
+.menu-children .menu-children .menu-children .menu-children .menu-item-link {
+    padding-left: 95px;
+}
+
+/* Empty state */
+.menu-empty {
+    padding: 20px;
+    text-align: center;
+}
+</style>
+
+<script>
+// Toggle submenu on click
+document.addEventListener('DOMContentLoaded', function() {
+    const menuItems = document.querySelectorAll('.menu-item-has-children > .menu-item-link');
+    
+    menuItems.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Only prevent default if it's a parent item
+            if (this.getAttribute('href') === '#' || this.getAttribute('href') === 'javascript:void(0)') {
+                e.preventDefault();
+            }
+            
+            const menuItem = this.closest('.menu-item');
+            menuItem.classList.toggle('open');
+        });
+    });
+    
+    // Set active state based on current URL
+    const currentPath = window.location.pathname;
+    const allLinks = document.querySelectorAll('.menu-item-link');
+    
+    allLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+            link.classList.add('active');
+            
+            // Open all parent menus
+            let parent = link.closest('.menu-children');
+            while (parent) {
+                const parentItem = parent.closest('.menu-item');
+                if (parentItem) {
+                    parentItem.classList.add('open');
+                }
+                parent = parentItem?.closest('.menu-children');
+            }
+        }
+    });
+});
+</script>

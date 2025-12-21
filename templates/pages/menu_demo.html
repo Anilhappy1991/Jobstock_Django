@@ -1,0 +1,131 @@
+{% extends 'Base/base.html' %}
+{% load static %}
+
+{% block title %}Hierarchical Menu Demo{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fa-solid fa-bars me-2"></i>
+                        Dynamic Navigation
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    {% include 'Components/hierarchical_menu.html' %}
+                </div>
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h6>User Info</h6>
+                    <p class="mb-1"><strong>Username:</strong> {{ user.username }}</p>
+                    <p class="mb-1"><strong>Role:</strong> {{ user.profile.role|default:'N/A' }}</p>
+                    <p class="mb-0"><strong>Groups:</strong> {{ navigation_groups|length }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Hierarchical Multilevel Menu System</h4>
+                </div>
+                <div class="card-body">
+                    <h5>Features:</h5>
+                    <ul>
+                        <li><strong>Dynamic Role-Based Access:</strong> Only hiring_manager and rpo_admin can access</li>
+                        <li><strong>Multilevel Hierarchy:</strong> Supports unlimited nesting levels</li>
+                        <li><strong>MVT Pattern:</strong> All logic in NavigationService</li>
+                        <li><strong>REST API Support:</strong> Available at /api/menu/hierarchical/</li>
+                        <li><strong>Validation:</strong> Menu structure validation with MenuValidationService</li>
+                        <li><strong>Active State:</strong> Only active items are displayed</li>
+                        <li><strong>Recursive Rendering:</strong> Handles parent-child relationships automatically</li>
+                    </ul>
+                    
+                    <hr>
+                    
+                    <h5>Menu Structure:</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Group</th>
+                                    <th>Items</th>
+                                    <th>Max Depth</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for group in navigation_groups %}
+                                <tr>
+                                    <td>
+                                        {% if group.icon %}<i class="{{ group.icon }}"></i>{% endif %}
+                                        {{ group.name }}
+                                    </td>
+                                    <td>{{ group.items|length }}</td>
+                                    <td>
+                                        {% for item in group.items %}
+                                            {% if item.children %}
+                                                {% for child in item.children %}
+                                                    {% if child.children %}
+                                                        3 levels
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">No navigation groups found</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h5>API Endpoints:</h5>
+                    <div class="list-group">
+                        <a href="/api/menu/hierarchical/" target="_blank" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">GET /api/menu/hierarchical/</h6>
+                                <small class="text-muted">Get menu data</small>
+                            </div>
+                            <p class="mb-1">Returns hierarchical menu structure for authenticated user</p>
+                        </a>
+                        
+                        <a href="/api/menu/validate/" target="_blank" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">GET /api/menu/validate/</h6>
+                                <small class="text-muted">Validate structure</small>
+                            </div>
+                            <p class="mb-1">Validates menu for circular references and depth violations</p>
+                        </a>
+                        
+                        <a href="/api/menu/check-access/" target="_blank" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">GET /api/menu/check-access/</h6>
+                                <small class="text-muted">Check access</small>
+                            </div>
+                            <p class="mb-1">Validates if user has access to navigation menu</p>
+                        </a>
+                        
+                        <a href="/api/menu/allowed-roles/" target="_blank" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">GET /api/menu/allowed-roles/</h6>
+                                <small class="text-muted">Allowed roles</small>
+                            </div>
+                            <p class="mb-1">Returns list of roles allowed to access menu</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

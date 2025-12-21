@@ -1,0 +1,39 @@
+{% comment %}
+Recursive Menu Item Component
+Renders a single menu item with all its children (supports unlimited nesting)
+Used by hierarchical_menu.html
+{% endcomment %}
+
+<li class="menu-item {% if item.has_children %}menu-item-has-children{% endif %} {% if item.level %}menu-level-{{ item.level }}{% endif %}" 
+    data-item-id="{{ item.id }}" 
+    data-level="{{ item.level|default:0 }}">
+    
+    <a href="{{ item.url }}" 
+       class="menu-item-link"
+       {% if item.url == '#' or item.url == 'javascript:void(0)' %}onclick="return false;"{% endif %}>
+        
+        {% if item.icon %}
+            <i class="{{ item.icon }} menu-item-icon"></i>
+        {% endif %}
+        
+        <span class="menu-item-title">{{ item.title }}</span>
+        
+        {% if item.badge_text %}
+            <span class="badge {{ item.badge_class|default:'badge-primary' }} menu-item-badge">
+                {{ item.badge_text }}
+            </span>
+        {% endif %}
+        
+        {% if item.has_children %}
+            <i class="fa-solid fa-chevron-right menu-item-caret"></i>
+        {% endif %}
+    </a>
+    
+    {% if item.has_children and item.children %}
+        <ul class="menu-children">
+            {% for child in item.children %}
+                {% include 'Components/menu_item_recursive.html' with item=child level=item.level|add:1 %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</li>

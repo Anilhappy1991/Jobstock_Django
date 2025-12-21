@@ -1,0 +1,104 @@
+========================================================================
+  MENU DISPLAY QUICK REFERENCE
+========================================================================
+
+REQUIREMENT:
+- No user login           --> NO menu shown
+- Employee login          --> Show HIRING MANAGER menu
+- Hiring Manager login    --> Show HIRING MANAGER menu
+- RPO Admin login         --> Show RPO ADMIN menu
+
+========================================================================
+
+IMPLEMENTATION:
+
+1. Role Mapping (MenuValidationService):
+   employee --> hiring_manager (same menu)
+   hiring_manager --> hiring_manager
+   rpo_admin --> rpo_admin
+
+2. Template Check (hierarchical_menu.html):
+   {% if user.is_authenticated %}
+       <!-- Show menu -->
+   {% endif %}
+
+3. Service Layer (NavigationService):
+   - Maps employee role to hiring_manager
+   - Filters navigation by mapped role
+   - Returns menu items based on role
+
+========================================================================
+
+FILES MODIFIED:
+[X] App/services/menu_validation_service.py
+    - Added 'employee' to ALLOWED_ROLES
+    - Created ROLE_MAPPING dictionary
+    - Added get_mapped_role() method
+
+[X] App/services/navigation_service.py
+    - Maps original role to menu role
+    - Logs role mapping for audit
+
+[X] templates/Components/hierarchical_menu.html
+    - Added user.is_authenticated check
+    - Hides menu for unauthenticated users
+
+[X] App/context_processors_navigation.py
+    - Converts ApiResponse to dict
+    - Already has authentication check
+
+========================================================================
+
+MENU STRUCTURE:
+
+Hiring Manager Menu (11 items, 3 levels):
+  Main Menu
+    - Dashboard
+    - Job Management (parent)
+        - Post New Job
+        - Manage Jobs
+        - Applications (sub-parent)
+            - All Applications
+            - Shortlisted
+    - Candidates
+    - Messages
+  Settings
+    - Company Profile
+    - Change Password
+
+RPO Admin Menu (3 items):
+  Resume Management
+    - Upload Resumes
+    - All Resumes
+    - Dashboard
+
+========================================================================
+
+TESTING:
+
+Test Script: python verify_menu_mapping.py
+
+Expected Output:
+  Allowed Roles: hiring_manager, rpo_admin, employee
+  employee --> hiring_manager <-- MAPPED
+  hiring_manager --> hiring_manager
+  rpo_admin --> rpo_admin
+
+Browser Testing:
+1. Logout --> No menu visible ✓
+2. Login as employee --> Hiring Manager menu ✓
+3. Login as hiring_manager --> Hiring Manager menu ✓
+4. Login as rpo_admin --> RPO Admin menu ✓
+
+========================================================================
+
+LOGS TO CHECK:
+
+Console output when user logs in:
+  [INFO] User <username> with role '<original>' mapped to '<mapped>' for menu
+
+Examples:
+  User employee1 with role 'employee' mapped to 'hiring_manager' for menu
+  User rpo_admin with role 'rpo_admin' mapped to 'rpo_admin' for menu
+
+========================================================================

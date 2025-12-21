@@ -25,6 +25,7 @@ class NavigationService(BaseService):
     def get_navigation_for_user(cls, user: User) -> Dict[str, Any]:
         """
         Get navigation menu items for a specific user based on their role
+        Employee role is mapped to hiring_manager menu
         
         Args:
             user: User object
@@ -35,9 +36,15 @@ class NavigationService(BaseService):
         try:
             # Get user role
             try:
-                user_role = user.profile.role
+                original_role = user.profile.role
             except:
-                user_role = 'candidate'  # Default role
+                original_role = 'candidate'  # Default role
+            
+            # Map employee to hiring_manager for menu display
+            from App.services.menu_validation_service import MenuValidationService
+            user_role = MenuValidationService.get_mapped_role(original_role)
+            
+            logger.info(f"User {user.username} with role '{original_role}' mapped to '{user_role}' for menu")
             
             # Get active navigation groups visible to this role
             nav_groups = NavigationGroup.objects.filter(
@@ -77,7 +84,10 @@ class NavigationService(BaseService):
     
     @classmethod
     def _get_items_for_role(cls, group, user_role: str, user: User) -> List[Dict]:
-        """Get navigation items for a specific role - ONLY ACTIVE ITEMS"""
+        """
+        Get navigation items for a specific role - ONLY ACTIVE ITEMS
+        Supports multilevel hierarchical menu structure
+        """
         items = []
         
         # Get top-level items (no parent) - ONLY ACTIVE
@@ -95,50 +105,77 @@ class NavigationService(BaseService):
             if item.requires_permission and not user.has_perm(item.requires_permission):
                 continue
             
-            # Get URL
-            try:
-                url = reverse(item.url_name)
-            except NoReverseMatch:
-                url = '#'
-                logger.warning(f"URL name '{item.url_name}' not found for nav item '{item.title}'")
-            
-            # Build item data
-            item_data = {
-                'id': item.id,
-                'title': item.title,
-                'url': url,
-                'url_name': item.url_name,
-                'icon': item.icon,
-                'badge_text': item.badge_text,
-                'badge_class': item.badge_class,
-                'has_children': item.has_children(),
-            }
-            
-            # Get children if any
-            if item.has_children():
-                children = []
-                for child in item.children.filter(is_active=True).order_by('order'):
-                    if cls._is_visible_to_role(child.visible_to_roles, user_role):
-                        try:
-                            child_url = reverse(child.url_name)
-                        except NoReverseMatch:
-                            child_url = '#'
-                        
-                        children.append({
-                            'id': child.id,
-                            'title': child.title,
-                            'url': child_url,
-                            'url_name': child.url_name,
-                            'icon': child.icon,
-                            'badge_text': child.badge_text,
-                            'badge_class': child.badge_class,
-                        })
-                
-                item_data['children'] = children
-            
-            items.append(item_data)
+            # Build item recursively to support multilevel
+            item_data = cls._build_menu_item(item, user_role, user, level=0)
+            if item_data:
+                items.append(item_data)
         
         return items
+    
+    @classmethod
+    def _build_menu_item(cls, item, user_role: str, user: User, level: int = 0, max_depth: int = 10) -> Optional[Dict]:
+        """
+        Recursively build menu item with all nested children (multilevel support)
+        
+        Args:
+            item: NavigationItem object
+            user_role: User's role string
+            user: User object for permission checks
+            level: Current nesting level (for recursion tracking)
+            max_depth: Maximum nesting depth allowed
+            
+        Returns:
+            Dict with item data and nested children, or None if not visible
+        """
+        # Prevent infinite recursion
+        if level >= max_depth:
+            logger.warning(f"Maximum menu depth ({max_depth}) reached for item '{item.title}'")
+            return None
+        
+        # Get URL
+        try:
+            url = reverse(item.url_name) if item.url_name and item.url_name != '#' else '#'
+        except NoReverseMatch:
+            url = '#'
+            if item.url_name and item.url_name != '#':
+                logger.warning(f"URL name '{item.url_name}' not found for nav item '{item.title}'")
+        
+        # Build item data
+        item_data = {
+            'id': item.id,
+            'title': item.title,
+            'url': url,
+            'url_name': item.url_name,
+            'icon': item.icon,
+            'badge_text': item.badge_text,
+            'badge_class': item.badge_class,
+            'has_children': item.has_children(),
+            'level': level,
+            'children': []
+        }
+        
+        # Recursively get children if any
+        if item.has_children():
+            children = item.children.filter(is_active=True).order_by('order')
+            
+            for child in children:
+                # Check role visibility for child
+                if not cls._is_visible_to_role(child.visible_to_roles, user_role):
+                    continue
+                
+                # Check permissions for child
+                if child.requires_permission and not user.has_perm(child.requires_permission):
+                    continue
+                
+                # Recursively build child item
+                child_data = cls._build_menu_item(child, user_role, user, level + 1, max_depth)
+                if child_data:
+                    item_data['children'].append(child_data)
+            
+            # Update has_children based on visible children count
+            item_data['has_children'] = len(item_data['children']) > 0
+        
+        return item_data
     
     @classmethod
     def _is_visible_to_role(cls, visible_to_roles: List[str], user_role: str) -> bool:
