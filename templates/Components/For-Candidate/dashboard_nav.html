@@ -1,50 +1,122 @@
-<div class="dashboard-inner">
-    <ul data-submenu-title="Main Navigation">
-        <li class="{% if dashboard_active == 'dashboard' %}active{% endif %}"><a href="{% url 'App:candidate_dashboard' %}"><i class="fa-solid fa-gauge-high me-2"></i>User Dashboard</a></li>
-        <li class="{% if dashboard_active == 'profile' %}active{% endif %}"><a href="{% url 'App:candidate_profile_detail' request.user.username %}"><i class="fa-regular fa-user me-2"></i>My Profile </a></li>
-        <!-- <li class="{% if dashboard_active == 'resume' %}active{% endif %}"><a href="{% url 'App:candidate_resume' %}"><i class="fa-solid fa-file-pdf me-2"></i>My Resumes</a></li>
-        <li class="{% if dashboard_active == 'applied' %}active{% endif %}"><a href="{% url 'App:candidate_applied_jobs' %}"><i class="fa-regular fa-paper-plane me-2"></i>Applied jobs</a></li>
-        <li class="{% if dashboard_active == 'alert' %}active{% endif %}"><a href="{% url 'App:candidate_alert_job' %}"><i class="fa-solid fa-bell me-2"></i>Alert Jobs<span class="count-tag bg-warning">4</span></a></li>
-        <li class="{% if dashboard_active == 'saved' %}active{% endif %}"><a href="{% url 'App:candidate_saved_jobs' %}"><i class="fa-solid fa-bookmark me-2"></i>Shortlist Jobs</a></li>
-        <li class="{% if dashboard_active == 'follow' %}active{% endif %}"><a href="{% url 'App:candidate_follow_employers' %}"><i class="fa-solid fa-user-clock me-2"></i>Following Employers</a></li>
-        <li class="{% if dashboard_active == 'messages' %}active{% endif %}"><a href="{% url 'App:candidate_messages' %}"><i class="fa-solid fa-comments me-2"></i>Messages<span class="count-tag">4</span></a></li>
-        <li class="{% if dashboard_active == 'change_password' %}active{% endif %}"><a href="{% url 'App:candidate_change_password' %}"><i class="fa-solid fa-unlock-keyhole me-2"></i>Change Password</a></li>
-        <li class="{% if dashboard_active == 'delete' %}active{% endif %}"><a href="{% url 'App:candidate_delete_account' %}"><i class="fa-solid fa-trash-can me-2"></i>Delete Account</a></li>
-        <li><a href="{% url 'App:index' %}"><i class="fa-solid fa-power-off me-2"></i>Log Out</a></li> -->
-    </ul>
-</div>
-
+<!-- Navigation Component - MVT Pattern with Service Layer -->
+{% load static %}
 
 <div class="dashboard-inner">
-    <ul data-submenu-title="Main Navigation">
-        <li class="{% if dashboard_active == 'dashboard' %}active{% endif %}"><a href="{% url 'App:employer_dashboard' %}"><i class="fa-solid fa-gauge-high me-2"></i>User Dashboard</a></li>
-        <li class="{% if dashboard_active == 'profile' %}active{% endif %}"><a href="{% url 'App:employer_profile' %}"><i class="fa-regular fa-user me-2"></i>User Profile </a></li>
-        <li class="{% if dashboard_active == 'jobs' %}active{% endif %}"><a href="{% url 'App:employer_jobs' %}"><i class="fa-solid fa-business-time me-2"></i>My Jobs</a></li>
-        <li class="{% if dashboard_active == 'submit' %}active{% endif %}"><a href="{% url 'App:employer_submit_job' %}"><i class="fa-solid fa-pen-ruler me-2"></i>Submit Jobs</a></li>
-        <li class="{% if dashboard_active == 'applicants' %}active{% endif %}"><a href="{% url 'App:employer_applicants_jobs' %}"><i class="fa-solid fa-user-group me-2"></i>Applicants Jobs</a></li>
-        <li class="{% if dashboard_active == 'shortlist' %}active{% endif %}"><a href="{% url 'App:employer_shortlist_candidates' %}"><i class="fa-solid fa-user-clock me-2"></i>Shortlisted Candidates</a></li>
-        <li class="{% if dashboard_active == 'package' %}active{% endif %}"><a href="{% url 'App:employer_package' %}"><i class="fa-solid fa-wallet me-2"></i>Package</a></li>
-        <li class="{% if dashboard_active == 'messages' %}active{% endif %}"><a href="{% url 'App:employer_messages' %}"><i class="fa-solid fa-comments me-2"></i>Messages</a></li>
-        <li class="{% if dashboard_active == 'change_password' %}active{% endif %}"><a href="{% url 'App:employer_change_password' %}"><i class="fa-solid fa-unlock-keyhole me-2"></i>Change Password</a></li>
-        <li class="{% if dashboard_active == 'delete' %}active{% endif %}"><a href="{% url 'App:employer_delete_account' %}"><i class="fa-solid fa-trash-can me-2"></i>Delete Account</a></li>
-        <li><a href="{% url 'App:index' %}"><i class="fa-solid fa-power-off me-2"></i>Log Out</a></li>
-    </ul>
+    {% if navigation_groups %}
+        {% for group in navigation_groups %}
+        <ul data-submenu-title="{{ group.name }}">
+            {% for item in group.items %}
+                {% if item.has_children %}
+                    <!-- Parent item with dropdown -->
+                    <li class="{% if dashboard_active == item.url_name %}active{% endif %}">
+                        <a href="javascript:void(0);" class="dropdown-toggle">
+                            <i class="{{ item.icon }} me-2"></i>{{ item.title }}
+                            {% if item.badge_text %}
+                                <span class="badge {{ item.badge_class }} ms-2">{{ item.badge_text }}</span>
+                            {% endif %}
+                        </a>
+                        <ul class="submenu">
+                            {% for child in item.children %}
+                            <li class="{% if dashboard_active == child.url_name %}active{% endif %}">
+                                <a href="{{ child.url }}">
+                                    <i class="{{ child.icon }} me-2"></i>{{ child.title }}
+                                    {% if child.badge_text %}
+                                        <span class="badge {{ child.badge_class }} ms-2">{{ child.badge_text }}</span>
+                                    {% endif %}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% else %}
+                    <!-- Single item -->
+                    <li class="{% if dashboard_active == item.url_name %}active{% endif %}">
+                        <a href="{{ item.url }}">
+                            <i class="{{ item.icon }} me-2"></i>{{ item.title }}
+                            {% if item.badge_text %}
+                                <span class="badge {{ item.badge_class }} ms-2">{{ item.badge_text }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% endfor %}
+    {% else %}
+        <!-- Fallback: Static navigation if dynamic data not available -->
+        <ul data-submenu-title="Main Navigation">
+            <li class="{% if dashboard_active == 'dashboard' %}active{% endif %}">
+                <a href="{% url 'App:candidate_dashboard' %}">
+                    <i class="fa-solid fa-gauge-high me-2"></i>User Dashboard
+                </a>
+            </li>
+            <li class="{% if dashboard_active == 'profile' %}active{% endif %}">
+                <a href="{% url 'App:candidate_profile_detail' request.user.username %}">
+                    <i class="fa-regular fa-user me-2"></i>My Profile
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'App:logout_view' %}">
+                    <i class="fa-solid fa-power-off me-2"></i>Log Out
+                </a>
+            </li>
+        </ul>
+    {% endif %}
 </div>
 
+<style>
+/* Dropdown Submenu Styles */
+.submenu {
+    display: none;
+    padding-left: 20px;
+    margin-top: 5px;
+}
 
-<div class="dashboard-inner">
-    <ul data-submenu-title="Main Navigation">
-        <li class="{% if dashboard_active == 'dashboard' %}active{% endif %}"><a href="{% url 'App:employer_dashboard' %}"><i class="fa-solid fa-gauge-high me-2"></i>RPO Dashboard</a></li>
-        <li class="{% if dashboard_active == 'profile' %}active{% endif %}"><a href="{% url 'App:employer_profile' %}"><i class="fa-regular fa-user me-2"></i>Resume Upload </a></li>
-        <li class="{% if dashboard_active == 'profile' %}active{% endif %}"><a href="{% url 'App:employer_profile' %}"><i class="fa-regular fa-user me-2"></i>User Profile </a></li>
-        <li class="{% if dashboard_active == 'jobs' %}active{% endif %}"><a href="{% url 'App:employer_jobs' %}"><i class="fa-solid fa-business-time me-2"></i>My Jobs</a></li>
-        <li class="{% if dashboard_active == 'submit' %}active{% endif %}"><a href="{% url 'App:employer_submit_job' %}"><i class="fa-solid fa-pen-ruler me-2"></i>Submit Jobs</a></li>
-        <li class="{% if dashboard_active == 'applicants' %}active{% endif %}"><a href="{% url 'App:employer_applicants_jobs' %}"><i class="fa-solid fa-user-group me-2"></i>Applicants Jobs</a></li>
-        <li class="{% if dashboard_active == 'shortlist' %}active{% endif %}"><a href="{% url 'App:employer_shortlist_candidates' %}"><i class="fa-solid fa-user-clock me-2"></i>Shortlisted Candidates</a></li>
-        <li class="{% if dashboard_active == 'package' %}active{% endif %}"><a href="{% url 'App:employer_package' %}"><i class="fa-solid fa-wallet me-2"></i>Package</a></li>
-        <li class="{% if dashboard_active == 'messages' %}active{% endif %}"><a href="{% url 'App:employer_messages' %}"><i class="fa-solid fa-comments me-2"></i>Messages</a></li>
-        <li class="{% if dashboard_active == 'change_password' %}active{% endif %}"><a href="{% url 'App:employer_change_password' %}"><i class="fa-solid fa-unlock-keyhole me-2"></i>Change Password</a></li>
-        <li class="{% if dashboard_active == 'delete' %}active{% endif %}"><a href="{% url 'App:employer_delete_account' %}"><i class="fa-solid fa-trash-can me-2"></i>Delete Account</a></li>
-        <li><a href="{% url 'App:index' %}"><i class="fa-solid fa-power-off me-2"></i>Log Out</a></li>
-    </ul>
-</div>
+li.active > .dropdown-toggle + .submenu,
+.dropdown-toggle.active + .submenu {
+    display: block;
+}
+
+.dropdown-toggle::after {
+    content: "\f078"; /* Font Awesome down arrow */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    float: right;
+    margin-left: 5px;
+    transition: transform 0.3s;
+}
+
+.dropdown-toggle.active::after,
+li.active > .dropdown-toggle::after {
+    transform: rotate(180deg);
+}
+
+/* Badge Styles */
+.badge {
+    font-size: 0.7rem;
+    padding: 0.25em 0.5em;
+    border-radius: 10px;
+}
+
+.badge-primary { background-color: #007bff; color: #fff; }
+.badge-danger { background-color: #dc3545; color: #fff; }
+.badge-success { background-color: #28a745; color: #fff; }
+.badge-warning { background-color: #ffc107; color: #000; }
+.badge-info { background-color: #17a2b8; color: #fff; }
+</style>
+
+<script>
+// Dropdown toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    
+    dropdownToggles.forEach(function(toggle) {
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            const parent = this.parentElement;
+            parent.classList.toggle('active');
+            this.classList.toggle('active');
+        });
+    });
+});
+</script>

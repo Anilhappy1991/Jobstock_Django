@@ -50,8 +50,34 @@ def login_view(request):
             if '&login=failed' in next_url:
                 next_url = next_url.replace('&login=failed', '')
             
-            # Redirect to the next URL or index
-            return redirect(next_url if next_url else reverse('App:index'))
+            # Determine redirect based on user role if no next_url
+            if not next_url or next_url == reverse('App:index'):
+                # Get user's role from profile or group
+                user_role = None
+                try:
+                    user_role = user.profile.role
+                except:
+                    # Fallback to checking groups
+                    if user.groups.filter(name__icontains='hiring').exists() or user.groups.filter(name='Hiring Managers').exists():
+                        user_role = 'hiring_manager'
+                    elif user.groups.filter(name__icontains='candidate').exists() or user.groups.filter(name='Candidates').exists():
+                        user_role = 'candidate'
+                    elif user.groups.filter(name__icontains='rpo').exists():
+                        user_role = 'rpo_admin'
+                
+                # Redirect to appropriate dashboard
+                if user_role == 'hiring_manager' or user.is_superuser:
+                    next_url = reverse('App:employer_dashboard')
+                elif user_role == 'candidate':
+                    next_url = reverse('App:candidate_dashboard')
+                elif user_role == 'rpo_admin':
+                    next_url = reverse('App:employer_dashboard')  # RPO uses employer dashboard
+                else:
+                    # Default to index if role is unknown
+                    next_url = reverse('App:index')
+            
+            # Redirect to the next URL
+            return redirect(next_url)
         else:
             messages.error(request, 'Invalid username or password. Please try again.')
             print(f"Login failed for username: {username}")
