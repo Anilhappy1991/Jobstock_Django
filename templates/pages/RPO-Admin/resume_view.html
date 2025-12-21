@@ -1,0 +1,143 @@
+{% extends "Base/base.html" %}
+{% load static %}
+
+{% block hero_content %}
+
+{% include 'Base/navbar.html' %}
+	
+<!-- Resume View Page -->
+<div class="dashboard-wrap bg-light">
+	<a class="mobNavigation" data-bs-toggle="collapse" href="#MobNav" role="button" aria-expanded="false" aria-controls="MobNav">
+		<i class="fas fa-bars mr-2"></i>Dashboard Navigation
+	</a>
+	<div class="collapse" id="MobNav">
+		<div class="dashboard-nav">
+			<div class="dash-user-blocks pt-5">
+				<div class="jbs-grid-usrs-thumb">
+					<div class="jbs-grid-yuo">
+						<figure><img src="{% static 'app/img/l-12.png' %}" class="img-fluid circle" alt=""></figure>
+					</div>
+				</div>
+				<div class="jbs-grid-usrs-caption mb-3">
+					<div class="jbs-kioyer">
+						<span class="label text-light bg-main">RPO Admin</span>
+					</div>
+					<div class="jbs-tiosk">
+						<h4 class="jbs-tiosk-title">{{ request.user.get_full_name|default:request.user.username }}</h4>
+						<div class="jbs-tiosk-subtitle"><span><i class="fa-solid fa-user-tie me-2"></i>RPO Administrator</span></div>
+					</div>
+				</div>
+			</div>
+			{% include 'Components/For-Employer/dashboard_nav.html' with dashboard_active='rpo_resume_list' %}
+		</div>					
+	</div>
+	
+	<div class="dashboard-content">
+		<div class="dashboard-tlbar d-block mb-4">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<h1 class="mb-1 fs-3 fw-medium">Resume Details</h1>
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item text-muted"><a href="{% url 'App:index' %}">Home</a></li>
+							<li class="breadcrumb-item"><a href="{% url 'App:rpo_dashboard' %}">RPO Dashboard</a></li>
+							<li class="breadcrumb-item"><a href="{% url 'App:rpo_resume_list' %}">Resume List</a></li>
+							<li class="breadcrumb-item active">Resume Details</li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+		
+		<div class="dashboard-widg-bar d-block">
+			
+			<!-- Resume Information -->
+			<div class="row gx-4 gy-4 mb-4">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<div class="d-flex align-items-center justify-content-between">
+								<h4 class="mb-0">Resume Information</h4>
+								<div>
+									<a href="{% url 'App:rpo_resume_download' resume.id %}" class="btn btn-sm btn-success">
+										<i class="fa-solid fa-download me-2"></i>Download
+									</a>
+									<a href="{% url 'App:rpo_resume_list' %}" class="btn btn-sm btn-light">
+										<i class="fa-solid fa-arrow-left me-2"></i>Back to List
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="row mb-3">
+								<div class="col-md-6">
+									<p class="mb-2"><strong>Filename:</strong> {{ resume.original_filename }}</p>
+									<p class="mb-2"><strong>Uploaded:</strong> {{ resume.created_at|date:"F d, Y H:i" }}</p>
+									<p class="mb-2"><strong>File Size:</strong> {{ resume.file_size|filesizeformat }}</p>
+									<p class="mb-2"><strong>Status:</strong> 
+										{% if resume.status == 'pending' %}
+										<span class="badge bg-warning">Pending</span>
+										{% elif resume.status == 'processing' %}
+										<span class="badge bg-info">Processing</span>
+										{% elif resume.status == 'completed' %}
+										<span class="badge bg-success">Completed</span>
+										{% elif resume.status == 'failed' %}
+										<span class="badge bg-danger">Failed</span>
+										{% endif %}
+									</p>
+								</div>
+								<div class="col-md-6">
+									{% if resume.extracted_email %}
+									<p class="mb-2"><strong>Email:</strong> {{ resume.extracted_email }}</p>
+									{% endif %}
+									{% if resume.extracted_phone %}
+									<p class="mb-2"><strong>Phone:</strong> {{ resume.extracted_phone }}</p>
+									{% endif %}
+									{% if resume.years_of_experience %}
+									<p class="mb-2"><strong>Experience:</strong> {{ resume.years_of_experience }} years</p>
+									{% endif %}
+									{% if resume.word_count %}
+									<p class="mb-2"><strong>Word Count:</strong> {{ resume.word_count }}</p>
+									{% endif %}
+								</div>
+							</div>
+							
+							{% if resume.extracted_skills %}
+							<div class="row mb-3">
+								<div class="col-12">
+									<h5>Extracted Skills</h5>
+									<p>{{ resume.extracted_skills }}</p>
+								</div>
+							</div>
+							{% endif %}
+							
+							{% if resume.resume_text %}
+							<div class="row">
+								<div class="col-12">
+									<h5>Resume Text</h5>
+									<div class="border p-3 bg-light" style="max-height: 400px; overflow-y: auto;">
+										<pre style="white-space: pre-wrap; font-family: inherit;">{{ resume.resume_text }}</pre>
+									</div>
+								</div>
+							</div>
+							{% endif %}
+							
+							{% if resume.error_message %}
+							<div class="row mt-3">
+								<div class="col-12">
+									<div class="alert alert-danger">
+										<strong>Error:</strong> {{ resume.error_message }}
+									</div>
+								</div>
+							</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+{% endblock %}

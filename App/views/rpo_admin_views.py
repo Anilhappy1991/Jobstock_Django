@@ -144,3 +144,62 @@ def rpo_resume_list(request):
         }
     
     return render(request, 'Pages/RPO-Admin/resume_list.html', context)
+
+
+@login_required
+def rpo_resume_view(request, resume_id):
+    """
+    View resume details
+    """
+    from App.models import ResumeProcessing
+    from django.http import HttpResponseForbidden
+    
+    # Check if user is RPO Admin
+    user_role = request.user.profile.role if hasattr(request.user, 'profile') else 'unknown'
+    is_rpo_admin = user_role == 'rpo_admin' or request.user.groups.filter(name='rpo_admin').exists()
+    
+    if not is_rpo_admin and not request.user.is_superuser:
+        return HttpResponseForbidden('Access denied. RPO Admin role required.')
+    
+    try:
+        resume = ResumeProcessing.objects.get(id=resume_id, user=request.user)
+        context = {
+            'page_title': 'View Resume',
+            'resume': resume
+        }
+        return render(request, 'Pages/RPO-Admin/resume_view.html', context)
+    except ResumeProcessing.DoesNotExist:
+        messages.error(request, 'Resume not found.')
+        return redirect('App:rpo_resume_list')
+
+
+@login_required
+def rpo_resume_download(request, resume_id):
+    """
+    Download resume file
+    """
+    from App.models import ResumeProcessing
+    from django.http import FileResponse, Http404, HttpResponseForbidden
+    import os
+    
+    # Check if user is RPO Admin
+    user_role = request.user.profile.role if hasattr(request.user, 'profile') else 'unknown'
+    is_rpo_admin = user_role == 'rpo_admin' or request.user.groups.filter(name='rpo_admin').exists()
+    
+    if not is_rpo_admin and not request.user.is_superuser:
+        return HttpResponseForbidden('Access denied. RPO Admin role required.')
+    
+    try:
+        resume = ResumeProcessing.objects.get(id=resume_id, user=request.user)
+        
+        if not resume.resume_path or not os.path.exists(resume.resume_path):
+            messages.error(request, 'Resume file not found.')
+            return redirect('App:rpo_resume_list')
+        
+        # Open and return the file
+        response = FileResponse(open(resume.resume_path, 'rb'))
+        response['Content-Disposition'] = f'attachment; filename="{resume.original_filename}"'
+        return response
+        
+    except ResumeProcessing.DoesNotExist:
+        raise Http404("Resume not found")

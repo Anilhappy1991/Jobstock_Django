@@ -130,6 +130,37 @@
 				
 			</div>
 			
+			<!-- Quick Actions -->
+			<div class="row gx-4 gy-4 mb-4">
+				<div class="col-xl-6 col-lg-6 col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="mb-0">Quick Actions</h4>
+						</div>
+						<div class="card-body">
+							<a href="{% url 'App:rpo_resume_upload' %}" class="btn btn-primary btn-block mb-3 w-100">
+								<i class="fa-solid fa-upload me-2"></i>Upload Resumes
+							</a>
+							<a href="{% url 'App:rpo_resume_list' %}" class="btn btn-light btn-block w-100">
+								<i class="fa-solid fa-list me-2"></i>View All Resumes
+							</a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-xl-6 col-lg-6 col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="mb-0">Storage Information</h4>
+						</div>
+						<div class="card-body">
+							<p class="mb-2"><strong>Total Storage Used:</strong> {{ stats.total_size_mb|floatformat:2|default:"0.00" }} MB</p>
+							<p class="mb-0"><strong>Total Files:</strong> {{ stats.total_uploads|default:0 }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 			<!-- Recent Uploads -->
 			<div class="row gx-4 gy-4 mb-4">
 				<div class="col-xl-12 col-lg-12 col-md-12">
@@ -172,7 +203,14 @@
 											</td>
 											<td>{{ resume.created_at|date:"M d, Y H:i" }}</td>
 											<td>
-												<a href="#" class="btn btn-sm btn-light"><i class="fa-solid fa-eye"></i></a>
+												<div class="btn-group" role="group">
+													<a href="{% url 'App:rpo_resume_view' resume.id %}" class="btn btn-sm btn-info" title="View Resume">
+														<i class="fa-solid fa-eye"></i> View
+													</a>
+													<a href="{% url 'App:rpo_resume_download' resume.id %}" class="btn btn-sm btn-success" title="Download Resume">
+														<i class="fa-solid fa-download"></i> Download
+													</a>
+												</div>
 											</td>
 										</tr>
 										{% endfor %}
@@ -182,37 +220,6 @@
 							{% else %}
 							<p class="text-muted text-center py-4">No resumes uploaded yet.</p>
 							{% endif %}
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<!-- Quick Actions -->
-			<div class="row gx-4 gy-4 mb-4">
-				<div class="col-xl-6 col-lg-6 col-md-12">
-					<div class="card">
-						<div class="card-header">
-							<h4 class="mb-0">Quick Actions</h4>
-						</div>
-						<div class="card-body">
-							<a href="{% url 'App:rpo_resume_upload' %}" class="btn btn-primary btn-block mb-3 w-100">
-								<i class="fa-solid fa-upload me-2"></i>Upload Resumes
-							</a>
-							<a href="{% url 'App:rpo_resume_list' %}" class="btn btn-light btn-block w-100">
-								<i class="fa-solid fa-list me-2"></i>View All Resumes
-							</a>
-						</div>
-					</div>
-				</div>
-				
-				<div class="col-xl-6 col-lg-6 col-md-12">
-					<div class="card">
-						<div class="card-header">
-							<h4 class="mb-0">Storage Information</h4>
-						</div>
-						<div class="card-body">
-							<p class="mb-2"><strong>Total Storage Used:</strong> {{ stats.total_size_mb|floatformat:2|default:"0.00" }} MB</p>
-							<p class="mb-0"><strong>Total Files:</strong> {{ stats.total_uploads|default:0 }}</p>
 						</div>
 					</div>
 				</div>
