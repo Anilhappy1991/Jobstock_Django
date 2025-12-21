@@ -180,6 +180,7 @@ def rpo_resume_download(request, resume_id):
     """
     from App.models import ResumeProcessing
     from django.http import FileResponse, Http404, HttpResponseForbidden
+    from django.conf import settings
     import os
     
     # Check if user is RPO Admin
@@ -192,12 +193,19 @@ def rpo_resume_download(request, resume_id):
     try:
         resume = ResumeProcessing.objects.get(id=resume_id, user=request.user)
         
-        if not resume.resume_path or not os.path.exists(resume.resume_path):
+        # Build absolute path from relative path stored in database
+        if resume.resume_path.startswith('/') or resume.resume_path.startswith('\\'):
+            # Remove leading slash if present
+            resume.resume_path = resume.resume_path.lstrip('/\\')
+        
+        absolute_path = os.path.join(settings.BASE_DIR, resume.resume_path)
+        
+        if not os.path.exists(absolute_path):
             messages.error(request, 'Resume file not found.')
             return redirect('App:rpo_resume_list')
         
         # Open and return the file
-        response = FileResponse(open(resume.resume_path, 'rb'))
+        response = FileResponse(open(absolute_path, 'rb'))
         response['Content-Disposition'] = f'attachment; filename="{resume.original_filename}"'
         return response
         

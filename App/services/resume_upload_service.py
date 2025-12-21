@@ -16,7 +16,8 @@ class ResumeUploadService:
     """
     Service for handling resume uploads
     Supports: PDF, DOC, DOCX, TXT formats
-    Storage: Data/resume/YYYYMMDD/username/
+    Storage: /Data/resume/YYYYMMDD/username_userID/
+    Database: Stores relative path
     """
     
     # Allowed file extensions
@@ -59,58 +60,70 @@ class ResumeUploadService:
         return {'valid': True, 'error': None}
     
     @classmethod
-    def get_upload_path(cls, user: User) -> str:
+    def get_upload_path(cls, user: User) -> tuple:
         """
-        Generate upload path: Data/resume/YYYYMMDD/username/
+        Generate upload path: /Data/resume/YYYYMMDD/username_userID/
         Creates directory if it doesn't exist
+        
+        Returns:
+            tuple: (absolute_path, relative_path)
         """
         # Get current date in YYYYMMDD format
         current_date = datetime.now().strftime('%Y%m%d')
         
-        # Build path
-        upload_dir = os.path.join(
-            settings.BASE_DIR,
+        # Build folder name: username_userID
+        folder_name = f"{user.username}_{user.id}"
+        
+        # Build relative path (for database storage) - use forward slashes
+        relative_path = os.path.join(
             'Data',
             'resume',
             current_date,
-            user.username
-        )
+            folder_name
+        ).replace('\\', '/')
+        
+        # Build absolute path (for file system)
+        absolute_path = os.path.join(settings.BASE_DIR, relative_path)
         
         # Create directory if it doesn't exist
-        os.makedirs(upload_dir, exist_ok=True)
+        os.makedirs(absolute_path, exist_ok=True)
         
-        return upload_dir
+        return absolute_path, relative_path
     
     @classmethod
     def save_resume_file(cls, file: UploadedFile, user: User) -> Dict[str, Any]:
         """
         Save resume file to disk
-        Returns: dict with 'success', 'file_path', 'error'
+        Returns: dict with 'success', 'file_path' (absolute), 'relative_path', 'error'
         """
         try:
-            # Get upload directory
-            upload_dir = cls.get_upload_path(user)
+            # Get upload directory (absolute and relative paths)
+            absolute_dir, relative_dir = cls.get_upload_path(user)
             
             # Generate unique filename if file already exists
             filename = file.name
-            file_path = os.path.join(upload_dir, filename)
+            absolute_file_path = os.path.join(absolute_dir, filename)
             
             # Handle duplicate filenames
             counter = 1
             base_name, ext = os.path.splitext(filename)
-            while os.path.exists(file_path):
+            while os.path.exists(absolute_file_path):
                 filename = f"{base_name}_{counter}{ext}"
-                file_path = os.path.join(upload_dir, filename)
+                absolute_file_path = os.path.join(absolute_dir, filename)
                 counter += 1
             
+            # Build relative path for database (use forward slashes)
+            relative_file_path = os.path.join(relative_dir, filename).replace('\\', '/')
+            
             # Save file
-            with open(file_path, 'wb+') as destination:
+            with open(absolute_file_path, 'wb+') as destination:
                 for chunk in file.chunks():
                     destination.write(chunk)
             
             return {
                 'success': True,
-                'file_path': file_path,
+                'file_path': absolute_file_path,
+                'relative_path': relative_file_path,
                 'filename': filename,
                 'error': None
             }
@@ -119,6 +132,7 @@ class ResumeUploadService:
             return {
                 'success': False,
                 'file_path': None,
+                'relative_path': None,
                 'filename': None,
                 'error': str(e)
             }
@@ -178,7 +192,7 @@ class ResumeUploadService:
                 resume_record = ResumeProcessing.objects.create(
                     user=user,
                     profile=user.profile if hasattr(user, 'profile') else None,
-                    resume_path=save_result['file_path'],
+                    resume_path=save_result['relative_path'],  # Store relative path
                     original_filename=save_result['filename'],
                     file_size=file.size,
                     file_extension=file_ext,
@@ -189,7 +203,7 @@ class ResumeUploadService:
                     'id': resume_record.id,
                     'filename': save_result['filename'],
                     'file_size': file.size,
-                    'file_path': save_result['file_path'],
+                    'file_path': save_result['relative_path'],  # Return relative path
                     'status': 'pending'
                 })
                 results['success_count'] += 1
