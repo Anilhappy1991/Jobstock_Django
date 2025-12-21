@@ -14,12 +14,35 @@ import logging
 from celery import shared_task
 from django.conf import settings
 from django.utils import timezone
-import pdfplumber
-import PyPDF2
-from docx import Document
-import nltk
-from textblob import TextBlob
-from collections import Counter
+
+# Lazy imports - only import when needed to avoid breaking migrations
+def _lazy_import_processing_libs():
+    """Lazy import of processing libraries to avoid import errors during migrations"""
+    global pdfplumber, PyPDF2, Document, nltk, TextBlob, Counter
+    
+    if 'pdfplumber' not in globals():
+        import pdfplumber as _pdfplumber
+        globals()['pdfplumber'] = _pdfplumber
+    
+    if 'PyPDF2' not in globals():
+        import PyPDF2 as _PyPDF2
+        globals()['PyPDF2'] = _PyPDF2
+    
+    if 'Document' not in globals():
+        from docx import Document as _Document
+        globals()['Document'] = _Document
+    
+    if 'nltk' not in globals():
+        import nltk as _nltk
+        globals()['nltk'] = _nltk
+    
+    if 'TextBlob' not in globals():
+        from textblob import TextBlob as _TextBlob
+        globals()['TextBlob'] = _TextBlob
+    
+    if 'Counter' not in globals():
+        from collections import Counter as _Counter
+        globals()['Counter'] = _Counter
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +54,9 @@ class SimpleDocumentProcessor:
     
     def __init__(self):
         """Initialize NLTK data"""
+        # Lazy import libraries
+        _lazy_import_processing_libs()
+        
         try:
             # Download required NLTK data
             nltk.data.find('tokenizers/punkt')

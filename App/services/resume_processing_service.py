@@ -3,6 +3,7 @@ Generic Resume Processing Service
 Handles resume extraction, analysis, and database storage
 Reusable by REST API, Django views, and background tasks
 """
+import os
 from typing import Dict, Any, Optional
 from pathlib import Path
 from datetime import datetime
@@ -93,34 +94,65 @@ class ResumeProcessingService:
         Raises:
             FileNotFoundError: If file doesn't exist
             ValueError: If text extraction fails or text is too short
+            Exception: Other processing errors with detailed context
         """
         file_path_obj = Path(file_path)
         
         # Validate file exists
         if not file_path_obj.exists():
-            raise FileNotFoundError(f"Resume file not found: {file_path}")
+            raise FileNotFoundError(f"Resume file not found at path: {file_path}")
         
-        # Extract text
-        text = self.processor.extract_text(str(file_path))
+        # Check file is readable
+        if not os.access(file_path, os.R_OK):
+            raise PermissionError(f"Resume file is not readable: {file_path}")
+        
+        # Check file size
+        file_size = file_path_obj.stat().st_size
+        if file_size == 0:
+            raise ValueError(f"Resume file is empty (0 bytes): {file_path}")
+        
+        # Extract text with error handling
+        try:
+            text = self.processor.extract_text(str(file_path))
+        except Exception as e:
+            raise ValueError(f"Text extraction failed for {file_path_obj.suffix} file: {str(e)}")
         
         # Validate text extraction
-        if not text or len(text.strip()) < 50:
-            raise ValueError(f"Extracted text is too short ({len(text)} characters)")
+        if not text:
+            raise ValueError(f"No text extracted from resume file: {file_path}")
+        
+        if len(text.strip()) < 50:
+            raise ValueError(f"Extracted text is too short ({len(text)} characters, minimum 50 required). File may be corrupted or empty.")
         
         # Extract contact information
-        contact_info = self.processor.extract_contact_info(text)
+        try:
+            contact_info = self.processor.extract_contact_info(text)
+        except Exception as e:
+            raise ValueError(f"Contact information extraction failed: {str(e)}")
         
         # Extract skills
-        skills_results = self.processor.extract_skills(text)
+        try:
+            skills_results = self.processor.extract_skills(text)
+        except Exception as e:
+            raise ValueError(f"Skills extraction failed: {str(e)}")
         
         # Extract entities
-        entity_results = self.processor.extract_entities(text)
+        try:
+            entity_results = self.processor.extract_entities(text)
+        except Exception as e:
+            raise ValueError(f"Entity extraction failed: {str(e)}")
         
         # Get text statistics
-        stats = self.processor.get_text_statistics(text)
+        try:
+            stats = self.processor.get_text_statistics(text)
+        except Exception as e:
+            raise ValueError(f"Text statistics calculation failed: {str(e)}")
         
         # Analyze sentiment
-        sentiment = self.processor.analyze_sentiment(text)
+        try:
+            sentiment = self.processor.analyze_sentiment(text)
+        except Exception as e:
+            raise ValueError(f"Sentiment analysis failed: {str(e)}")
         
         # Compile results
         return {
@@ -132,7 +164,7 @@ class ResumeProcessingService:
             'sentiment': sentiment,
             'metadata': {
                 'original_filename': file_path_obj.name,
-                'file_size_bytes': file_path_obj.stat().st_size,
+                'file_size_bytes': file_size,
                 'processed_at': datetime.now().isoformat(),
                 'file_extension': file_path_obj.suffix,
                 'word_count': stats['word_count'],
@@ -248,12 +280,48 @@ class ResumeProcessingService:
             }
             
         except Exception as e:
+            import traceback
+            import sys
+            
             error_msg = str(e)
+            error_type = type(e).__name__
+            
+            # Capture detailed error information
+            error_details = {
+                'error_type': error_type,
+                'error_message': error_msg,
+                'traceback': traceback.format_exc(),
+                'file_path': file_path,
+                'timestamp': datetime.now().isoformat(),
+                'python_version': sys.version,
+            }
+            
+            # Add file-specific information if available
+            try:
+                from pathlib import Path
+                file_obj = Path(file_path)
+                if file_obj.exists():
+                    error_details['file_info'] = {
+                        'exists': True,
+                        'size': file_obj.stat().st_size,
+                        'extension': file_obj.suffix,
+                        'is_readable': os.access(file_path, os.R_OK)
+                    }
+                else:
+                    error_details['file_info'] = {
+                        'exists': False,
+                        'error': 'File not found'
+                    }
+            except Exception as file_error:
+                error_details['file_info'] = {
+                    'error': str(file_error)
+                }
             
             # Update record as failed if exists
             if resume_record:
                 resume_record.status = 'failed'
                 resume_record.error_message = error_msg
+                resume_record.error_details = error_details
                 resume_record.processing_completed_at = timezone.now()
                 resume_record.save()
             
@@ -261,7 +329,8 @@ class ResumeProcessingService:
                 'success': False,
                 'resume_record': resume_record,
                 'extracted_data': None,
-                'error': error_msg
+                'error': error_msg,
+                'error_details': error_details
             }
     
     def process_multiple_resumes(self,

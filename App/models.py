@@ -488,6 +488,7 @@ class ResumeProcessing(models.Model):
     processing_started_at = models.DateTimeField(null=True, blank=True)
     processing_completed_at = models.DateTimeField(null=True, blank=True)
     error_message = models.TextField(blank=True, null=True)
+    error_details = models.JSONField(blank=True, null=True, help_text="Detailed error information including traceback and context")
     
     # Extracted Data
     resume_text = models.TextField(blank=True, null=True, help_text="Full extracted text from resume")

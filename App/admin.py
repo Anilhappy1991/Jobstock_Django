@@ -74,7 +74,7 @@ class ResumeProcessingAdmin(admin.ModelAdmin):
 			'fields': ('resume_path', 'original_filename', 'file_size', 'file_extension')
 		}),
 		('Processing Status', {
-			'fields': ('status', 'processing_started_at', 'processing_completed_at', 'error_message')
+			'fields': ('status', 'processing_started_at', 'processing_completed_at', 'error_message', 'error_details')
 		}),
 		('Extracted Data', {
 			'fields': ('resume_text', 'resume_json'),

@@ -134,7 +134,55 @@
 							<div class="row mt-3">
 								<div class="col-12">
 									<div class="alert alert-danger">
-										<strong>Error:</strong> {{ resume.error_message }}
+										<h5 class="alert-heading"><i class="fa-solid fa-exclamation-triangle me-2"></i>Processing Error</h5>
+										<p class="mb-2"><strong>Error:</strong> {{ resume.error_message }}</p>
+										
+										{% if resume.error_details %}
+										<hr>
+										<div class="mt-3">
+											<button class="btn btn-sm btn-outline-danger" type="button" data-bs-toggle="collapse" data-bs-target="#errorDetails" aria-expanded="false" aria-controls="errorDetails">
+												<i class="fa-solid fa-code me-1"></i> Show Error Details
+											</button>
+											
+											<div class="collapse mt-3" id="errorDetails">
+												<div class="card card-body bg-white">
+													{% if resume.error_details.error_type %}
+													<p class="mb-2"><strong>Error Type:</strong> <code>{{ resume.error_details.error_type }}</code></p>
+													{% endif %}
+													
+													{% if resume.error_details.timestamp %}
+													<p class="mb-2"><strong>Timestamp:</strong> {{ resume.error_details.timestamp }}</p>
+													{% endif %}
+													
+													{% if resume.error_details.file_info %}
+													<p class="mb-2"><strong>File Information:</strong></p>
+													<ul class="mb-2">
+														{% if resume.error_details.file_info.exists != None %}
+														<li>File Exists: {{ resume.error_details.file_info.exists|yesno:"Yes,No" }}</li>
+														{% endif %}
+														{% if resume.error_details.file_info.size %}
+														<li>File Size: {{ resume.error_details.file_info.size|filesizeformat }}</li>
+														{% endif %}
+														{% if resume.error_details.file_info.extension %}
+														<li>Extension: {{ resume.error_details.file_info.extension }}</li>
+														{% endif %}
+														{% if resume.error_details.file_info.is_readable != None %}
+														<li>Readable: {{ resume.error_details.file_info.is_readable|yesno:"Yes,No" }}</li>
+														{% endif %}
+														{% if resume.error_details.file_info.error %}
+														<li class="text-danger">Error: {{ resume.error_details.file_info.error }}</li>
+														{% endif %}
+													</ul>
+													{% endif %}
+													
+													{% if resume.error_details.traceback %}
+													<p class="mb-2"><strong>Traceback:</strong></p>
+													<pre class="bg-dark text-light p-3" style="max-height: 300px; overflow-y: auto; font-size: 12px;">{{ resume.error_details.traceback }}</pre>
+													{% endif %}
+												</div>
+											</div>
+										</div>
+										{% endif %}
 									</div>
 								</div>
 							</div>
