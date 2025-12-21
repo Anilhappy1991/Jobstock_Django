@@ -1,0 +1,217 @@
+{% load static %}
+
+{% if jobs %}
+<div class="col-xl-12 col-lg-12 col-md-12">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col" style="width: 5%;">#</th>
+                    <th scope="col" style="width: 30%;">Job Title</th>
+                    <th scope="col" style="width: 12%;">Category</th>
+                    <th scope="col" style="width: 10%;">Type</th>
+                    <th scope="col" style="width: 10%;">Location</th>
+                    <th scope="col" style="width: 10%;">Salary</th>
+                    <th scope="col" style="width: 8%;">Status</th>
+                    <th scope="col" style="width: 10%;">Posted Date</th>
+                    <th scope="col" style="width: 5%;" class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="me-2">
+                                {% if job.company_logo %}
+                                    <img src="{{ job.company_logo.url }}" class="rounded" width="40" height="40" alt="{{ job.title }}">
+                                {% else %}
+                                    <img src="{% static 'app/img/l-5.png' %}" class="rounded" width="40" height="40" alt="{{ job.title }}">
+                                {% endif %}
+                            </div>
+                            <div>
+                                <strong>{{ job.title }}</strong>
+                                {% if job.job_level %}
+                                <br><small class="text-muted">{{ job.job_level.text }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        {% if job.job_category %}
+                            <span class="badge bg-primary">{{ job.job_category.text }}</span>
+                        {% else %}
+                            <span class="badge bg-secondary">General</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if job.job_type %}
+                            <span class="badge bg-info text-dark">{{ job.job_type.text }}</span>
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if job.state_city %}
+                            <i class="fa-solid fa-location-dot me-1 text-muted"></i>{{ job.state_city.text }}
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if job.min_salary or job.max_salary %}
+                            <i class="fa-solid fa-money-bill me-1 text-success"></i>
+                            {% if job.min_salary %}${{ job.min_salary }}{% endif %}
+                            {% if job.max_salary %} - ${{ job.max_salary }}{% endif %}
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="badge {% if job.is_active %}bg-success{% else %}bg-secondary{% endif %}">
+                            {% if job.is_active %}Active{% else %}Inactive{% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        <small class="text-muted">{{ job.created_at|date:"M d, Y" }}</small>
+                        {% if job.deadline %}
+                        <br><small class="text-danger"><i class="fa-solid fa-clock me-1"></i>{{ job.deadline|date:"M d, Y" }}</small>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a href="{% url 'App:employer_edit_job' job.id %}" 
+                               class="btn btn-outline-success" 
+                               title="Edit Job"
+                               data-bs-toggle="tooltip">
+                                <i class="fa-solid fa-pencil"></i>
+                            </a>
+                            <button type="button"
+                                    class="btn btn-outline-danger delete-job-btn" 
+                                    data-job-id="{{ job.id }}"
+                                    data-job-title="{{ job.title }}"
+                                    title="Delete Job"
+                                    data-bs-toggle="tooltip">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="col-xl-12 col-lg-12 col-md-12">
+    <div class="alert alert-info text-center">
+        <i class="fa-solid fa-info-circle me-2"></i>
+        {% if search_query %}
+            No jobs found matching "{{ search_query }}". <a href="{% url 'App:employer_jobs' %}" class="alert-link">Clear search</a>
+        {% else %}
+            No jobs posted yet. <a href="{% url 'App:employer_submit_job' %}" class="alert-link">Post your first job</a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteJobModal" tabindex="-1" aria-labelledby="deleteJobModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteJobModalLabel">
+                    <i class="fa-solid fa-exclamation-triangle me-2"></i>Confirm Delete
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Are you sure you want to delete the job:</p>
+                <p class="fw-bold mb-0" id="deleteJobTitle"></p>
+                <p class="text-muted mt-2 mb-0">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-times me-1"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                    <i class="fa-solid fa-trash-can me-1"></i>Delete Job
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+    
+    // Delete job modal
+    let deleteJobId = null;
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteJobModal'));
+    
+    // When delete button is clicked
+    document.querySelectorAll('.delete-job-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            deleteJobId = this.getAttribute('data-job-id');
+            const jobTitle = this.getAttribute('data-job-title');
+            document.getElementById('deleteJobTitle').textContent = jobTitle;
+            deleteModal.show();
+        });
+    });
+    
+    // When confirm delete is clicked
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        if (deleteJobId) {
+            deleteJob(deleteJobId);
+        }
+    });
+    
+    // Get CSRF token from cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    // Delete job function
+    function deleteJob(jobId) {
+        fetch(`/employer-delete-job/${jobId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            deleteModal.hide();
+            if (data.success) {
+                // Show success message and reload
+                window.location.reload();
+            } else {
+                alert(data.message || 'Error deleting job');
+            }
+        })
+        .catch(error => {
+            deleteModal.hide();
+            console.error('Error:', error);
+            alert('An error occurred while deleting the job');
+        });
+    }
+});
+</script>

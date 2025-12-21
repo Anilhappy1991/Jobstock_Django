@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 from App.models import Employer, Job, DropdownGroup, DropdownMaster
 from App.services import JobService
@@ -65,16 +67,65 @@ def employer_profile(request):
 
 @login_required
 def employer_jobs(request):
-    """Employer jobs listing"""
-    # Get all jobs posted by the current user
-    jobs = JobService.get_all_jobs(user=request.user)
+    """Employer jobs listing with search and pagination"""
+    # 🔴 BREAKPOINT: Set VSCode breakpoint on the line below to debug when employer-jobs page is accessed
+    # Get search query from request
+    search_query = request.GET.get('search', '').strip()
+    
+    # DEBUG: Print current user
+    print(f"🔍 DEBUG - Current User: {request.user.username}")
+    
+    # Get all jobs - superusers see ALL jobs, regular users see only THEIR jobs
+    if request.user.is_superuser or request.user.is_staff:
+        # Admins and staff see ALL jobs
+        jobs = Job.objects.select_related(
+            'job_category', 'job_type', 'job_level', 
+            'experience_required', 'qualification_required', 'posted_by'
+        ).order_by('-created_at')
+        print(f"🔍 DEBUG - ADMIN VIEW: Showing ALL jobs")
+    else:
+        # Regular employers see only THEIR jobs
+        jobs = Job.objects.filter(posted_by=request.user).select_related(
+            'job_category', 'job_type', 'job_level', 
+            'experience_required', 'qualification_required'
+        ).order_by('-created_at')
+        print(f"🔍 DEBUG - EMPLOYER VIEW: Showing only user's jobs")
+    
+    # DEBUG: Print query results
+    print(f"🔍 DEBUG - Total Jobs Found: {jobs.count()}")
+    print(f"🔍 DEBUG - Search Query: '{search_query}'")
+    
+    # Apply search filter if search query exists
+    if search_query:
+        jobs = jobs.filter(
+            Q(title__icontains=search_query) |
+            Q(job_category__text__icontains=search_query) |
+            Q(job_type__text__icontains=search_query) |
+            Q(job_level__text__icontains=search_query) |
+            Q(skills__icontains=search_query) |
+            Q(permanent_address__icontains=search_query) |
+            Q(state_city__text__icontains=search_query)
+        )
     
     # Get statistics
     stats = JobService.get_job_statistics(user=request.user)
     
+    # Pagination - 10 jobs per page
+    paginator = Paginator(jobs, 10)
+    page = request.GET.get('page', 1)
+    
+    try:
+        jobs_page = paginator.page(page)
+    except PageNotAnInteger:
+        jobs_page = paginator.page(1)
+    except EmptyPage:
+        jobs_page = paginator.page(paginator.num_pages)
+    
     context = {
-        'jobs': jobs,
+        'jobs': jobs_page,
         'stats': stats,
+        'search_query': search_query,
+        'total_jobs': paginator.count,
     }
     return render(request, 'pages/employer-jobs.html', context)
 

@@ -36,8 +36,13 @@ def login_view(request):
         if user is not None:
             login(request, user)
             messages.success(request, 'You are now logged in.')
-            # Redirect to the user's profile using their email
-            return redirect('App:candidate_profile_detail', username=user.email)
+            
+            # Redirect based on user type/group or next_url
+            if next_url and next_url != reverse('App:index'):
+                return redirect(next_url)
+            else:
+                # Default redirect to home page
+                return redirect('App:index')
         else:
             messages.error(request, 'Invalid username or password.')
             # On failure, redirect to the same page and open login modal

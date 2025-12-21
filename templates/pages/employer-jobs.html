@@ -58,59 +58,148 @@
 						<div class="card-header">
 							<div class="_mp-inner-content elior">
 								<div class="_mp-inner-first">
-									<div class="search-inline">
-										<input type="text" class="form-control" placeholder="Job title, Keywords etc.">
-										<button type="button" class="btn btn-main">Search</button>
-									</div>
+									<form method="get" class="search-inline" id="searchForm">
+										<input type="text" name="search" class="form-control" placeholder="Search by job title, category, skills..." value="{{ search_query }}">
+										<button type="submit" class="btn btn-main">
+											<i class="fa-solid fa-search me-1"></i>Search
+										</button>
+										{% if search_query %}
+										<a href="{% url 'App:employer_jobs' %}" class="btn btn-outline-secondary ms-2">
+											<i class="fa-solid fa-times me-1"></i>Clear
+										</a>
+										{% endif %}
+									</form>
 								</div>
-								<div class="_mp_inner-last">
-									<div class="item-shorting-box-right">
-										<div class="shorting-by me-2 small">
-											<select>
-												<option value="0">Short by (Default)</option>
-												<option value="1">Short by (Featured)</option>
-												<option value="2">Short by (Urgent)</option>
-												<option value="3">Short by (Post Date)</option>
-											</select>
-										</div>
+								<div class="_mp_inner-last d-flex gap-2">
+									<!-- View Toggle -->
+									<div class="btn-group" role="group">
+										<button type="button" class="btn btn-outline-primary" id="listViewBtn" onclick="switchView('list')">
+											<i class="fa-solid fa-list"></i>
+										</button>
+										<button type="button" class="btn btn-outline-primary active" id="tableViewBtn" onclick="switchView('table')">
+											<i class="fa-solid fa-table"></i>
+										</button>
 									</div>
+									<a href="{% url 'App:employer_submit_job' %}" class="btn btn-success">
+										<i class="fa-solid fa-plus me-1"></i>Post New Job
+									</a>
 								</div>
 							</div>
 						</div>
 						<div class="card-body">
-							<!-- Row -->
+							<!-- Statistics Row -->
 							<div class="row mb-3">
 								<div class="col-xl-12 col-lg-12 col-md-12">
 									<div class="duster-flex-row align-items-center d-flex justify-content-between">
 										<div class="duster-flex-first">
-											<h6 class="mb-0">Upgrade Package - 10 Days Left</h6>
+											{% if search_query %}
+											<h6 class="mb-0">
+												<i class="fa-solid fa-search me-2"></i>
+												Search Results: <span class="text-main">{{ total_jobs }}</span> job{% if total_jobs != 1 %}s{% endif %} found for "{{ search_query }}"
+											</h6>
+											{% else %}
+											<h6 class="mb-0">
+												<i class="fa-solid fa-briefcase me-2"></i>
+												Total Jobs: <span class="text-main">{{ total_jobs }}</span>
+											</h6>
+											{% endif %}
 										</div>
 										<div class="duster-flex-end">
 											<ul class="nav nav-pills nav-fill gap-2 p-1 small gray-simple rounded" id="pillNav2" role="tablist">
 												<li class="nav-item" role="presentation">
-													<button class="nav-link active rounded" id="alls" data-bs-toggle="tab" type="button" role="tab" aria-selected="true">All: 138</button>
+													<button class="nav-link active rounded" id="alls" data-bs-toggle="tab" type="button" role="tab" aria-selected="true">
+														All: {{ stats.total }}
+													</button>
 												</li>
 												<li class="nav-item" role="presentation">
-													<button class="nav-link rounded" id="actives" data-bs-toggle="tab" type="button" role="tab" aria-selected="false">Active: 122</button>
+													<button class="nav-link rounded" id="actives" data-bs-toggle="tab" type="button" role="tab" aria-selected="false">
+														Active: {{ stats.active }}
+													</button>
 												</li>
 												<li class="nav-item" role="presentation">
-													<button class="nav-link rounded" id="expireds" data-bs-toggle="tab" type="button" role="tab" aria-selected="false">Axpired: 16</button>
+													<button class="nav-link rounded" id="pendings" data-bs-toggle="tab" type="button" role="tab" aria-selected="false">
+														Pending: {{ stats.pending }}
+													</button>
 												</li>
 											</ul>
 										</div>
 									</div>
 								</div>
 							</div>
-							<!-- End Row -->
+							<!-- End Statistics Row -->
 							
 							<!-- Start All List -->
-							<div class="row justify-content-start gx-3 gy-4">
+							<div class="row justify-content-start gx-3 gy-4" id="listView" style="display: none;">
 								
 								<!-- Components/For-Employer/employer-dashboard/posted.html -->
            	 					{% include 'Components/For-Employer/employer-dashboard/posted.html' %}
 								
 							</div>
 							<!-- End All Job List -->
+							
+							<!-- Start Table View -->
+							<div class="row" id="tableView">
+								{% include 'Components/For-Employer/employer-dashboard/jobs-table.html' %}
+							</div>
+							<!-- End Table View -->
+							
+							<!-- Pagination -->
+							{% if jobs.has_other_pages %}
+							<div class="row mt-4">
+								<div class="col-xl-12 col-lg-12 col-md-12">
+									<nav aria-label="Job list pagination">
+										<ul class="pagination justify-content-center">
+											<!-- Previous Button -->
+											{% if jobs.has_previous %}
+											<li class="page-item">
+												<a class="page-link" href="?page={{ jobs.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" aria-label="Previous">
+													<span aria-hidden="true">&laquo;</span>
+												</a>
+											</li>
+											{% else %}
+											<li class="page-item disabled">
+												<span class="page-link">&laquo;</span>
+											</li>
+											{% endif %}
+											
+											<!-- Page Numbers -->
+											{% for num in jobs.paginator.page_range %}
+												{% if jobs.number == num %}
+												<li class="page-item active">
+													<span class="page-link">{{ num }}</span>
+												</li>
+												{% elif num > jobs.number|add:'-3' and num < jobs.number|add:'3' %}
+												<li class="page-item">
+													<a class="page-link" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}">{{ num }}</a>
+												</li>
+												{% endif %}
+											{% endfor %}
+											
+											<!-- Next Button -->
+											{% if jobs.has_next %}
+											<li class="page-item">
+												<a class="page-link" href="?page={{ jobs.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" aria-label="Next">
+													<span aria-hidden="true">&raquo;</span>
+												</a>
+											</li>
+											{% else %}
+											<li class="page-item disabled">
+												<span class="page-link">&raquo;</span>
+											</li>
+											{% endif %}
+										</ul>
+									</nav>
+									
+									<!-- Page Info -->
+									<div class="text-center mt-2">
+										<p class="text-muted mb-0">
+											Showing {{ jobs.start_index }} to {{ jobs.end_index }} of {{ jobs.paginator.count }} jobs
+										</p>
+									</div>
+								</div>
+							</div>
+							{% endif %}
+							<!-- End Pagination -->
 				
 						</div>
 					</div>
@@ -131,5 +220,35 @@
 	
 </div>
 <!-- dashboard Detail End -->
+
+<script>
+// View switching functionality
+function switchView(view) {
+    const listView = document.getElementById('listView');
+    const tableView = document.getElementById('tableView');
+    const listBtn = document.getElementById('listViewBtn');
+    const tableBtn = document.getElementById('tableViewBtn');
+    
+    if (view === 'list') {
+        listView.style.display = 'flex';
+        tableView.style.display = 'none';
+        listBtn.classList.add('active');
+        tableBtn.classList.remove('active');
+        localStorage.setItem('jobsViewPreference', 'list');
+    } else {
+        listView.style.display = 'none';
+        tableView.style.display = 'block';
+        listBtn.classList.remove('active');
+        tableBtn.classList.add('active');
+        localStorage.setItem('jobsViewPreference', 'table');
+    }
+}
+
+// Load saved preference on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const savedView = localStorage.getItem('jobsViewPreference') || 'table';
+    switchView(savedView);
+});
+</script>
 
 {% endblock %}
