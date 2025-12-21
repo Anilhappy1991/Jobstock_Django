@@ -1,9 +1,13 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 app_name = 'App'
 
 urlpatterns = [
+    # API Routes
+    path("api/", include('App.urls_api_navigation')),
+    
+    # Home and main pages
     path("", views.home_4, name="index"),
     #path("", views.index, name="home-10"),    
     path("home-2/", views.home_2, name="home_2"),

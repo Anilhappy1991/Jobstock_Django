@@ -158,6 +158,17 @@ document.addEventListener('DOMContentLoaded', function() {
             form.classList.add('was-validated');
         }, false);
     });
+    
+    // Automatically reopen login modal if login failed
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('login') === 'failed') {
+        const loginModal = new bootstrap.Modal(document.getElementById('login'));
+        loginModal.show();
+        
+        // Clean up the URL without reloading the page
+        const cleanUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+    }
 });
 </script>
 

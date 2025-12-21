@@ -1,0 +1,374 @@
+<!-- Dynamic Navigation Component using REST API -->
+<div class="dashboard-inner" id="dashboard-navigation">
+    <!-- Loading State -->
+    <div id="nav-loading" class="text-center py-4">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading navigation...</span>
+        </div>
+        <p class="mt-2 text-muted">Loading menu...</p>
+    </div>
+    
+    <!-- Error State -->
+    <div id="nav-error" class="alert alert-danger d-none" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <span id="error-message">Failed to load navigation</span>
+    </div>
+    
+    <!-- Navigation Content (populated dynamically) -->
+    <div id="nav-content" class="d-none"></div>
+</div>
+
+<!-- Navigation Template -->
+<script type="text/template" id="nav-group-template">
+    <ul data-submenu-title="{{group_name}}">
+        {{items}}
+    </ul>
+</script>
+
+<script type="text/template" id="nav-item-template">
+    <li class="{{active_class}}">
+        <a href="{{url}}">
+            <i class="{{icon}} me-2"></i>{{title}}
+            {{badge}}
+        </a>
+        {{children}}
+    </li>
+</script>
+
+<script type="text/template" id="nav-dropdown-template">
+    <li class="{{active_class}}">
+        <a href="javascript:void(0);" class="dropdown-toggle">
+            <i class="{{icon}} me-2"></i>{{title}}
+            {{badge}}
+        </a>
+        <ul class="submenu">
+            {{children}}
+        </ul>
+    </li>
+</script>
+
+<!-- Navigation JavaScript -->
+<script>
+(function() {
+    'use strict';
+    
+    // Configuration
+    const NAV_CONFIG = {
+        apiUrl: '{% url "navigation_api:user_navigation" %}',
+        statsUrl: '{% url "navigation_api:navigation_stats" %}',
+        refreshInterval: 30000, // Refresh stats every 30 seconds
+        currentPage: window.location.pathname
+    };
+    
+    // State
+    let navigationData = null;
+    let statsData = null;
+    
+    /**
+     * Initialize navigation on page load
+     */
+    document.addEventListener('DOMContentLoaded', function() {
+        loadNavigation();
+        
+        // Set up periodic stats refresh for badges
+        setInterval(refreshStats, NAV_CONFIG.refreshInterval);
+    });
+    
+    /**
+     * Load navigation from API
+     */
+    async function loadNavigation() {
+        const loadingEl = document.getElementById('nav-loading');
+        const errorEl = document.getElementById('nav-error');
+        const contentEl = document.getElementById('nav-content');
+        
+        try {
+            showLoading();
+            
+            const response = await fetch(NAV_CONFIG.apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'same-origin'
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                navigationData = result.data.navigation;
+                renderNavigation(navigationData);
+                
+                // Load stats for badges
+                await refreshStats();
+                
+                hideLoading();
+            } else {
+                throw new Error(result.message || 'Failed to load navigation');
+            }
+            
+        } catch (error) {
+            console.error('Navigation load error:', error);
+            showError(error.message);
+        }
+    }
+    
+    /**
+     * Refresh navigation stats (badges)
+     */
+    async function refreshStats() {
+        try {
+            const response = await fetch(NAV_CONFIG.statsUrl, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'same-origin'
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                if (result.success) {
+                    statsData = result.data.stats;
+                    updateBadges(statsData);
+                }
+            }
+        } catch (error) {
+            console.warn('Stats refresh failed:', error);
+        }
+    }
+    
+    /**
+     * Render navigation HTML
+     */
+    function renderNavigation(groups) {
+        const contentEl = document.getElementById('nav-content');
+        let html = '';
+        
+        groups.forEach(group => {
+            html += renderGroup(group);
+        });
+        
+        contentEl.innerHTML = html;
+    }
+    
+    /**
+     * Render a navigation group
+     */
+    function renderGroup(group) {
+        const items = group.items.map(item => renderItem(item)).join('');
+        
+        return `
+            <ul data-submenu-title="${escapeHtml(group.name)}">
+                ${items}
+            </ul>
+        `;
+    }
+    
+    /**
+     * Render a navigation item
+     */
+    function renderItem(item) {
+        const isActive = isItemActive(item);
+        const activeClass = isActive ? 'active' : '';
+        const badge = renderBadge(item);
+        
+        if (item.has_children && item.children && item.children.length > 0) {
+            // Item with dropdown
+            const children = item.children.map(child => renderChildItem(child)).join('');
+            
+            return `
+                <li class="${activeClass}">
+                    <a href="javascript:void(0);" class="dropdown-toggle">
+                        <i class="${escapeHtml(item.icon)} me-2"></i>${escapeHtml(item.title)}
+                        ${badge}
+                    </a>
+                    <ul class="submenu">
+                        ${children}
+                    </ul>
+                </li>
+            `;
+        } else {
+            // Regular item
+            return `
+                <li class="${activeClass}">
+                    <a href="${escapeHtml(item.url)}">
+                        <i class="${escapeHtml(item.icon)} me-2"></i>${escapeHtml(item.title)}
+                        ${badge}
+                    </a>
+                </li>
+            `;
+        }
+    }
+    
+    /**
+     * Render a child navigation item
+     */
+    function renderChildItem(item) {
+        const isActive = isItemActive(item);
+        const activeClass = isActive ? 'active' : '';
+        const badge = renderBadge(item);
+        
+        return `
+            <li class="${activeClass}">
+                <a href="${escapeHtml(item.url)}">
+                    <i class="${escapeHtml(item.icon)} me-2"></i>${escapeHtml(item.title)}
+                    ${badge}
+                </a>
+            </li>
+        `;
+    }
+    
+    /**
+     * Render badge HTML
+     */
+    function renderBadge(item) {
+        if (!item.badge_text) return '';
+        
+        const badgeClass = item.badge_class || 'badge-primary';
+        return `<span class="badge ${escapeHtml(badgeClass)} ms-2">${escapeHtml(item.badge_text)}</span>`;
+    }
+    
+    /**
+     * Update dynamic badges from stats
+     */
+    function updateBadges(stats) {
+        if (!stats) return;
+        
+        // Update specific badges based on stats
+        // This is role-specific and can be customized
+        
+        // Example: Update "Applications" badge with new count
+        if (stats.new_applications !== undefined) {
+            updateItemBadge('Applications', stats.new_applications, 'badge-danger');
+        }
+        
+        // Example: Update "Messages" badge
+        if (stats.unread_messages !== undefined && stats.unread_messages > 0) {
+            updateItemBadge('Messages', stats.unread_messages, 'badge-info');
+        }
+    }
+    
+    /**
+     * Update a specific item's badge
+     */
+    function updateItemBadge(itemTitle, count, badgeClass) {
+        const items = document.querySelectorAll('#nav-content a');
+        items.forEach(link => {
+            const text = link.textContent.trim();
+            if (text.includes(itemTitle)) {
+                // Remove old badge
+                const oldBadge = link.querySelector('.badge');
+                if (oldBadge) {
+                    oldBadge.remove();
+                }
+                
+                // Add new badge if count > 0
+                if (count > 0) {
+                    const badge = document.createElement('span');
+                    badge.className = `badge ${badgeClass} ms-2`;
+                    badge.textContent = count;
+                    link.appendChild(badge);
+                }
+            }
+        });
+    }
+    
+    /**
+     * Check if navigation item is active
+     */
+    function isItemActive(item) {
+        // Check if current page matches this item's URL
+        return NAV_CONFIG.currentPage === item.url;
+    }
+    
+    /**
+     * Show loading state
+     */
+    function showLoading() {
+        document.getElementById('nav-loading').classList.remove('d-none');
+        document.getElementById('nav-error').classList.add('d-none');
+        document.getElementById('nav-content').classList.add('d-none');
+    }
+    
+    /**
+     * Hide loading state
+     */
+    function hideLoading() {
+        document.getElementById('nav-loading').classList.add('d-none');
+        document.getElementById('nav-content').classList.remove('d-none');
+    }
+    
+    /**
+     * Show error state
+     */
+    function showError(message) {
+        document.getElementById('nav-loading').classList.add('d-none');
+        document.getElementById('nav-error').classList.remove('d-none');
+        document.getElementById('error-message').textContent = message;
+    }
+    
+    /**
+     * Escape HTML to prevent XSS
+     */
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    // Expose API for external use
+    window.NavigationAPI = {
+        reload: loadNavigation,
+        refreshStats: refreshStats,
+        getData: () => navigationData,
+        getStats: () => statsData
+    };
+    
+})();
+</script>
+
+<style>
+/* Navigation Loading State */
+#nav-loading {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Navigation Submenu */
+.submenu {
+    display: none;
+    padding-left: 20px;
+}
+
+.dropdown-toggle + .submenu {
+    display: none;
+}
+
+li.active > .dropdown-toggle + .submenu {
+    display: block;
+}
+
+/* Badge Styles */
+.badge {
+    font-size: 0.7rem;
+    padding: 0.25em 0.5em;
+    border-radius: 10px;
+}
+
+.badge-primary { background-color: #007bff; }
+.badge-danger { background-color: #dc3545; }
+.badge-success { background-color: #28a745; }
+.badge-warning { background-color: #ffc107; color: #000; }
+.badge-info { background-color: #17a2b8; }
+</style>

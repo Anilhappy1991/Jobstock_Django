@@ -353,3 +353,70 @@ class NavigationService(BaseService):
                 message="Failed to retrieve dashboard data",
                 error_details=str(e)
             )
+    
+    @classmethod
+    def get_navigation_stats(cls, user: User) -> Dict[str, Any]:
+        """
+        Get navigation statistics (badge counts, notifications, etc.)
+        
+        Args:
+            user: User object
+            
+        Returns:
+            ApiResponse dict with stats
+        """
+        try:
+            from App.models import JobApplication, Job, Message
+            
+            # Get user role
+            try:
+                user_role = user.profile.role
+            except:
+                user_role = 'candidate'
+            
+            stats = {}
+            
+            # Role-specific stats
+            if user_role == 'hiring_manager':
+                stats = {
+                    'new_applications': JobApplication.objects.filter(
+                        job__posted_by=user,
+                        status='pending'
+                    ).count(),
+                    'active_jobs': Job.objects.filter(
+                        posted_by=user,
+                        is_active=True
+                    ).count(),
+                    'unread_messages': 0,  # Implement message counting
+                    'total_candidates': JobApplication.objects.filter(
+                        job__posted_by=user
+                    ).values('candidate').distinct().count(),
+                }
+            elif user_role == 'candidate':
+                stats = {
+                    'applications_count': JobApplication.objects.filter(
+                        candidate=user
+                    ).count(),
+                    'saved_jobs': 0,  # Implement saved jobs counting
+                    'profile_views': 0,  # Implement profile views
+                    'unread_messages': 0,
+                }
+            elif user_role == 'rpo_admin':
+                stats = {
+                    'total_jobs': Job.objects.count(),
+                    'total_applications': JobApplication.objects.count(),
+                    'pending_approvals': Job.objects.filter(status='pending').count(),
+                    'active_clients': 0,  # Implement client counting
+                }
+            
+            return ApiResponse.success(
+                data={'stats': stats},
+                message="Navigation stats retrieved successfully"
+            )
+            
+        except Exception as e:
+            logger.error(f"Error getting navigation stats: {str(e)}")
+            return ApiResponse.server_error(
+                message="Failed to retrieve navigation stats",
+                error_details=str(e)
+            )
