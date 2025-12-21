@@ -433,4 +433,186 @@ class JobService(BaseService):
                 message="Failed to search jobs",
                 error_details=str(e)
             )
-
+    
+    @classmethod
+    def get_posted_jobs_for_rpo(cls, search: Optional[str] = None, 
+                                filters: Optional[Dict] = None,
+                                sort_by: str = '-created_at',
+                                page: int = 1, 
+                                page_size: int = 20) -> Dict[str, Any]:
+        """
+        Get all posted jobs for RPO Admin dashboard with search, filter, sort
+        
+        Args:
+            search: Search query (title, company, skills)
+            filters: Dictionary of filter parameters (job_type, job_category, is_active, posted_by, date_range)
+            sort_by: Field to sort by (default: -created_at)
+            page: Page number
+            page_size: Items per page
+            
+        Returns:
+            ApiResponse dict with job list data
+        """
+        try:
+            # Base queryset with optimized select_related
+            queryset = Job.objects.select_related(
+                'job_category', 
+                'job_type', 
+                'job_level',
+                'posted_by',
+                'posted_by__profile',
+                'country',
+                'state_city'
+            ).all()
+            
+            # Apply search
+            if search:
+                search = search.strip()
+                queryset = queryset.filter(
+                    Q(title__icontains=search) |
+                    Q(job_summary__icontains=search) |
+                    Q(skills__icontains=search) |
+                    Q(posted_by__username__icontains=search) |
+                    Q(posted_by__profile__full_name__icontains=search)
+                )
+            
+            # Apply filters
+            if filters:
+                if 'job_type' in filters and filters['job_type']:
+                    queryset = queryset.filter(job_type__value=filters['job_type'])
+                
+                if 'job_category' in filters and filters['job_category']:
+                    queryset = queryset.filter(job_category__value=filters['job_category'])
+                
+                if 'is_active' in filters and filters['is_active'] is not None:
+                    queryset = queryset.filter(is_active=filters['is_active'])
+                
+                if 'posted_by' in filters and filters['posted_by']:
+                    queryset = queryset.filter(posted_by_id=filters['posted_by'])
+                
+                if 'date_from' in filters and filters['date_from']:
+                    queryset = queryset.filter(created_at__gte=filters['date_from'])
+                
+                if 'date_to' in filters and filters['date_to']:
+                    queryset = queryset.filter(created_at__lte=filters['date_to'])
+            
+            # Apply sorting
+            valid_sort_fields = [
+                'title', '-title', 
+                'created_at', '-created_at',
+                'deadline', '-deadline',
+                'posted_by__username', '-posted_by__username'
+            ]
+            if sort_by in valid_sort_fields:
+                queryset = queryset.order_by(sort_by)
+            else:
+                queryset = queryset.order_by('-created_at')  # Default
+            
+            # Get total count before pagination
+            total_count = queryset.count()
+            
+            # Calculate pagination
+            total_pages = (total_count + page_size - 1) // page_size if total_count > 0 else 1
+            start = (page - 1) * page_size
+            end = start + page_size
+            
+            # Get page items
+            jobs_page = queryset[start:end]
+            
+            # Transform data for template/API
+            jobs_list = []
+            for job in jobs_page:
+                jobs_list.append({
+                    'id': job.id,
+                    'title': job.title,
+                    'slug': job.slug,
+                    'job_category': job.job_category.text if job.job_category else 'N/A',
+                    'job_type': job.job_type.text if job.job_type else 'N/A',
+                    'job_level': job.job_level.text if job.job_level else 'N/A',
+                    'company_name': job.posted_by.profile.full_name if job.posted_by and hasattr(job.posted_by, 'profile') and job.posted_by.profile.full_name else job.posted_by.username if job.posted_by else 'Unknown',
+                    'posted_by': job.posted_by.username if job.posted_by else 'Unknown',
+                    'posted_by_id': job.posted_by.id if job.posted_by else None,
+                    'location': f"{job.state_city.text}, {job.country.text}" if job.state_city and job.country else (job.state_city.text if job.state_city else (job.country.text if job.country else 'N/A')),
+                    'min_salary': float(job.min_salary) if job.min_salary else None,
+                    'max_salary': float(job.max_salary) if job.max_salary else None,
+                    'salary_display': f"${job.min_salary:,.0f} - ${job.max_salary:,.0f}" if job.min_salary and job.max_salary else ('Negotiable' if not job.min_salary and not job.max_salary else f"${job.min_salary:,.0f}+" if job.min_salary else f"Up to ${job.max_salary:,.0f}"),
+                    'created_at': job.created_at,
+                    'created_at_display': job.created_at.strftime('%Y-%m-%d %H:%M') if job.created_at else 'N/A',
+                    'start_date': job.start_date.strftime('%Y-%m-%d') if job.start_date else 'N/A',
+                    'deadline': job.deadline.strftime('%Y-%m-%d') if job.deadline else 'N/A',
+                    'is_active': job.is_active,
+                    'status_display': 'Active' if job.is_active else 'Inactive',
+                    'status_class': 'badge-success' if job.is_active else 'badge-secondary',
+                    'detail_url': f'/job-detail/{job.slug}/' if job.slug else '#',
+                })
+            
+            # Prepare pagination data
+            paginated_data = {
+                'items': jobs_list,
+                'total_count': total_count,
+                'page': page,
+                'page_size': page_size,
+                'total_pages': total_pages,
+                'has_next': page < total_pages,
+                'has_previous': page > 1,
+                'next_page': page + 1 if page < total_pages else None,
+                'previous_page': page - 1 if page > 1 else None,
+            }
+            
+            return ApiResponse.success(
+                data=paginated_data,
+                message=f"Found {total_count} job(s)"
+            )
+            
+        except Exception as e:
+            logger.error(f"Error getting posted jobs for RPO: {str(e)}")
+            return ApiResponse.server_error(
+                message="Failed to retrieve posted jobs",
+                error_details=str(e)
+            )
+    
+    @classmethod
+    def get_job_statistics_api(cls, user_id: Optional[int] = None) -> Dict[str, Any]:
+        """
+        Get job statistics for dashboard with API standardized response
+        
+        Args:
+            user_id: Optional user ID to filter statistics
+            
+        Returns:
+            ApiResponse dict with statistics
+        """
+        try:
+            queryset = Job.objects.all()
+            
+            if user_id:
+                queryset = queryset.filter(posted_by_id=user_id)
+            
+            from django.utils import timezone
+            from datetime import timedelta
+            
+            now = timezone.now()
+            week_ago = now - timedelta(days=7)
+            month_ago = now - timedelta(days=30)
+            
+            stats = {
+                'total_jobs': queryset.count(),
+                'active_jobs': queryset.filter(is_active=True).count(),
+                'inactive_jobs': queryset.filter(is_active=False).count(),
+                'jobs_this_week': queryset.filter(created_at__gte=week_ago).count(),
+                'jobs_this_month': queryset.filter(created_at__gte=month_ago).count(),
+                'jobs_with_deadline': queryset.filter(deadline__isnull=False).count(),
+                'expired_jobs': queryset.filter(deadline__lt=now.date(), is_active=True).count(),
+            }
+            
+            return ApiResponse.success(
+                data=stats,
+                message="Job statistics retrieved successfully"
+            )
+            
+        except Exception as e:
+            logger.error(f"Error getting job statistics: {str(e)}")
+            return ApiResponse.server_error(
+                message="Failed to retrieve job statistics",
+                error_details=str(e)
+            )

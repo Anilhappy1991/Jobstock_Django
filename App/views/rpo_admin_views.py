@@ -6,7 +6,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.contrib import messages
+from django.core.paginator import Paginator
 from App.services.resume_upload_service import ResumeUploadService
+from App.services.job_service import JobService
 from App.utils.response import ApiResponse
 
 
@@ -283,3 +285,98 @@ def rpo_process_single_resume(request, resume_id):
     
     # Redirect back to referring page or resume view
     return redirect(request.META.get('HTTP_REFERER', 'App:rpo_resume_view', kwargs={'resume_id': resume_id}))
+
+
+@login_required
+@require_http_methods(["GET"])
+def rpo_posted_jobs(request):
+    """
+    RPO Admin Posted Jobs List Page
+    Display all posted jobs with search, filter, sort, and pagination
+    GET: Display jobs table with controls
+    """
+    # Check if user is RPO Admin or Superuser
+    user_role = request.user.profile.role if hasattr(request.user, 'profile') else 'unknown'
+    is_rpo_admin = user_role == 'rpo_admin' or request.user.groups.filter(name='rpo_admin').exists()
+    
+    if not is_rpo_admin and not request.user.is_superuser:
+        messages.error(request, 'Access denied. RPO Admin role required.')
+        return redirect('App:index')
+    
+    # Get query parameters
+    search = request.GET.get('search', '').strip()
+    job_type = request.GET.get('job_type', '').strip()
+    job_category = request.GET.get('job_category', '').strip()
+    is_active_filter = request.GET.get('is_active', '').strip()
+    sort_by = request.GET.get('sort_by', '-created_at').strip()
+    page = int(request.GET.get('page', 1))
+    page_size = int(request.GET.get('page_size', 20))
+    
+    # Prepare filters
+    filters = {}
+    if job_type:
+        filters['job_type'] = job_type
+    if job_category:
+        filters['job_category'] = job_category
+    if is_active_filter:
+        filters['is_active'] = is_active_filter.lower() == 'true'
+    
+    # Use service to get jobs
+    result = JobService.get_posted_jobs_for_rpo(
+        search=search,
+        filters=filters,
+        sort_by=sort_by,
+        page=page,
+        page_size=page_size
+    )
+    
+    if result.success:
+        jobs_data = result.data
+        
+        # Get statistics
+        stats_result = JobService.get_job_statistics_api()
+        stats = stats_result.data if stats_result.success else {}
+        
+        # Get dropdown options for filters
+        from App.models import DropdownMaster
+        job_types = DropdownMaster.objects.filter(
+            group__value='job_type', 
+            is_active=True
+        ).order_by('sort_order', 'text')
+        
+        job_categories = DropdownMaster.objects.filter(
+            group__value='job_category', 
+            is_active=True
+        ).order_by('sort_order', 'text')
+        
+        context = {
+            'jobs': jobs_data['items'],
+            'total_count': jobs_data.get('total_count', 0),
+            'page': jobs_data.get('page', page),
+            'page_size': jobs_data.get('page_size', page_size),
+            'total_pages': jobs_data.get('total_pages', 1),
+            'has_previous': jobs_data.get('has_previous', False),
+            'has_next': jobs_data.get('has_next', False),
+            'previous_page': jobs_data.get('previous_page'),
+            'next_page': jobs_data.get('next_page'),
+            'stats': stats,
+            'job_types': job_types,
+            'job_categories': job_categories,
+            'search': search,
+            'selected_job_type': job_type,
+            'selected_job_category': job_category,
+            'selected_is_active': is_active_filter,
+            'sort_by': sort_by,
+        }
+        
+        return render(request, 'Pages/RPO-Admin/posted_jobs.html', context)
+    else:
+        messages.error(request, result.message)
+        context = {
+            'jobs': [],
+            'total_count': 0,
+            'stats': {},
+            'job_types': [],
+            'job_categories': [],
+        }
+        return render(request, 'Pages/RPO-Admin/posted_jobs.html', context)

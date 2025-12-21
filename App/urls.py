@@ -101,6 +101,7 @@ urlpatterns = [
     path("rpo-resume-download/<int:resume_id>/", views.rpo_resume_download, name="rpo_resume_download"),
     path("rpo-process-resumes/", views.rpo_process_resumes, name="rpo_process_resumes"),
     path("rpo-process-resume/<int:resume_id>/", views.rpo_process_single_resume, name="rpo_process_single_resume"),
+    path("rpo-posted-jobs/", views.rpo_posted_jobs, name="rpo_posted_jobs"),
     
     # Menu Demo
     path("menu-demo/", views.menu_demo, name="menu_demo"),
