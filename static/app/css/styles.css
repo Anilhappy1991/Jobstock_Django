@@ -3038,7 +3038,9 @@ nav a {
     position: relative;
 	background:var(--maincolor);
 	border:2px solid var(--maincolor) !important;
+    height: 40px;
 }
+.task-title span{font-size: 12px;}
 .nav-menu.nav-menu-social>li.list-buttons.light a{
 	background:#ffffff;
 	border:2px solid #ffffff !important;
@@ -3053,8 +3055,14 @@ nav a {
 }
 .nav-menu.nav-menu-social>li.list-buttons a {
     top:0px;
-	padding:14px 20px;
+	padding:5px 8px;
     color:#ffffff !important;
+}
+.alert-error{
+    padding:5px 8px;
+    float: right;
+    z-index: 9;
+    margin-bottom: 2px;
 }
 .nav-menu.nav-menu-social>li.list-buttons.light a {
     color:#08184b !important;
@@ -8744,10 +8752,10 @@ span.remove-from-compare {
     overflow: visible;
 }
 .dashboard-wrap {
-    min-height: calc(100vh - 75px);
+    /* min-height: calc(100vh - 75px); */
     display: flex;
     flex-wrap: wrap;
-    padding-top:75px !important;
+    /* padding-top:75px !important; */
 }
 .dashboard-nav {
     position: fixed;
@@ -8805,7 +8813,10 @@ span.remove-from-compare {
     transition: 0.3s;
     line-height: 20px;
     font-size: 14px;
+    border-color: var(--maincolor);
+   background-color:color-mix(in srgb, var(--maincolor), transparent 90%);
 }
+
 .dashboard-nav ul li.active, .dashboard-nav ul li:hover {
     border-color:var(--maincolor);
     background-color:color-mix(in srgb, var(--maincolor), transparent 90%);
@@ -8832,8 +8843,9 @@ span.remove-from-compare {
     position: relative;
     z-index: 1;
     height: 100%;
-    margin-left: 280px;
+    /* margin-left: 280px; */
 }
+
 .dashboard-nav ul li span.count-tag {
     display: inline-block;
     font-weight: 700;
@@ -8891,6 +8903,54 @@ span.remove-from-compare {
     font-size: 25px;
     margin-bottom: 0.5rem;
 }
+
+
+/****side menu**anil****/
+.layout {
+  display: flex;
+  width: 100%;
+}
+
+.sidebar {
+  width: 280px;
+  transition: all 0.3s ease;
+}
+
+.main-content {
+  width: calc(100% - 280px);
+  transition: all 0.3s ease;
+  position: relative;
+  margin-top: 75px;
+}
+
+/* HIDDEN STATE */
+.sidebar.hide {
+  width: 0;
+  overflow: hidden;
+}
+
+.main-content.full {
+  width: 100%;
+}
+
+/* Toggle Button */
+.toggle-btn {
+  position: absolute;
+  top: 5px;
+  left: 4px;
+  z-index: 999;
+  border: none;
+  background: #000;
+  color: #fff;
+  padding: 2px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+/****side end anil*****/
+.sidebar .dashboard-inner .dropdown-toggle::after{border-top: 0em solid;}
+#main-wrapper{background: #f2f3f7;}
+.dashboard-widg-bar .card-body{background: #f2f3f7;}
+.sidebar .dash-user-blocks{background: #e6f2ef;padding-bottom: 10px;}
 .list-inline {
     padding-left: 0;
     margin-left: -5px;
@@ -10883,7 +10943,9 @@ a.purple-theme{background:#9237cb!important;}
 a.orange-theme{background:#E55807!important;}
 a.brown-theme{background:#bc3306!important;}
 a.cadmium-theme{background:#5F8D4E!important;}
-
+.alert-success{
+    float: right;z-index: 9;padding: 5px 10px;
+}
 /* Active Class */
 
 .nav-menus-wrapper ul li:hover > a,

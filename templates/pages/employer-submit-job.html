@@ -21,48 +21,56 @@
 	#main-wrapper {
 		padding-top: 0 !important;
 	}
+
 </style>
 {% endblock %}
 
 {% block hero_content %}
 
 {% include 'Base/navbar.html' %}
-
+<div class="layout">
 <!-- dashboard Detail -->
-<div class="dashboard-wrap bg-light">
-	<a class="mobNavigation" data-bs-toggle="collapse" href="#MobNav" role="button" aria-expanded="false" aria-controls="MobNav">
-		<i class="fas fa-bars mr-2"></i>Dashboard Navigation
-	</a>
+ <!-- LEFT MENU -->
+  <div id="sidebar" class="sidebar">
+	<div class="dashboard-wrap bg-light">
+		<a class="mobNavigation" data-bs-toggle="collapse" href="#MobNav" role="button" aria-expanded="false" aria-controls="MobNav">
+			<i class="fas fa-bars mr-2"></i>Dashboard Navigation
+		</a>
 		<div class="collapse" id="MobNav">
-		<div class="dashboard-nav">
-			<div class="dash-user-blocks pt-5">
-				<div class="jbs-grid-usrs-thumb">
-					<div class="jbs-grid-yuo">
-						<a href="{% url 'App:candidate_list_or_default' %}"><figure><img src="{% static 'app/img/l-12.png' %}" class="img-fluid circle" alt=""></figure></a>
+			<div class="dashboard-nav">
+				<div class="dash-user-blocks pt-3">
+					<div class="jbs-grid-usrs-thumb">
+						<div class="jbs-grid-yuo">
+							<a href="{% url 'App:candidate_list_or_default' %}"><figure><img src="{% static 'app/img/l-12.png' %}" class="img-fluid circle" alt=""></figure></a>
+						</div>
+					</div>
+					<div class="jbs-grid-usrs-caption mb-3">
+						<div class="jbs-kioyer">
+							<span class="label text-light bg-main">05 Openings</span>
+						</div>
+						<div class="jbs-tiosk">
+							<h4 class="jbs-tiosk-title"><a href="{% url 'App:candidate_list_or_default' %}">Instagram App</a></h4>
+							<div class="jbs-tiosk-subtitle"><span><i class="fa-solid fa-location-dot me-2"></i>Canada</span></div>
+						</div>
 					</div>
 				</div>
-				<div class="jbs-grid-usrs-caption mb-3">
-					<div class="jbs-kioyer">
-						<span class="label text-light bg-main">05 Openings</span>
-					</div>
-					<div class="jbs-tiosk">
-						<h4 class="jbs-tiosk-title"><a href="{% url 'App:candidate_list_or_default' %}">Instagram App</a></h4>
-						<div class="jbs-tiosk-subtitle"><span><i class="fa-solid fa-location-dot me-2"></i>Canada</span></div>
-					</div>
-				</div>
-			</div>
-			{% include 'Components/For-Employer/dashboard_nav.html' with dashboard_active='submit' %}
-		</div>					
+				{% include 'Components/For-Employer/dashboard_nav.html' with dashboard_active='submit' %}
+			</div>					
 		</div>
 	</div>
+	</div>
 	
+	<div id="mainContent" class="main-content">
+		 <button id="toggleBtn" class="toggle-btn">☰</button>
+<div class="page-content">
 	<div class="dashboard-content">
+
 		<div class="dashboard-tlbar d-block mb-4">
 			<div class="row">
 				<div class="colxl-12 col-lg-12 col-md-12">
 					<h1 class="mb-1 fs-3 fw-medium">{% if is_edit %}Edit Job{% else %}Post Jobs{% endif %}</h1>
 					<nav aria-label="breadcrumb">
-						<ol class="breadcrumb">
+						<ol class="breadcrumb ">
 							<li class="breadcrumb-item text-muted"><a href="{% url 'App:employer_dashboard' %}">Employer</a></li>
 							<li class="breadcrumb-item text-muted"><a href="{% url 'App:employer_jobs' %}">Jobs</a></li>
 							<li class="breadcrumb-item"><a href="#" class="text-main">{% if is_edit %}Edit{% else %}Post{% endif %} Job</a></li>
@@ -116,18 +124,18 @@
 								<div class="form-group">
 									<label>Job summary</label>
 							<textarea name="job_summary" id="job_summary" class="form-control froala-editor" rows="4" placeholder="Provide a brief summary of the job role">{{ job.job_summary|default:'' }}</textarea>
-						<div class="col-xl-12 col-lg-12 col-md-12">
+						<div class="col-xl-12 col-lg-12 col-md-12 mt-3">
 							<div class="form-group">
 								<label>Responsibilities</label>
 								<textarea name="responsibilities" id="responsibilities" class="form-control froala-editor" rows="4" placeholder="List key responsibilities for this position"></textarea>
 							</div>
 						</div>
-							<textarea name="responsibilities" id="responsibilities" class="form-control froala-editor" rows="4" placeholder="List key responsibilities for this position">{{ job.responsibilities|default:'' }}</textarea>		<label>Qualifications</label>
+							<textarea name="responsibilities" id="responsibilities" class="form-control froala-editor" rows="4" placeholder="List key responsibilities for this position">{{ job.responsibilities|default:'' }}</textarea>		<label class="mt-3">Qualifications</label>
 								<textarea name="qualifications" id="qualifications" class="form-control froala-editor" rows="4" placeholder="Required qualifications and skills"></textarea>
 							</div>
 						</div>
 						{{ job.qualifications|default:'' }}
-						<div class="col-xl-6 col-lg-6 col-md-12">
+						<div class="col-xl-6 col-lg-6 col-md-12 ">
 							<div class="form-group">
 								<label>Job Category</label>
 								<div class="select-ops">
@@ -380,9 +388,10 @@
 				<!-- <div class="py-3 text-center">© <script>document.write(new Date().getFullYear())</script>reetechusa Develop with <i class="mdi mdi-heart text-danger"></i> by <a href="https://reetechusa.in" target="_blank" class="text-reset">reetechusa</a>.</div> -->
 			</div>
 		</div>
-
+	</div>
 	</div>				
-	
+</div>
+</div>
 </div>
 <!-- dashboard Detail End -->
 
@@ -497,4 +506,16 @@
 		});
 	});
 </script>
+
+	<script>
+  const toggleBtn = document.getElementById('toggleBtn');
+  const sidebar = document.getElementById('sidebar');
+  const mainContent = document.getElementById('mainContent');
+
+  toggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('hide');
+    mainContent.classList.toggle('full');
+  });
+</script>
+
 {% endblock %}
